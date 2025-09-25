@@ -1,6 +1,14 @@
 import React, { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
-import { Filter, MapPin, Phone, Calculator, X } from "lucide-react";
+import {
+  Filter,
+  MapPin,
+  Phone,
+  Calculator,
+  X,
+  Volume2,
+  VolumeX,
+} from "lucide-react";
 import "./styles/cortos.css";
 
 const Cortos = () => {
@@ -8,7 +16,15 @@ const Cortos = () => {
   const [currentVideoIndex, setCurrentVideoIndex] = useState(0);
   const [showFilters, setShowFilters] = useState(false);
   const [isTransitioning, setIsTransitioning] = useState(false);
+  const [isMuted, setIsMuted] = useState(true);
+  const [isPlaying, setIsPlaying] = useState(true);
+  const [playbackRate, setPlaybackRate] = useState(1);
+  const [progress, setProgress] = useState(0);
+  const [duration, setDuration] = useState(0);
+
   const videoContainerRef = useRef(null);
+  const videoRef = useRef(null);
+  const progressIntervalRef = useRef(null);
 
   // Mock video data - replace with your actual data
   const videos = [
@@ -41,6 +57,104 @@ const Cortos = () => {
     },
   ];
 
+  // Update progress bar
+  const updateProgress = () => {
+    if (videoRef.current) {
+      const current = videoRef.current.currentTime;
+      const total = videoRef.current.duration;
+      setProgress((current / total) * 100);
+    }
+  };
+
+  // Handle video loaded metadata
+  const handleLoadedMetadata = () => {
+    if (videoRef.current) {
+      setDuration(videoRef.current.duration);
+      setProgress(0);
+    }
+  };
+
+  // Start progress tracking
+  const startProgressTracking = () => {
+    progressIntervalRef.current = setInterval(updateProgress, 100);
+  };
+
+  // Stop progress tracking
+  const stopProgressTracking = () => {
+    if (progressIntervalRef.current) {
+      clearInterval(progressIntervalRef.current);
+      progressIntervalRef.current = null;
+    }
+  };
+
+  // Handle video play/pause
+  const togglePlayPause = () => {
+    if (videoRef.current) {
+      if (isPlaying) {
+        videoRef.current.pause();
+        stopProgressTracking();
+      } else {
+        videoRef.current.play();
+        startProgressTracking();
+      }
+      setIsPlaying(!isPlaying);
+    }
+  };
+
+  // Handle mute/unmute
+  const toggleMute = () => {
+    if (videoRef.current) {
+      videoRef.current.muted = !isMuted;
+      setIsMuted(!isMuted);
+    }
+  };
+
+  // Handle speed control - start 2x speed
+  const startSpeedControl = () => {
+    if (videoRef.current) {
+      videoRef.current.playbackRate = 2;
+      setPlaybackRate(2);
+    }
+  };
+
+  // Handle speed control - stop 2x speed
+  const stopSpeedControl = () => {
+    if (videoRef.current) {
+      videoRef.current.playbackRate = 1;
+      setPlaybackRate(1);
+    }
+  };
+
+  // Handle video change
+  const changeVideo = (direction) => {
+    if (isTransitioning) return;
+
+    setIsTransitioning(true);
+    stopProgressTracking();
+
+    setTimeout(() => {
+      if (direction === "next") {
+        setCurrentVideoIndex((prev) => (prev + 1) % videos.length);
+      } else {
+        setCurrentVideoIndex((prev) =>
+          prev === 0 ? videos.length - 1 : prev - 1
+        );
+      }
+      setProgress(0);
+      setIsPlaying(true);
+      setPlaybackRate(1);
+
+      setTimeout(() => {
+        setIsTransitioning(false);
+        if (videoRef.current) {
+          videoRef.current.play();
+          startProgressTracking();
+        }
+      }, 100);
+    }, 300);
+  };
+
+  // Handle wheel scroll
   useEffect(() => {
     let scrollTimeout;
 
@@ -52,16 +166,10 @@ const Cortos = () => {
       clearTimeout(scrollTimeout);
       scrollTimeout = setTimeout(() => {
         if (e.deltaY > 0) {
-          // Scroll down - next video
-          setCurrentVideoIndex((prev) => (prev + 1) % videos.length);
+          changeVideo("next");
         } else {
-          // Scroll up - previous video
-          setCurrentVideoIndex((prev) =>
-            prev === 0 ? videos.length - 1 : prev - 1
-          );
+          changeVideo("prev");
         }
-        setIsTransitioning(true);
-        setTimeout(() => setIsTransitioning(false), 300);
       }, 100);
     };
 
@@ -76,7 +184,23 @@ const Cortos = () => {
       }
       clearTimeout(scrollTimeout);
     };
-  }, [videos.length, isTransitioning]);
+  }, [isTransitioning]);
+
+  // Cleanup on unmount
+  useEffect(() => {
+    return () => {
+      stopProgressTracking();
+    };
+  }, []);
+
+  // Auto-play when video changes
+  useEffect(() => {
+    if (videoRef.current && !isTransitioning) {
+      videoRef.current.currentTime = 0;
+      videoRef.current.play();
+      startProgressTracking();
+    }
+  }, [currentVideoIndex]);
 
   const currentVideo = videos[currentVideoIndex];
 
@@ -106,14 +230,58 @@ const Cortos = () => {
             isTransitioning ? "transitioning" : ""
           }`}
         >
-          <video
-            key={currentVideo.id}
-            src={currentVideo.src}
-            autoPlay
-            loop
-            muted
-            className="main-video"
-          />
+          <div className="video-wrapper">
+            <video
+              ref={videoRef}
+              key={currentVideo.id}
+              src={currentVideo.src}
+              autoPlay
+              loop
+              muted={isMuted}
+              className="main-video"
+              onLoadedMetadata={handleLoadedMetadata}
+              onEnded={() => changeVideo("next")}
+            />
+
+            {/* Mute Button */}
+            <button className="mute-btn" onClick={toggleMute}>
+              {isMuted ? <VolumeX size={24} /> : <Volume2 size={24} />}
+            </button>
+
+            {/* Speed Control Areas */}
+            <div
+              className="speed-control left-speed"
+              onMouseDown={startSpeedControl}
+              onMouseUp={stopSpeedControl}
+              onMouseLeave={stopSpeedControl}
+            />
+            <div
+              className="speed-control right-speed"
+              onMouseDown={startSpeedControl}
+              onMouseUp={stopSpeedControl}
+              onMouseLeave={stopSpeedControl}
+            />
+
+            {/* Play/Pause Overlay */}
+            <div className="play-pause-overlay" onClick={togglePlayPause} />
+
+            {/* Progress Bar */}
+            <div className="progress-container">
+              <div className="progress-bar">
+                <div
+                  className="progress-fill"
+                  style={{ width: `${progress}%` }}
+                />
+              </div>
+            </div>
+
+            {/* Play/Pause Indicator */}
+            {!isPlaying && (
+              <div onClick={togglePlayPause} className="play-indicator">
+                ▶
+              </div>
+            )}
+          </div>
 
           {/* Video Description Overlay */}
           <div className="video-overlay">
