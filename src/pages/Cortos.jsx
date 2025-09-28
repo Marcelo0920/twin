@@ -574,18 +574,18 @@ const Cortos = () => {
       </div>
 
       {/* Filters Modal */}
-      <div className={`filters-modal ${showFilters ? "active" : ""}`}>
-        <div className="modal-content">
-          <div className="modal-header">
+      <div className={`filters-modal-cortos ${showFilters ? "active" : ""}`}>
+        <div className="modal-content-cortos">
+          <div className="modal-header-cortos">
             <h3>Filtros de búsqueda</h3>
             <button className="close-btn" onClick={() => setShowFilters(false)}>
               <X size={24} />
             </button>
           </div>
 
-          <div className="filters-content">
+          <div className="filters-content-cortos">
             {/* Transaction Type Toggle */}
-            <div className="filter-group">
+            <div className="filter-group-cortos">
               <label>Tipo de transacción</label>
               <div className="transaction-toggle">
                 <button
@@ -612,7 +612,7 @@ const Cortos = () => {
             </div>
 
             {/* Price Range Slider */}
-            <div className="filter-group">
+            <div className="filter-group-cortos">
               <label>Rango de precio</label>
               <div className="price-slider-container">
                 <div
@@ -665,7 +665,7 @@ const Cortos = () => {
             </div>
 
             {/* City */}
-            <div className="filter-group">
+            <div className="filter-group-cortos">
               <label>Ciudad</label>
               <select
                 value={filters.ciudad}
@@ -681,7 +681,7 @@ const Cortos = () => {
             </div>
 
             {/* Property Type */}
-            <div className="filter-group">
+            <div className="filter-group-cortos">
               <label>Tipo de propiedad</label>
               <select
                 value={filters.tipo}
@@ -697,7 +697,7 @@ const Cortos = () => {
             </div>
 
             {/* Zone */}
-            <div className="filter-group">
+            <div className="filter-group-cortos">
               <label>Zona</label>
               <select
                 value={filters.zona}
@@ -713,7 +713,7 @@ const Cortos = () => {
             </div>
           </div>
 
-          <div className="filter-actions">
+          <div className="filter-actions-cortos">
             <button className="clear-btn" onClick={clearFilters}>
               Limpiar
             </button>

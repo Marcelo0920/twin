@@ -401,7 +401,7 @@
 }
 
 /* Filters Modal */
-.filters-modal {
+.filters-modal-cortos {
   position: fixed;
   top: 0;
   left: 0;
@@ -418,12 +418,12 @@
   transition: all 0.3s ease;
 }
 
-.filters-modal.active {
+.filters-modal-cortos.active {
   opacity: 1;
   visibility: visible;
 }
 
-.filters-modal .modal-content {
+.filters-modal-cortos .modal-content-cortos {
   background: linear-gradient(
     145deg,
     rgba(255, 255, 255, 0.15) 0%,
@@ -443,11 +443,11 @@
   overflow: hidden;
 }
 
-.filters-modal.active .modal-content {
+.filters-modal-cortos.active .modal-content-cortos {
   transform: scale(1);
 }
 
-.modal-header {
+.modal-header-cortos {
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -457,7 +457,7 @@
   border-bottom: 1px solid rgba(255, 255, 255, 0.1);
 }
 
-.modal-header h3 {
+.modal-header-cortos h3 {
   font-size: 1.5rem;
   font-weight: 700;
 }
@@ -477,7 +477,7 @@
   color: white;
 }
 
-.filters-content {
+.filters-content-cortos {
   color: white;
   padding: 1.5rem 2rem;
   overflow-y: auto;
@@ -486,32 +486,32 @@
   scrollbar-color: rgba(255, 144, 23, 0.4) transparent;
 }
 
-.filters-content::-webkit-scrollbar {
+.filters-content-cortos::-webkit-scrollbar {
   width: 6px;
 }
 
-.filters-content::-webkit-scrollbar-track {
+.filters-content-cortos::-webkit-scrollbar-track {
   background: transparent;
 }
 
-.filters-content::-webkit-scrollbar-thumb {
+.filters-content-cortos::-webkit-scrollbar-thumb {
   background: rgba(255, 144, 23, 0.4);
   border-radius: 10px;
 }
 
-.filters-content::-webkit-scrollbar-thumb:hover {
+.filters-content-cortos::-webkit-scrollbar-thumb:hover {
   background: rgba(255, 144, 23, 0.6);
 }
 
-.filter-group {
+.filter-group-cortos {
   margin-bottom: 1.5rem;
 }
 
-.filter-group:last-of-type {
+.filter-group-cortos:last-of-type {
   margin-bottom: 0;
 }
 
-.filter-group label {
+.filter-group-cortos label {
   display: block;
   font-weight: 600;
   margin-bottom: 0.75rem;
@@ -703,7 +703,7 @@
   padding: 8px;
 }
 
-.filter-actions {
+.filter-actions-cortos {
   display: flex;
   gap: 1rem;
   padding: 1.5rem 2rem;
@@ -747,7 +747,7 @@
 }
 
 /* Updated Modal Header */
-.modal-header h3 {
+.modal-header-cortos h3 {
   font-size: 1.4rem;
   font-weight: 700;
   background: linear-gradient(135deg, #ffffff 0%, #e0e7ff 100%);
@@ -824,21 +824,21 @@
   }
 
   /* Filter responsive adjustments */
-  .filters-modal .modal-content {
+  .filters-modal-cortos .modal-content-cortos {
     width: 95%;
     height: 95vh;
     max-height: 95vh;
   }
 
-  .modal-header {
+  .modal-header-cortos {
     padding: 1.25rem 1.5rem;
   }
 
-  .filters-content {
+  .filters-content-cortos {
     padding: 1rem 1.5rem;
   }
 
-  .filter-actions {
+  .filter-actions-cortos {
     padding: 1rem 1.5rem;
     flex-direction: column;
     gap: 0.75rem;
@@ -857,11 +857,11 @@
     font-size: 0.75rem;
   }
 
-  .modal-header h3 {
+  .modal-header-cortos h3 {
     font-size: 1.25rem;
   }
 
-  .filter-group {
+  .filter-group-cortos {
     margin-bottom: 1.25rem;
   }
 

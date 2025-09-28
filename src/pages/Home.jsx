@@ -1,21 +1,7 @@
 import React, { useState, useRef, useEffect } from "react";
-import {
-  Search,
-  Settings,
-  LogIn,
-  Menu,
-  X,
-  Bed,
-  Bath,
-  MapPin,
-  Facebook,
-  Twitter,
-  Instagram,
-  Linkedin,
-  ChevronDown,
-  Check,
-} from "lucide-react";
+import { Search, X, ChevronDown, Check } from "lucide-react";
 import { useNavigate } from "react-router-dom";
+import Header from "../components/Header";
 import "./styles/home.css";
 
 // Custom Dropdown Component
@@ -159,113 +145,13 @@ const Home = () => {
     { value: "loft", label: "Loft" },
   ];
 
-  const destinations = [
-    {
-      id: 1,
-      country: "Israel",
-      image:
-        "https://images.unsplash.com/photo-1544736150-6cc092c24469?w=400&h=300&fit=crop",
-    },
-    {
-      id: 2,
-      country: "Belgium",
-      image:
-        "https://images.unsplash.com/photo-1559564484-e48c87883e5b?w=400&h=300&fit=crop",
-    },
-    {
-      id: 3,
-      country: "Mexico",
-      image:
-        "https://images.unsplash.com/photo-1518105779142-d975f22f1b0b?w=400&h=300&fit=crop",
-    },
-    {
-      id: 4,
-      country: "Slovenia",
-      image:
-        "https://images.unsplash.com/photo-1504019347908-b45f9b0b8dd5?w=400&h=300&fit=crop",
-    },
-    {
-      id: 5,
-      country: "Cyprus",
-      image:
-        "https://images.unsplash.com/photo-1539650116574-75c0c6d20e65?w=400&h=300&fit=crop",
-    },
-    {
-      id: 6,
-      country: "Guyana",
-      image:
-        "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=400&h=300&fit=crop",
-    },
-    {
-      id: 7,
-      country: "Colombia",
-      image:
-        "https://images.unsplash.com/photo-1555169062-013468b47731?w=400&h=300&fit=crop",
-    },
-    {
-      id: 8,
-      country: "Venezuela",
-      image:
-        "https://images.unsplash.com/photo-1469474968028-56623f02e42e?w=400&h=300&fit=crop",
-    },
-  ];
-
-  const featuredProperties = [
-    {
-      id: 1,
-      image:
-        "https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=500&h=400&fit=crop",
-      price: "$2,175,000 USD",
-      type: "Single Family Home for Sale",
-      beds: 4,
-      baths: 3,
-      location: "Beverly Hills, CA",
-    },
-    {
-      id: 2,
-      image:
-        "https://images.unsplash.com/photo-1600047509807-ba8f99d2cdde?w=500&h=400&fit=crop",
-      price: "$1,850,000 USD",
-      type: "Luxury Condo for Sale",
-      beds: 3,
-      baths: 2,
-      location: "Manhattan, NY",
-    },
-    {
-      id: 3,
-      image:
-        "https://images.unsplash.com/photo-1600566753190-17f0baa2a6c3?w=500&h=400&fit=crop",
-      price: "$3,200,000 USD",
-      type: "Waterfront Villa for Sale",
-      beds: 5,
-      baths: 4,
-      location: "Miami Beach, FL",
-    },
-  ];
-
   return (
     <div className="home-container">
       {/* Header */}
-      <header className="header">
-        <div className="header-container">
-          <a href="/" className="logo">
-            TWIN®
-          </a>
-
-          <div className="header-actions">
-            <a href="/login" className="btn btn-primary">
-              <LogIn size={18} />
-              Login
-            </a>
-            <button
-              className="mobile-menu-btn"
-              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            >
-              {mobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
-            </button>
-          </div>
-        </div>
-      </header>
+      <Header
+        mobileMenuOpen={mobileMenuOpen}
+        setMobileMenuOpen={setMobileMenuOpen}
+      />
 
       {/* Hero Section */}
       <section className="hero">
@@ -280,7 +166,7 @@ const Home = () => {
         <h1 className="hero-title">Encuentra tu hogar perfecto con Twin®</h1>
 
         <div className="search-card">
-          <div className="search-tabs">
+          <div className="search-tabs-home">
             {["comprar", "alquilar"].map((tab) => (
               <button
                 key={tab}
@@ -312,7 +198,10 @@ const Home = () => {
             </div>
 
             <div className="search-btn-container">
-              <button className="search-btn" onClick={() => setShowModal(true)}>
+              <button
+                className="search-btn-home"
+                onClick={() => setShowModal(true)}
+              >
                 <Search size={20} />
                 Buscar
               </button>
@@ -348,7 +237,7 @@ const Home = () => {
               className="modal-option classic"
               onClick={() => {
                 setShowModal(false);
-                console.log("Búsqueda clásica selected");
+                navigate("/classic");
               }}
             >
               Búsqueda clásica
