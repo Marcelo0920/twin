@@ -1,4 +1,4 @@
-// src/pages/Classic/data/filterOptions.js
+// src/data/filterOptions.js
 
 export const cities = [
   { value: "", label: "Todas las ciudades" },
@@ -22,6 +22,22 @@ export const bedroomOptions = [
   { value: "2", label: "2 dormitorios" },
   { value: "3", label: "3 dormitorios" },
   { value: "4", label: "4+ dormitorios" },
+];
+
+export const bathroomOptions = [
+  { value: "", label: "Cualquier cantidad" },
+  { value: "1", label: "1 baño" },
+  { value: "2", label: "2 baños" },
+  { value: "3", label: "3 baños" },
+  { value: "4", label: "4+ baños" },
+];
+
+export const garageOptions = [
+  { value: "", label: "Cualquier cantidad" },
+  { value: "0", label: "Sin garaje" },
+  { value: "1", label: "1 garaje" },
+  { value: "2", label: "2 garajes" },
+  { value: "3", label: "3+ garajes" },
 ];
 
 export const zones = [

@@ -11,10 +11,11 @@
 /* Filter Section */
 .filter-section {
   background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  padding: 5rem 0 1.5rem;
+  padding: 5rem 0 1.75rem;
   color: white;
   position: relative;
-  overflow: hidden;
+  overflow: visible; /* Changed from hidden */
+  z-index: 10; /* Add this */
 }
 
 .filter-section::before {
@@ -84,6 +85,8 @@
 .filter-group {
   display: flex;
   flex-direction: column;
+  position: relative;
+  z-index: auto;
 }
 
 /* Input with Icon Wrapper */

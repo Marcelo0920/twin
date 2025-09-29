@@ -1,7 +1,7 @@
-// src/pages/Classic/components/FilterSection.jsx
 import React from "react";
 import { Search } from "lucide-react";
 import { FaCity, FaBuilding, FaBed } from "react-icons/fa";
+import CustomDropdown from "../dropdown/Dropdown";
 import {
   cities,
   propertyTypes,
@@ -33,57 +33,40 @@ const FilterSection = ({
             </div>
           </div>
 
+          {/* City Dropdown */}
           <div className="filter-group">
-            <div className="input-with-icon">
-              <FaCity className="input-icon" />
-              <select
-                value={filters.city}
-                onChange={(e) => onFilterChange("city", e.target.value)}
-                className="filter-select with-icon"
-              >
-                {cities.map((city) => (
-                  <option key={city.value} value={city.value}>
-                    {city.label}
-                  </option>
-                ))}
-              </select>
-            </div>
+            <CustomDropdown
+              options={cities}
+              value={filters.city}
+              onChange={(value) => onFilterChange("city", value)}
+              placeholder="Seleccionar ciudad"
+              icon={FaCity}
+            />
           </div>
 
+          {/* Property Type Dropdown */}
           <div className="filter-group">
-            <div className="input-with-icon">
-              <FaBuilding className="input-icon" />
-              <select
-                value={filters.propertyType}
-                onChange={(e) => onFilterChange("propertyType", e.target.value)}
-                className="filter-select with-icon"
-              >
-                {propertyTypes.map((type) => (
-                  <option key={type.value} value={type.value}>
-                    {type.label}
-                  </option>
-                ))}
-              </select>
-            </div>
+            <CustomDropdown
+              options={propertyTypes}
+              value={filters.propertyType}
+              onChange={(value) => onFilterChange("propertyType", value)}
+              placeholder="Tipo de propiedad"
+              icon={FaBuilding}
+            />
           </div>
 
+          {/* Bedrooms Dropdown */}
           <div className="filter-group">
-            <div className="input-with-icon">
-              <FaBed className="input-icon" />
-              <select
-                value={filters.bedrooms}
-                onChange={(e) => onFilterChange("bedrooms", e.target.value)}
-                className="filter-select with-icon"
-              >
-                {bedroomOptions.map((option) => (
-                  <option key={option.value} value={option.value}>
-                    {option.label}
-                  </option>
-                ))}
-              </select>
-            </div>
+            <CustomDropdown
+              options={bedroomOptions}
+              value={filters.bedrooms}
+              onChange={(value) => onFilterChange("bedrooms", value)}
+              placeholder="Dormitorios"
+              icon={FaBed}
+            />
           </div>
 
+          {/* Search Button */}
           <div className="filter-actions">
             <button className="search-btn">
               <Search size={18} />
