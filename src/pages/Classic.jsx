@@ -36,6 +36,7 @@ import {
   FaCheckCircle,
   FaTimesCircle,
   FaExclamationCircle,
+  FaWhatsapp,
 } from "react-icons/fa";
 import Header from "../components/Header";
 import "./styles/classic.css";
@@ -549,19 +550,35 @@ const Classic = () => {
             <X size={24} />
           </button>
 
-          {selectedNearbyPlace && (
-            <div className="modal-header-classic">
-              <h2>{selectedNearbyPlace.name}</h2>
-              <p>Vista 360° del lugar</p>
-            </div>
-          )}
-
           <div className="modal-360-viewer">
             <img
               src={current360Images[current360ImageIndex]}
               alt="360 view"
               className="viewer-360-image"
             />
+
+            {selectedNearbyPlace && (
+              <div className="place-info-overlay">
+                <div className="place-overlay-content">
+                  <div className="place-icon-container">
+                    {React.createElement(
+                      getNearbyPlaceIcon(selectedNearbyPlace.type),
+                      {
+                        size: 24,
+                        style: {
+                          color: getNearbyPlaceColor(selectedNearbyPlace.type),
+                        },
+                      }
+                    )}
+                  </div>
+                  <div className="place-details">
+                    <h3>{selectedNearbyPlace.name}</h3>
+                    <p>Vista 360° • {selectedNearbyPlace.distance}</p>
+                  </div>
+                </div>
+              </div>
+            )}
+
             {current360Images.length > 1 && (
               <div className="viewer-navigation">
                 {current360Images.map((_, idx) => (
@@ -919,13 +936,9 @@ const Classic = () => {
             <div className="contact-section">
               <h3>Contactar</h3>
               <div className="contact-buttons">
-                <button className="contact-btn primary">
-                  <FaPhone size={16} />
-                  Llamar
-                </button>
-                <button className="contact-btn secondary">
-                  <FaEnvelope size={16} />
-                  Email
+                <button className="contact-btn whatsapp">
+                  <FaWhatsapp size={16} />
+                  Contactar
                 </button>
               </div>
             </div>

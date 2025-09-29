@@ -1056,6 +1056,53 @@
   margin: 0;
 }
 
+/* Enhanced Modal Header for Nearby Places */
+.place-info-overlay {
+  position: absolute;
+  bottom: 20px;
+  left: 20px;
+  right: 20px;
+  z-index: 10;
+}
+
+.place-overlay-content {
+  background: rgba(255, 255, 255, 0.15);
+  backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 16px;
+  padding: 1.5rem;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+}
+
+.place-overlay-content .place-icon-container {
+  width: 48px;
+  height: 48px;
+  background: rgba(255, 255, 255, 0.9);
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.place-details h3 {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: white;
+  margin: 0 0 0.25rem 0;
+  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
+}
+
+.place-details p {
+  font-size: 0.9rem;
+  color: rgba(255, 255, 255, 0.9);
+  margin: 0;
+  text-shadow: 0 1px 4px rgba(0, 0, 0, 0.5);
+}
+
 .modal-360-viewer {
   position: relative;
   width: 100%;
@@ -1168,6 +1215,20 @@
   box-shadow: 0 6px 20px rgba(255, 144, 23, 0.3);
 }
 
+/* WhatsApp Contact Button */
+.contact-btn.whatsapp {
+  background: #25d366;
+  color: white;
+  border: 2px solid #25d366;
+}
+
+.contact-btn.whatsapp:hover {
+  background: #1fa652;
+  border-color: #1fa652;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(37, 211, 102, 0.4);
+}
+
 /* Responsive Design */
 @media (max-width: 1200px) {
   .main-content {
@@ -1272,6 +1333,26 @@
   .modal-360-viewer {
     height: 400px;
   }
+
+  .place-overlay-content {
+    padding: 1rem;
+    flex-direction: column;
+    text-align: center;
+    gap: 0.75rem;
+  }
+
+  .place-overlay-content .place-icon-container {
+    width: 40px;
+    height: 40px;
+  }
+
+  .place-details h3 {
+    font-size: 1rem;
+  }
+
+  .place-details p {
+    font-size: 0.8rem;
+  }
 }
 
 @media (max-width: 480px) {
@@ -1333,5 +1414,31 @@
 
   .modal-360-viewer {
     height: 300px;
+  }
+
+  .place-info-overlay {
+    bottom: 10px;
+    left: 10px;
+    right: 10px;
+  }
+
+  .place-overlay-content {
+    padding: 0.75rem;
+    flex-direction: column;
+    text-align: center;
+    gap: 0.5rem;
+  }
+
+  .place-overlay-content .place-icon-container {
+    width: 36px;
+    height: 36px;
+  }
+
+  .place-details h3 {
+    font-size: 0.9rem;
+  }
+
+  .place-details p {
+    font-size: 0.75rem;
   }
 }
