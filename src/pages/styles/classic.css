@@ -464,11 +464,12 @@
   height: 100%;
   background: white;
   border-radius: 0;
+  position: relative; /* Add this */
 }
 
 .detail-header {
   display: flex;
-  justify-content: space-between;
+  justify-content: flex-start; /* Changed from space-between */
   align-items: center;
   padding: 1.5rem 0 1rem 0;
   border-bottom: 1px solid #e2e8f0;
@@ -495,9 +496,49 @@
   transform: translateX(-2px);
 }
 
-.detail-actions {
+.detail-actions-sticky {
+  position: sticky;
+  bottom: 0;
+  left: 0;
+  right: 0;
   display: flex;
-  gap: 0.75rem;
+  justify-content: end;
+  gap: 1rem;
+  padding: 1.5rem 2rem;
+  z-index: 100;
+}
+
+.detail-actions-sticky .action-btn-classic {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 56px;
+  height: 56px;
+  background: white;
+  border: 2px solid #e2e8f0;
+  border-radius: 16px;
+  color: #64748b;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+.detail-actions-sticky .action-btn-classic:hover {
+  border-color: #667eea;
+  color: #667eea;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(102, 126, 234, 0.2);
+}
+
+.detail-actions-sticky .action-btn-classic:first-child:hover {
+  border-color: #ef4444;
+  color: #ef4444;
+  box-shadow: 0 8px 20px rgba(239, 68, 68, 0.2);
+}
+
+/* Add spacer to prevent content from being hidden */
+.sticky-actions-spacer {
+  height: 120px; /* Adjust this if needed */
 }
 
 .action-btn-classic {
@@ -1382,4 +1423,50 @@
   .place-details p {
     font-size: 0.75rem;
   }
+}
+
+@media (max-width: 768px) {
+  .detail-actions-sticky {
+    padding: 1rem;
+    gap: 0.75rem;
+  }
+
+  .detail-actions-sticky .action-btn-classic {
+    width: 48px;
+    height: 48px;
+    border-radius: 12px;
+  }
+
+  .sticky-actions-spacer {
+    height: 100px;
+  }
+}
+
+@media (max-width: 480px) {
+  .detail-actions-sticky {
+    padding: 0.75rem;
+  }
+
+  .detail-actions-sticky .action-btn-classic {
+    width: 44px;
+    height: 44px;
+  }
+
+  .sticky-actions-spacer {
+    height: 90px;
+  }
+}
+
+.detail-actions-sticky .action-btn-classic.whatsapp-btn {
+  background: #25d366;
+  border-color: #25d366;
+  color: white;
+}
+
+.detail-actions-sticky .action-btn-classic.whatsapp-btn:hover {
+  background: #1fa652;
+  border-color: #1fa652;
+  color: white;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(37, 211, 102, 0.3);
 }

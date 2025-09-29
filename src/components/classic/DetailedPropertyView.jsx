@@ -46,14 +46,6 @@ const DetailedPropertyView = ({
         <button className="back-button" onClick={onBack}>
           <FaArrowLeft size={18} />
         </button>
-        <div className="detail-actions">
-          <button className="action-btn-classic">
-            <FaHeart size={16} />
-          </button>
-          <button className="action-btn-classic">
-            <FaShare size={16} />
-          </button>
-        </div>
       </div>
 
       <div className="detail-content">
@@ -116,18 +108,6 @@ const DetailedPropertyView = ({
             </div>
           </div>
 
-          <CalendarWidget availableDates={property.availableDates} />
-
-          <NearbyPlaces
-            places={property.nearbyPlaces}
-            onPlaceClick={onNearbyPlaceClick}
-          />
-
-          <StreetView
-            images={property.street360Images}
-            onImageClick={onStreet360Click}
-          />
-
           <div className="property-description">
             <h3>Descripción</h3>
             <p>
@@ -138,6 +118,11 @@ const DetailedPropertyView = ({
               familia.
             </p>
           </div>
+
+          <NearbyPlaces
+            places={property.nearbyPlaces}
+            onPlaceClick={onNearbyPlaceClick}
+          />
 
           <div className="property-features">
             <h3>Características</h3>
@@ -151,16 +136,29 @@ const DetailedPropertyView = ({
             </div>
           </div>
 
-          <div className="contact-section">
-            <h3>Contactar</h3>
-            <div className="contact-buttons">
-              <button className="contact-btn whatsapp">
-                <FaWhatsapp size={16} />
-                Contactar
-              </button>
-            </div>
-          </div>
+          <StreetView
+            images={property.street360Images}
+            onImageClick={onStreet360Click}
+          />
+
+          <CalendarWidget availableDates={property.availableDates} />
+
+          {/* Add padding at bottom to prevent content from being hidden behind sticky actions */}
+          <div className="sticky-actions-spacer"></div>
         </div>
+      </div>
+
+      {/* Sticky Actions at Bottom */}
+      <div className="detail-actions-sticky">
+        <button className="action-btn-classic">
+          <FaHeart size={16} />
+        </button>
+        <button className="action-btn-classic">
+          <FaShare size={16} />
+        </button>
+        <button className="action-btn-classic whatsapp-btn">
+          <FaWhatsapp size={18} />
+        </button>
       </div>
     </div>
   );
