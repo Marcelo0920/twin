@@ -36,7 +36,7 @@
   z-index: 1;
 }
 
-/* Search Tabs - Now inline with filters */
+/* Search Tabs */
 .search-tabs {
   display: flex;
   gap: 4px;
@@ -413,7 +413,7 @@
   width: 100% !important;
 }
 
-/* Custom Map Markers - UPDATED */
+/* Custom Map Markers */
 .custom-price-marker {
   background: none !important;
   border: none !important;
@@ -446,6 +446,30 @@
   border-color: #ff9017;
   box-shadow: 0 6px 16px rgba(255, 144, 23, 0.4);
   transform: scale(1.1);
+}
+
+/* Nearby Place Markers */
+.custom-nearby-marker {
+  background: none !important;
+  border: none !important;
+}
+
+.nearby-place-marker {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  cursor: pointer;
+  transition: all 0.3s ease;
+  border: 2px solid white;
+}
+
+.nearby-place-marker:hover {
+  transform: scale(1.1);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.3);
 }
 
 /* Detailed Property View Styles */
@@ -489,7 +513,7 @@
   gap: 0.75rem;
 }
 
-.action-btn {
+.action-btn-classic {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -503,7 +527,7 @@
   transition: all 0.3s ease;
 }
 
-.action-btn:hover {
+.action-btn-classic:hover {
   border-color: #ff9017;
   color: #ff9017;
   transform: translateY(-2px);
@@ -515,20 +539,91 @@
   gap: 2rem;
 }
 
-.property-image-gallery {
+/* Image Carousel */
+.property-carousel {
   width: 100%;
-  height: 300px;
   border-radius: 16px;
   overflow: hidden;
   box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
 }
 
-.main-property-image {
+.carousel-container {
+  position: relative;
+  width: 100%;
+  height: 400px;
+  overflow: hidden;
+}
+
+.carousel-track {
+  display: flex;
+  height: 100%;
+  transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.carousel-image {
   width: 100%;
   height: 100%;
   object-fit: cover;
+  flex-shrink: 0;
 }
 
+.carousel-btn {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background: rgba(255, 255, 255, 0.9);
+  border: none;
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  z-index: 10;
+}
+
+.carousel-btn:hover {
+  background: white;
+  transform: translateY(-50%) scale(1.1);
+}
+
+.carousel-btn.prev {
+  left: 16px;
+}
+
+.carousel-btn.next {
+  right: 16px;
+}
+
+.carousel-indicators {
+  position: absolute;
+  bottom: 16px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 8px;
+  z-index: 10;
+}
+
+.indicator {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.5);
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.indicator.active {
+  background: white;
+  width: 32px;
+  border-radius: 5px;
+}
+
+/* Property Info */
 .property-info {
   display: flex;
   flex-direction: column;
@@ -616,6 +711,162 @@
   color: #64748b;
 }
 
+/* Calendar Widget */
+.calendar-widget {
+  background: white;
+  border: 2px solid #e2e8f0;
+  border-radius: 16px;
+  padding: 1.5rem;
+}
+
+.calendar-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid #e2e8f0;
+}
+
+.calendar-header h3 {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: #1e293b;
+  margin: 0;
+}
+
+.calendar-legend {
+  display: flex;
+  gap: 1rem;
+}
+
+.legend-item {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 0.75rem;
+  color: #64748b;
+}
+
+.calendar-month {
+  font-size: 1rem;
+  font-weight: 600;
+  color: #475569;
+  margin-bottom: 1rem;
+}
+
+.calendar-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(70px, 1fr));
+  gap: 0.5rem;
+}
+
+.calendar-day {
+  aspect-ratio: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 8px;
+  border-radius: 12px;
+  border: 2px solid #e2e8f0;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  position: relative;
+}
+
+.calendar-day.available {
+  background: #f0fdf4;
+  border-color: #86efac;
+}
+
+.calendar-day.available:hover {
+  background: #dcfce7;
+  border-color: #4ade80;
+  transform: scale(1.05);
+}
+
+.calendar-day.taken {
+  background: #fef3c7;
+  border-color: #fcd34d;
+  cursor: not-allowed;
+}
+
+.calendar-day.unavailable {
+  background: #fee2e2;
+  border-color: #fca5a5;
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+.calendar-day.selected {
+  border-color: #667eea;
+  background: #ede9fe;
+  box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.2);
+  transform: scale(1.05);
+}
+
+.day-number {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: #1e293b;
+}
+
+.day-name {
+  font-size: 0.65rem;
+  color: #64748b;
+  font-weight: 500;
+  text-transform: uppercase;
+}
+
+.day-icon {
+  position: absolute;
+  bottom: 4px;
+  right: 4px;
+  font-size: 0.7rem;
+}
+
+.selected-date-info {
+  margin-top: 1rem;
+  padding: 1rem;
+  background: #f8fafc;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.selected-date-info span {
+  flex: 1;
+  font-size: 0.875rem;
+  color: #475569;
+  font-weight: 500;
+}
+
+.confirm-visit-btn {
+  padding: 10px 20px;
+  background: #667eea;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.confirm-visit-btn:hover {
+  background: #5568d3;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+}
+
+/* Nearby Places Section */
+.nearby-places-section h3,
+.street-view-section h3,
 .property-description h3,
 .property-features h3,
 .contact-section h3 {
@@ -625,6 +876,229 @@
   margin-bottom: 1rem;
 }
 
+.nearby-places-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1rem;
+}
+
+.nearby-place-card {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 1rem;
+  background: white;
+  border: 2px solid #e2e8f0;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.nearby-place-card:hover {
+  border-color: #667eea;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(102, 126, 234, 0.15);
+}
+
+.nearby-place-icon {
+  width: 48px;
+  height: 48px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.nearby-place-info h4 {
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: #1e293b;
+  margin: 0 0 4px 0;
+}
+
+.nearby-place-info .distance {
+  font-size: 0.8rem;
+  color: #64748b;
+}
+
+/* Street View Section */
+.street-view-section {
+  margin-top: 1rem;
+}
+
+.section-description {
+  color: #64748b;
+  font-size: 0.95rem;
+  margin-bottom: 1rem;
+}
+
+.street-view-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1rem;
+}
+
+.street-view-card {
+  position: relative;
+  aspect-ratio: 16/9;
+  border-radius: 12px;
+  overflow: hidden;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.street-view-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+}
+
+.street-view-card img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.street-view-overlay {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 12px;
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.7), transparent);
+  color: white;
+  font-size: 0.875rem;
+  font-weight: 600;
+}
+
+/* 360 Modal */
+.modal-overlay-classic {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.8);
+  backdrop-filter: blur(8px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+  animation: fadeIn 0.3s ease;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.modal-content-classic {
+  background: white;
+  border-radius: 20px;
+  max-width: 90vw;
+  max-height: 90vh;
+  width: 1200px;
+  overflow: hidden;
+  position: relative;
+  animation: slideUp 0.3s ease;
+}
+
+@keyframes slideUp {
+  from {
+    transform: translateY(50px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+.modal-close-classic {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.9);
+  border: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  z-index: 10;
+  transition: all 0.3s ease;
+}
+
+.modal-close-classic:hover {
+  background: white;
+  transform: rotate(90deg);
+}
+
+.modal-header-classic {
+  padding: 2rem 2rem 1rem;
+  border-bottom: 1px solid #e2e8f0;
+}
+
+.modal-header-classic h2 {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #1e293b;
+  margin: 0 0 0.5rem 0;
+}
+
+.modal-header-classic p {
+  color: #64748b;
+  margin: 0;
+}
+
+.modal-360-viewer {
+  position: relative;
+  width: 100%;
+  height: 600px;
+  background: #000;
+}
+
+.viewer-360-image {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.viewer-navigation {
+  position: absolute;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 12px;
+}
+
+.nav-dot {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.5);
+  border: 2px solid white;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.nav-dot.active {
+  background: white;
+  width: 32px;
+  border-radius: 6px;
+}
+
+.nav-dot:hover {
+  background: rgba(255, 255, 255, 0.8);
+}
+
+/* Description and Features */
 .property-description p {
   color: #475569;
   line-height: 1.6;
@@ -648,6 +1122,7 @@
   border: 1px solid #e2e8f0;
 }
 
+/* Contact Section */
 .contact-buttons {
   display: flex;
   gap: 1rem;
@@ -702,6 +1177,14 @@
   .properties-grid {
     grid-template-columns: 1fr;
   }
+
+  .nearby-places-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .street-view-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
 }
 
 @media (max-width: 768px) {
@@ -752,7 +1235,6 @@
     gap: 0.5rem 1rem;
   }
 
-  /* Mobile Detail View Adjustments */
   .property-details-grid {
     grid-template-columns: 1fr;
     gap: 1rem;
@@ -770,8 +1252,25 @@
     flex-direction: column;
   }
 
-  .property-image-gallery {
-    height: 200px;
+  .carousel-container {
+    height: 250px;
+  }
+
+  .calendar-grid {
+    grid-template-columns: repeat(auto-fill, minmax(60px, 1fr));
+  }
+
+  .street-view-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .modal-content-classic {
+    max-width: 95vw;
+    max-height: 95vh;
+  }
+
+  .modal-360-viewer {
+    height: 400px;
   }
 }
 
@@ -813,5 +1312,26 @@
   .filter-select.with-icon,
   .search-input.with-icon {
     padding-left: 38px;
+  }
+
+  .carousel-btn {
+    width: 36px;
+    height: 36px;
+  }
+
+  .carousel-btn.prev {
+    left: 8px;
+  }
+
+  .carousel-btn.next {
+    right: 8px;
+  }
+
+  .calendar-grid {
+    grid-template-columns: repeat(auto-fill, minmax(50px, 1fr));
+  }
+
+  .modal-360-viewer {
+    height: 300px;
   }
 }
