@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from "react";
-import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
+import { MapContainer, TileLayer, Marker } from "react-leaflet";
 import { Icon, DivIcon } from "leaflet";
 import { Search, ChevronDown, MapPin, X } from "lucide-react";
 import {
@@ -11,6 +11,11 @@ import {
   FaBuilding,
   FaMapMarkerAlt,
   FaCity,
+  FaArrowLeft,
+  FaHeart,
+  FaShare,
+  FaPhone,
+  FaEnvelope,
 } from "react-icons/fa";
 import Header from "../components/Header";
 import "./styles/classic.css";
@@ -19,6 +24,8 @@ const Classic = () => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [activeTab, setActiveTab] = useState("comprar");
   const [selectedProperty, setSelectedProperty] = useState(null);
+  const [selectedMarkerId, setSelectedMarkerId] = useState(null);
+  const [showDetailView, setShowDetailView] = useState(false);
   const mapRef = useRef(null);
 
   // Filter states
@@ -163,47 +170,63 @@ const Classic = () => {
   // Format price
   const formatPrice = (price) => {
     if (price >= 1000000) {
-      return `${(price / 1000000).toFixed(1)}M`;
+      return `$${(price / 1000000).toFixed(1)}M`;
     } else if (price >= 1000) {
-      return `${(price / 1000).toFixed(0)}K`;
+      return `$${(price / 1000).toFixed(0)}K`;
     } else {
-      return `${price}`;
+      return `$${price}`;
     }
   };
 
-  // Create custom marker with price
+  // Create custom marker with price - UPDATED
   const createCustomMarker = (property) => {
     const price =
       activeTab === "comprar"
         ? formatPrice(property.price)
-        : `${property.price}/mes`;
+        : `$${property.price}/mes`;
+
+    const isSelected = selectedMarkerId === property.id;
 
     return new DivIcon({
       html: `
-        <div class="custom-marker">
-          <div class="price-bubble">
-            ${price}
-          </div>
-          <div class="marker-pin">
-            <svg viewBox="0 0 24 24" fill="currentColor" width="32" height="32">
-              <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/>
-            </svg>
-          </div>
+        <div class="price-marker ${isSelected ? "selected" : ""}">
+          ${price}
         </div>
       `,
-      className: "custom-div-icon",
-      iconSize: [60, 70],
-      iconAnchor: [30, 65],
-      popupAnchor: [0, -65],
+      className: "custom-price-marker",
+      iconSize: [60, 30],
+      iconAnchor: [30, 15],
+      popupAnchor: [0, -15],
     });
   };
 
-  // Handle card click
-  const handleCardClick = (property) => {
+  // Handle marker click - UPDATED
+  const handleMarkerClick = (property) => {
     setSelectedProperty(property);
+    setSelectedMarkerId(property.id);
+    setShowDetailView(true);
     if (mapRef.current) {
       mapRef.current.setView(property.coordinates, 15);
     }
+  };
+
+  // Handle card click - UPDATED
+  const handleCardClick = (property) => {
+    setSelectedProperty(property);
+    setSelectedMarkerId(property.id);
+    setShowDetailView(true);
+    if (mapRef.current) {
+      mapRef.current.setView(property.coordinates, 15);
+    }
+  };
+
+  // Handle back to list view
+  const handleBackToList = () => {
+    setShowDetailView(false);
+    setTimeout(() => {
+      setSelectedProperty(null);
+      setSelectedMarkerId(null);
+    }, 300);
   };
 
   // Handle filter changes
@@ -223,6 +246,127 @@ const Classic = () => {
       bedrooms: "",
       zone: "",
     });
+  };
+
+  // Detailed Property View Component
+  const DetailedPropertyView = ({ property }) => {
+    if (!property) return null;
+
+    return (
+      <div className="detailed-property-view">
+        <div className="detail-header">
+          <button className="back-button" onClick={handleBackToList}>
+            <FaArrowLeft size={18} />
+          </button>
+          <div className="detail-actions">
+            <button className="action-btn">
+              <FaHeart size={16} />
+            </button>
+            <button className="action-btn">
+              <FaShare size={16} />
+            </button>
+          </div>
+        </div>
+
+        <div className="detail-content">
+          <div className="property-image-gallery">
+            <img
+              src={property.image}
+              alt={property.name}
+              className="main-property-image"
+            />
+          </div>
+
+          <div className="property-info">
+            <h1 className="property-title">{property.name}</h1>
+
+            <div className="property-price-detail">
+              <span className="price-amount">
+                {activeTab === "comprar"
+                  ? formatPrice(property.price)
+                  : `${property.price}/mes`}
+              </span>
+              <span className="price-type">
+                {activeTab === "comprar" ? "Venta" : "Alquiler"}
+              </span>
+            </div>
+
+            <div className="property-location-detail">
+              <MapPin size={16} />
+              {property.location}
+            </div>
+
+            <div className="property-details-grid">
+              <div className="detail-item">
+                <FaBed size={20} />
+                <div>
+                  <span className="detail-value">{property.bedrooms}</span>
+                  <span className="detail-label">Dormitorios</span>
+                </div>
+              </div>
+              <div className="detail-item">
+                <FaShower size={20} />
+                <div>
+                  <span className="detail-value">{property.bathrooms}</span>
+                  <span className="detail-label">Baños</span>
+                </div>
+              </div>
+              <div className="detail-item">
+                <FaRuler size={20} />
+                <div>
+                  <span className="detail-value">{property.area}</span>
+                  <span className="detail-label">m²</span>
+                </div>
+              </div>
+              <div className="detail-item">
+                <FaBuilding size={20} />
+                <div>
+                  <span className="detail-value">{property.type}</span>
+                  <span className="detail-label">Tipo</span>
+                </div>
+              </div>
+            </div>
+
+            <div className="property-description">
+              <h3>Descripción</h3>
+              <p>
+                Esta hermosa propiedad ofrece un estilo de vida excepcional en
+                una de las zonas más exclusivas de la ciudad. Con espacios
+                amplios y luminosos, acabados de primera calidad y una ubicación
+                privilegiada que garantiza comodidad y tranquilidad para toda la
+                familia.
+              </p>
+            </div>
+
+            <div className="property-features">
+              <h3>Características</h3>
+              <div className="features-grid">
+                <span className="feature-tag">Garage</span>
+                <span className="feature-tag">Jardín</span>
+                <span className="feature-tag">Piscina</span>
+                <span className="feature-tag">Seguridad 24h</span>
+                <span className="feature-tag">Ascensor</span>
+                <span className="feature-tag">Aire Acondicionado</span>
+              </div>
+            </div>
+
+            <div className="contact-section">
+              <h3>Contactar</h3>
+              <div className="contact-buttons">
+                <button className="contact-btn primary">
+                  <FaPhone size={16} />
+                  Llamar
+                </button>
+                <button className="contact-btn secondary">
+                  <FaEnvelope size={16} />
+                  Email
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
   };
 
   return (
@@ -323,69 +467,83 @@ const Classic = () => {
       <div className="main-content">
         {/* Properties Cards Section */}
         <div className="properties-section">
-          <div className="properties-header">
-            <h2>Propiedades disponibles</h2>
-            <span className="results-count">
-              {filteredProperties.length} resultados
-            </span>
-          </div>
+          <div
+            className={`properties-container ${
+              showDetailView ? "show-detail" : "show-list"
+            }`}
+          >
+            {/* List View */}
+            <div className="properties-list-view">
+              <div className="properties-header">
+                <h2>Propiedades disponibles</h2>
+                <span className="results-count">
+                  {filteredProperties.length} resultados
+                </span>
+              </div>
 
-          <div className="properties-grid">
-            {filteredProperties.map((property) => (
-              <div
-                key={property.id}
-                className={`property-card ${
-                  selectedProperty?.id === property.id ? "selected" : ""
-                }`}
-                onClick={() => handleCardClick(property)}
-              >
-                <div className="property-image-container">
-                  <img
-                    src={property.image}
-                    alt={property.name}
-                    className="property-image"
-                  />
-                  <div className="property-price-tag">
-                    <FaDollarSign size={12} />
-                    {activeTab === "comprar"
-                      ? formatPrice(property.price)
-                      : `$${property.price}/mes`}
-                  </div>
-                </div>
-
-                <div className="property-content">
-                  <h3 className="property-name">{property.name}</h3>
-
-                  <div className="property-location">
-                    <MapPin size={14} />
-                    {property.location}
-                  </div>
-
-                  <div className="property-characteristics">
-                    <h4>Características</h4>
-                    <div className="characteristics-list">
-                      <div className="characteristic">
-                        <FaBed size={14} />
-                        <span>{property.bedrooms} dorm.</span>
+              <div className="properties-grid">
+                {filteredProperties.map((property) => (
+                  <div
+                    key={property.id}
+                    className={`property-card ${
+                      selectedProperty?.id === property.id ? "selected" : ""
+                    }`}
+                    onClick={() => handleCardClick(property)}
+                  >
+                    <div className="property-image-container">
+                      <img
+                        src={property.image}
+                        alt={property.name}
+                        className="property-image"
+                      />
+                      <div className="property-price-tag">
+                        <FaDollarSign size={12} />
+                        {activeTab === "comprar"
+                          ? formatPrice(property.price)
+                          : `${property.price}/mes`}
                       </div>
-                      <div className="characteristic">
-                        <FaShower size={14} />
-                        <span>{property.bathrooms} baños</span>
+                    </div>
+
+                    <div className="property-content">
+                      <h3 className="property-name">{property.name}</h3>
+
+                      <div className="property-location">
+                        <MapPin size={14} />
+                        {property.location}
                       </div>
-                      <div className="characteristic">
-                        <FaRuler size={14} />
-                        <span>{property.area} m²</span>
+
+                      <div className="property-characteristics">
+                        <h4>Características</h4>
+                        <div className="characteristics-list">
+                          <div className="characteristic">
+                            <FaBed size={14} />
+                            <span>{property.bedrooms} dorm.</span>
+                          </div>
+                          <div className="characteristic">
+                            <FaShower size={14} />
+                            <span>{property.bathrooms} baños</span>
+                          </div>
+                          <div className="characteristic">
+                            <FaRuler size={14} />
+                            <span>{property.area} m²</span>
+                          </div>
+                        </div>
+                      </div>
+
+                      <div className="property-type-badge">
+                        <FaBuilding size={12} />
+                        {property.type}
                       </div>
                     </div>
                   </div>
-
-                  <div className="property-type-badge">
-                    <FaBuilding size={12} />
-                    {property.type}
-                  </div>
-                </div>
+                ))}
               </div>
-            ))}
+            </div>
+
+            {/* Detail View */}
+            <div className="properties-detail-view">
+              <DetailedPropertyView property={selectedProperty} />
+            </div>
           </div>
         </div>
 
@@ -408,40 +566,9 @@ const Classic = () => {
                 position={property.coordinates}
                 icon={createCustomMarker(property)}
                 eventHandlers={{
-                  click: () => setSelectedProperty(property),
+                  click: () => handleMarkerClick(property),
                 }}
-              >
-                <Popup>
-                  <div className="map-popup">
-                    <img
-                      src={property.image}
-                      alt={property.name}
-                      className="popup-image"
-                    />
-                    <h3>{property.name}</h3>
-                    <p className="popup-price">
-                      {activeTab === "comprar"
-                        ? formatPrice(property.price)
-                        : `$${property.price}/mes`}
-                    </p>
-                    <p className="popup-location">
-                      <MapPin size={12} />
-                      {property.location}
-                    </p>
-                    <div className="popup-characteristics">
-                      <span>
-                        <FaBed size={12} /> {property.bedrooms}
-                      </span>
-                      <span>
-                        <FaShower size={12} /> {property.bathrooms}
-                      </span>
-                      <span>
-                        <FaRuler size={12} /> {property.area}m²
-                      </span>
-                    </div>
-                  </div>
-                </Popup>
-              </Marker>
+              />
             ))}
           </MapContainer>
         </div>

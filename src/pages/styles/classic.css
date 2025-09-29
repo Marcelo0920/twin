@@ -199,26 +199,54 @@
 
 /* Properties Section */
 .properties-section {
-  padding: 2rem;
-  overflow-y: auto;
+  padding: 0;
+  overflow: hidden;
   background: #f8fafc;
   border-right: 1px solid #e2e8f0;
+  position: relative;
 }
 
-.properties-section::-webkit-scrollbar {
+.properties-container {
+  display: flex;
+  width: 200%;
+  height: 100%;
+  transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.properties-container.show-list {
+  transform: translateX(0);
+}
+
+.properties-container.show-detail {
+  transform: translateX(-50%);
+}
+
+.properties-list-view,
+.properties-detail-view {
+  width: 50%;
+  height: 100%;
+  overflow-y: auto;
+  padding: 2rem;
+}
+
+.properties-list-view::-webkit-scrollbar,
+.properties-detail-view::-webkit-scrollbar {
   width: 6px;
 }
 
-.properties-section::-webkit-scrollbar-track {
+.properties-list-view::-webkit-scrollbar-track,
+.properties-detail-view::-webkit-scrollbar-track {
   background: #f1f5f9;
 }
 
-.properties-section::-webkit-scrollbar-thumb {
+.properties-list-view::-webkit-scrollbar-thumb,
+.properties-detail-view::-webkit-scrollbar-thumb {
   background: #cbd5e1;
   border-radius: 3px;
 }
 
-.properties-section::-webkit-scrollbar-thumb:hover {
+.properties-list-view::-webkit-scrollbar-thumb:hover,
+.properties-detail-view::-webkit-scrollbar-thumb:hover {
   background: #94a3b8;
 }
 
@@ -385,109 +413,284 @@
   width: 100% !important;
 }
 
-/* Custom Map Markers */
-.custom-div-icon {
+/* Custom Map Markers - UPDATED */
+.custom-price-marker {
   background: none !important;
   border: none !important;
 }
 
-.custom-marker {
-  position: relative;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-
-.price-bubble {
-  background: linear-gradient(135deg, #667eea, #764ba2);
-  color: white;
-  padding: 6px 12px;
+.price-marker {
+  background: white;
+  color: #333333;
+  padding: 8px 12px;
   border-radius: 20px;
   font-weight: 700;
   font-size: 12px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
-  margin-bottom: 2px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
   white-space: nowrap;
-  position: relative;
-  z-index: 100;
+  border: 2px solid #e2e8f0;
+  transition: all 0.3s ease;
+  cursor: pointer;
+  text-align: center;
+  min-width: 50px;
 }
 
-.price-bubble::after {
-  content: "";
-  position: absolute;
-  top: 100%;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 0;
-  height: 0;
-  border-left: 6px solid transparent;
-  border-right: 6px solid transparent;
-  border-top: 6px solid #667eea;
+.price-marker:hover {
+  transform: scale(1.05);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.2);
 }
 
-.marker-pin {
-  color: #667eea;
-  filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.3));
+.price-marker.selected {
+  background: #ff9017;
+  color: white;
+  border-color: #ff9017;
+  box-shadow: 0 6px 16px rgba(255, 144, 23, 0.4);
+  transform: scale(1.1);
+}
+
+/* Detailed Property View Styles */
+.detailed-property-view {
+  height: 100%;
+  background: white;
+  border-radius: 0;
+}
+
+.detail-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1.5rem 0 1rem 0;
+  border-bottom: 1px solid #e2e8f0;
+  margin-bottom: 1.5rem;
+}
+
+.back-button {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px;
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  color: #475569;
+  font-weight: 600;
+  cursor: pointer;
   transition: all 0.3s ease;
 }
 
-.marker-pin:hover {
-  transform: scale(1.1);
-  color: #764ba2;
+.back-button:hover {
+  background: #e2e8f0;
+  color: #334155;
+  transform: translateX(-2px);
 }
 
-.marker-pin svg {
-  display: block;
-}
-
-/* Map Popup Styles */
-.map-popup {
-  min-width: 200px;
-}
-
-.popup-image {
-  width: 100%;
-  height: 120px;
-  object-fit: cover;
-  border-radius: 8px;
-  margin-bottom: 0.75rem;
-}
-
-.map-popup h3 {
-  font-size: 1rem;
-  font-weight: 700;
-  color: #1e293b;
-  margin-bottom: 0.5rem;
-  line-height: 1.3;
-}
-
-.popup-price {
-  font-size: 1.1rem;
-  font-weight: 700;
-  color: #667eea;
-  margin-bottom: 0.5rem;
-}
-
-.popup-location {
-  display: flex;
-  align-items: center;
-  gap: 4px;
-  color: #64748b;
-  font-size: 0.875rem;
-  margin-bottom: 0.75rem;
-}
-
-.popup-characteristics {
+.detail-actions {
   display: flex;
   gap: 0.75rem;
-  font-size: 0.8rem;
-  color: #6b7280;
 }
 
-.popup-characteristics span {
+.action-btn {
   display: flex;
   align-items: center;
-  gap: 3px;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  background: white;
+  border: 2px solid #e2e8f0;
+  border-radius: 12px;
+  color: #64748b;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.action-btn:hover {
+  border-color: #ff9017;
+  color: #ff9017;
+  transform: translateY(-2px);
+}
+
+.detail-content {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+.property-image-gallery {
+  width: 100%;
+  height: 300px;
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+}
+
+.main-property-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.property-info {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.property-title {
+  font-size: 2rem;
+  font-weight: 800;
+  color: #1e293b;
+  line-height: 1.2;
+  margin: 0;
+}
+
+.property-price-detail {
+  display: flex;
+  align-items: baseline;
+  gap: 0.75rem;
+}
+
+.price-amount {
+  font-size: 2.5rem;
+  font-weight: 900;
+  color: #ff9017;
+}
+
+.price-type {
+  font-size: 1rem;
+  font-weight: 600;
+  color: #64748b;
+  background: #f1f5f9;
+  padding: 6px 12px;
+  border-radius: 20px;
+}
+
+.property-location-detail {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: #64748b;
+  font-size: 1.1rem;
+  font-weight: 500;
+}
+
+.property-details-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1.5rem;
+  padding: 1.5rem;
+  background: #f8fafc;
+  border-radius: 16px;
+  border: 1px solid #e2e8f0;
+}
+
+.detail-item {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.detail-item svg {
+  color: #ff9017;
+  background: white;
+  padding: 12px;
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(255, 144, 23, 0.15);
+}
+
+.detail-item div {
+  display: flex;
+  flex-direction: column;
+}
+
+.detail-value {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: #1e293b;
+}
+
+.detail-label {
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: #64748b;
+}
+
+.property-description h3,
+.property-features h3,
+.contact-section h3 {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: #1e293b;
+  margin-bottom: 1rem;
+}
+
+.property-description p {
+  color: #475569;
+  line-height: 1.6;
+  font-size: 1rem;
+  margin: 0;
+}
+
+.features-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+}
+
+.feature-tag {
+  background: #f1f5f9;
+  color: #475569;
+  padding: 8px 16px;
+  border-radius: 20px;
+  font-size: 0.875rem;
+  font-weight: 600;
+  border: 1px solid #e2e8f0;
+}
+
+.contact-buttons {
+  display: flex;
+  gap: 1rem;
+}
+
+.contact-btn {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 14px 24px;
+  border-radius: 12px;
+  font-weight: 600;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  flex: 1;
+  justify-content: center;
+}
+
+.contact-btn.primary {
+  background: #ff9017;
+  color: white;
+  border: 2px solid #ff9017;
+}
+
+.contact-btn.primary:hover {
+  background: #e8800f;
+  border-color: #e8800f;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(255, 144, 23, 0.3);
+}
+
+.contact-btn.secondary {
+  background: white;
+  color: #ff9017;
+  border: 2px solid #ff9017;
+}
+
+.contact-btn.secondary:hover {
+  background: #ff9017;
+  color: white;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(255, 144, 23, 0.3);
 }
 
 /* Responsive Design */
@@ -547,6 +750,28 @@
   .characteristics-list {
     flex-wrap: wrap;
     gap: 0.5rem 1rem;
+  }
+
+  /* Mobile Detail View Adjustments */
+  .property-details-grid {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+
+  .property-title {
+    font-size: 1.5rem;
+  }
+
+  .price-amount {
+    font-size: 2rem;
+  }
+
+  .contact-buttons {
+    flex-direction: column;
+  }
+
+  .property-image-gallery {
+    height: 200px;
   }
 }
 
