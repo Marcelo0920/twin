@@ -107,6 +107,7 @@ const AdvancedFiltersModal = ({
                   value={localFilters.bathrooms}
                   onChange={(value) => handleLocalChange("bathrooms", value)}
                   placeholder="Seleccionar"
+                  textColor="#475569"
                 />
               </div>
 
@@ -120,6 +121,7 @@ const AdvancedFiltersModal = ({
                   value={localFilters.garages}
                   onChange={(value) => handleLocalChange("garages", value)}
                   placeholder="Seleccionar"
+                  textColor="#475569"
                 />
               </div>
             </div>
@@ -165,6 +167,7 @@ const AdvancedFiltersModal = ({
                   value={localFilters.condition}
                   onChange={(value) => handleLocalChange("condition", value)}
                   placeholder="Seleccionar"
+                  textColor="#475569"
                 />
               </div>
 
@@ -178,6 +181,7 @@ const AdvancedFiltersModal = ({
                   value={localFilters.yearBuilt}
                   onChange={(value) => handleLocalChange("yearBuilt", value)}
                   placeholder="Seleccionar"
+                  textColor="#475569"
                 />
               </div>
             </div>

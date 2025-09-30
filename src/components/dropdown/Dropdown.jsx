@@ -8,6 +8,7 @@ const CustomDropdown = ({
   onChange,
   placeholder,
   icon: Icon,
+  textColor = "white", // Default to white for backward compatibility
 }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [highlightedIndex, setHighlightedIndex] = useState(-1);
@@ -79,18 +80,27 @@ const CustomDropdown = ({
         onClick={() => setIsOpen(!isOpen)}
         aria-expanded={isOpen}
         aria-haspopup="listbox"
+        style={{ color: textColor }} // Apply custom text color
       >
-        {Icon && <Icon className="dropdown-leading-icon" size={18} />}
+        {Icon && (
+          <Icon
+            className="dropdown-leading-icon"
+            size={18}
+            style={{ color: textColor }} // Apply to icon
+          />
+        )}
         <span
           className={`dropdown-value-classic ${
             !selectedOption ? "placeholder" : ""
           }`}
+          style={{ color: textColor }} // Apply to value text
         >
           {selectedOption ? selectedOption.label : placeholder}
         </span>
         <ChevronDown
           size={18}
           className={`dropdown-icon-classic ${isOpen ? "rotated" : ""}`}
+          style={{ color: textColor }} // Apply to chevron
         />
       </button>
 
