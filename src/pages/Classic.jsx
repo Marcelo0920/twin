@@ -9,6 +9,7 @@ import Modal360 from "../components/classic/Modal360";
 import { mockProperties } from "../data/mockProperties";
 import { formatPrice } from "../utils/classic/mapHelpers";
 import "./styles/classic.css";
+import "../components/classic/styles/properties.css";
 
 const Classic = () => {
   // State management
