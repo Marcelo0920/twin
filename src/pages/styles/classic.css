@@ -277,7 +277,7 @@
   overflow: hidden;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
   border: 2px solid transparent;
-  transition: all 0.3s ease;
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1); /* CHANGED */
   cursor: pointer;
 }
 
@@ -285,12 +285,14 @@
   transform: translateY(-4px);
   box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
   border-color: #667eea;
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1); /* ADDED */
 }
 
 .property-card.selected {
   border-color: #667eea;
   box-shadow: 0 8px 25px rgba(102, 126, 234, 0.2);
   transform: translateY(-2px);
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1); /* ADDED */
 }
 
 .property-image-container {
@@ -303,7 +305,7 @@
   width: 100%;
   height: 100%;
   object-fit: cover;
-  transition: transform 0.3s ease;
+  transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1); /* CHANGED */
 }
 
 .property-card:hover .property-image {
@@ -419,25 +421,35 @@
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
   white-space: nowrap;
   border: 2px solid #e2e8f0;
-  transition: all 0.3s ease;
   cursor: pointer;
   text-align: center;
   min-width: 50px;
-}
 
+  /* Smooth transitions with GPU acceleration */
+  transition: background-color 0.4s cubic-bezier(0.4, 0, 0.2, 1),
+    color 0.4s cubic-bezier(0.4, 0, 0.2, 1),
+    border-color 0.4s cubic-bezier(0.4, 0, 0.2, 1),
+    transform 0.4s cubic-bezier(0.4, 0, 0.2, 1),
+    box-shadow 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+
+  transform: translateZ(0);
+  will-change: transform, background-color, color, border-color;
+  backface-visibility: hidden;
+  -webkit-font-smoothing: antialiased;
+}
 .price-marker:hover {
   transform: scale(1.05);
   box-shadow: 0 6px 16px rgba(0, 0, 0, 0.2);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); /* ADDED */
 }
 
 .price-marker.selected {
-  background: #ff9017;
-  color: white;
-  border-color: #ff9017;
+  background: #ff9017 !important;
+  color: white !important;
+  border-color: #ff9017 !important;
   box-shadow: 0 6px 16px rgba(255, 144, 23, 0.4);
-  transform: scale(1.1);
+  transform: scale(1.1) translateZ(0);
 }
-
 /* Nearby Place Markers */
 .custom-nearby-marker {
   background: none !important;
@@ -453,13 +465,33 @@
   justify-content: center;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
   cursor: pointer;
-  transition: all 0.3s ease;
   border: 2px solid white;
+
+  /* Smooth transitions with GPU acceleration */
+  transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1),
+    box-shadow 0.4s cubic-bezier(0.4, 0, 0.2, 1),
+    border-width 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+
+  transform: translateZ(0);
+  will-change: transform, box-shadow, border-width;
+  backface-visibility: hidden;
 }
 
+.nearby-place-marker.hovered,
 .nearby-place-marker:hover {
+  transform: scale(1.2) translateZ(0) !important;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.35) !important;
+  border-width: 3px !important;
+  z-index: 1000;
+}
+
+.nearby-place-marker svg {
+  transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.nearby-place-marker.hovered svg,
+.nearby-place-marker:hover svg {
   transform: scale(1.1);
-  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.3);
 }
 
 /* Detailed Property View Styles */
@@ -1705,7 +1737,6 @@ div[style*="filtersWrapperOpen"] > div {
   position: relative;
   z-index: 1000;
 }
-
 
 /* Hover effects for buttons */
 .search-btn:hover,

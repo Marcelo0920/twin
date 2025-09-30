@@ -10,11 +10,19 @@ import {
 } from "react-icons/fa";
 import { formatPrice } from "../../utils/classic/mapHelpers";
 
-const PropertyCard = ({ property, isSelected, onClick, activeTab }) => {
+const PropertyCard = ({
+  property,
+  isSelected,
+  onClick,
+  onHover,
+  activeTab,
+}) => {
   return (
     <div
       className={`property-card ${isSelected ? "selected" : ""}`}
       onClick={onClick}
+      onMouseEnter={() => onHover(property.id)}
+      onMouseLeave={() => onHover(null)}
     >
       <div className="property-image-container">
         <img

@@ -16,6 +16,8 @@ const Classic = () => {
   const [activeTab, setActiveTab] = useState("comprar");
   const [selectedProperty, setSelectedProperty] = useState(null);
   const [selectedMarkerId, setSelectedMarkerId] = useState(null);
+  const [hoveredPropertyId, setHoveredPropertyId] = useState(null);
+  const [hoveredNearbyPlaceId, setHoveredNearbyPlaceId] = useState(null);
   const [showDetailView, setShowDetailView] = useState(false);
   const [show360Modal, setShow360Modal] = useState(false);
   const [current360Images, setCurrent360Images] = useState([]);
@@ -23,13 +25,12 @@ const Classic = () => {
   const [selectedNearbyPlace, setSelectedNearbyPlace] = useState(null);
   const mapRef = useRef(null);
 
-  // Filter states - NOW WITH ALL THE NEW FILTERS INCLUDING ADVANCED ONES
+  // Filter states
   const [filters, setFilters] = useState({
     city: "",
     propertyType: "",
     priceRange: [0, 1000000],
     bedrooms: "",
-    // Advanced filters
     bathrooms: "",
     garages: "",
     minArea: "",
@@ -42,12 +43,10 @@ const Classic = () => {
 
   // Filter properties based on activeTab and filters
   const filteredProperties = mockProperties.filter((property) => {
-    // Tab filter (buy/rent)
     const matchesTab =
       activeTab === "comprar" ? property.forSale : !property.forSale;
     if (!matchesTab) return false;
 
-    // City filter
     if (
       filters.city &&
       !property.location.toLowerCase().includes(filters.city.toLowerCase())
@@ -55,7 +54,6 @@ const Classic = () => {
       return false;
     }
 
-    // Property type filter
     if (
       filters.propertyType &&
       property.type.toLowerCase() !== filters.propertyType.toLowerCase()
@@ -63,7 +61,6 @@ const Classic = () => {
       return false;
     }
 
-    // Bedrooms filter
     if (filters.bedrooms) {
       const bedroomCount = parseInt(filters.bedrooms);
       if (filters.bedrooms === "5") {
@@ -73,7 +70,6 @@ const Classic = () => {
       }
     }
 
-    // Price range filter
     if (filters.priceRange) {
       const [minPrice, maxPrice] = filters.priceRange;
       if (property.price < minPrice || property.price > maxPrice) {
@@ -81,9 +77,6 @@ const Classic = () => {
       }
     }
 
-    // ADVANCED FILTERS
-
-    // Bathrooms filter
     if (filters.bathrooms) {
       const bathroomCount = parseInt(filters.bathrooms);
       if (filters.bathrooms === "4") {
@@ -93,7 +86,6 @@ const Classic = () => {
       }
     }
 
-    // Garages filter - add garages field to mockProperties
     if (filters.garages && property.garages) {
       const garageCount = parseInt(filters.garages);
       if (filters.garages === "3") {
@@ -103,7 +95,6 @@ const Classic = () => {
       }
     }
 
-    // Area filter - add to mockProperties if needed
     if (filters.minArea && property.area < parseInt(filters.minArea)) {
       return false;
     }
@@ -111,18 +102,15 @@ const Classic = () => {
       return false;
     }
 
-    // Year built filter - add to mockProperties if needed
     if (filters.yearBuilt && property.yearBuilt) {
       const filterYear = parseInt(filters.yearBuilt);
       if (property.yearBuilt < filterYear) return false;
     }
 
-    // Condition filter - add to mockProperties if needed
     if (filters.condition && property.condition) {
       if (property.condition !== filters.condition) return false;
     }
 
-    // Amenities filter - add to mockProperties if needed
     if (
       filters.amenities &&
       filters.amenities.length > 0 &&
@@ -161,6 +149,14 @@ const Classic = () => {
     if (mapRef.current) {
       mapRef.current.setView(property.coordinates, 15);
     }
+  };
+
+  const handleCardHover = (propertyId) => {
+    setHoveredPropertyId(propertyId);
+  };
+
+  const handleNearbyPlaceHover = (placeId) => {
+    setHoveredNearbyPlaceId(placeId);
   };
 
   const handleBackToList = () => {
@@ -219,6 +215,7 @@ const Classic = () => {
               properties={filteredProperties}
               selectedProperty={selectedProperty}
               onCardClick={handleCardClick}
+              onCardHover={handleCardHover}
               activeTab={activeTab}
             />
 
@@ -228,6 +225,7 @@ const Classic = () => {
                 activeTab={activeTab}
                 onBack={handleBackToList}
                 onNearbyPlaceClick={handleNearbyPlaceClick}
+                onNearbyPlaceHover={handleNearbyPlaceHover}
                 onStreet360Click={handleStreet360Click}
               />
             </div>
@@ -239,6 +237,8 @@ const Classic = () => {
           properties={filteredProperties}
           selectedProperty={selectedProperty}
           selectedMarkerId={selectedMarkerId}
+          hoveredPropertyId={hoveredPropertyId}
+          hoveredNearbyPlaceId={hoveredNearbyPlaceId}
           activeTab={activeTab}
           onMarkerClick={handleMarkerClick}
           onNearbyPlaceClick={handleNearbyPlaceClick}

@@ -5,7 +5,7 @@ import {
   getNearbyPlaceColor,
 } from "../../utils/classic/mapHelpers";
 
-const NearbyPlaces = ({ places, onPlaceClick }) => {
+const NearbyPlaces = ({ places, onPlaceClick, onPlaceHover }) => {
   return (
     <div className="nearby-places-section">
       <h3>Lugares Cercanos</h3>
@@ -17,6 +17,8 @@ const NearbyPlaces = ({ places, onPlaceClick }) => {
               key={place.id}
               className="nearby-place-card"
               onClick={() => onPlaceClick(place)}
+              onMouseEnter={() => onPlaceHover(place.id)}
+              onMouseLeave={() => onPlaceHover(null)}
             >
               <div
                 className="nearby-place-icon"

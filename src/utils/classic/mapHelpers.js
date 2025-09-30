@@ -50,17 +50,23 @@ export const getNearbyPlaceColor = (type) => {
   return colors[type] || "#6b7280";
 };
 
-export const createCustomMarker = (property, selectedMarkerId, activeTab) => {
+export const createCustomMarker = (
+  property,
+  isSelected,
+  isHovered,
+  activeTab
+) => {
   const price =
     activeTab === "comprar"
       ? formatPrice(property.price)
       : `${property.price}/mes`;
 
-  const isSelected = selectedMarkerId === property.id;
+  // Marker is highlighted if it's selected OR hovered
+  const isHighlighted = isSelected || isHovered;
 
   return new DivIcon({
     html: `
-      <div class="price-marker ${isSelected ? "selected" : ""}">
+      <div class="price-marker ${isHighlighted ? "selected" : ""}">
         ${price}
       </div>
     `,
@@ -71,12 +77,14 @@ export const createCustomMarker = (property, selectedMarkerId, activeTab) => {
   });
 };
 
-export const createNearbyPlaceMarker = (place) => {
+export const createNearbyPlaceMarker = (place, isHovered = false) => {
   const color = getNearbyPlaceColor(place.type);
 
   return new DivIcon({
     html: `
-      <div class="nearby-place-marker" style="background-color: ${color};">
+      <div class="nearby-place-marker ${
+        isHovered ? "hovered" : ""
+      }" style="background-color: ${color};">
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="white" width="18" height="18">
           ${getIconSvgPath(place.type)}
         </svg>

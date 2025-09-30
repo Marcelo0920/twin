@@ -22,6 +22,7 @@ const DetailedPropertyView = ({
   activeTab,
   onBack,
   onNearbyPlaceClick,
+  onNearbyPlaceHover,
   onStreet360Click,
 }) => {
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
@@ -122,6 +123,7 @@ const DetailedPropertyView = ({
           <NearbyPlaces
             places={property.nearbyPlaces}
             onPlaceClick={onNearbyPlaceClick}
+            onPlaceHover={onNearbyPlaceHover}
           />
 
           <div className="property-features">

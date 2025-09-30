@@ -6,6 +6,7 @@ const PropertyList = ({
   properties,
   selectedProperty,
   onCardClick,
+  onCardHover,
   activeTab,
 }) => {
   return (
@@ -22,6 +23,7 @@ const PropertyList = ({
             property={property}
             isSelected={selectedProperty?.id === property.id}
             onClick={() => onCardClick(property)}
+            onHover={onCardHover}
             activeTab={activeTab}
           />
         ))}

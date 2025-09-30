@@ -1,16 +1,16 @@
 // src/pages/Classic/components/MapSection.jsx
 import React from "react";
-import { MapContainer, TileLayer, Marker } from "react-leaflet";
-import {
-  createCustomMarker,
-  createNearbyPlaceMarker,
-} from "../../utils/classic/mapHelpers";
+import { MapContainer, TileLayer } from "react-leaflet";
+import PropertyMarker from "./PropertyMarker";
+import NearbyPlaceMarker from "./NearbyPlaceMarker";
 
 const MapSection = ({
   mapRef,
   properties,
   selectedProperty,
   selectedMarkerId,
+  hoveredPropertyId,
+  hoveredNearbyPlaceId,
   activeTab,
   onMarkerClick,
   onNearbyPlaceClick,
@@ -28,29 +28,27 @@ const MapSection = ({
           attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
         />
 
-        {/* Property markers */}
+        {/* Property markers - using custom PropertyMarker component */}
         {properties.map((property) => (
-          <Marker
+          <PropertyMarker
             key={property.id}
-            position={property.coordinates}
-            icon={createCustomMarker(property, selectedMarkerId, activeTab)}
-            eventHandlers={{
-              click: () => onMarkerClick(property),
-            }}
+            property={property}
+            selectedMarkerId={selectedMarkerId}
+            hoveredPropertyId={hoveredPropertyId}
+            activeTab={activeTab}
+            onMarkerClick={onMarkerClick}
           />
         ))}
 
-        {/* Nearby places markers */}
+        {/* Nearby places markers - using custom NearbyPlaceMarker component */}
         {selectedProperty &&
           selectedProperty.nearbyPlaces &&
           selectedProperty.nearbyPlaces.map((place) => (
-            <Marker
+            <NearbyPlaceMarker
               key={`nearby-${place.id}`}
-              position={place.coordinates}
-              icon={createNearbyPlaceMarker(place)}
-              eventHandlers={{
-                click: () => onNearbyPlaceClick(place),
-              }}
+              place={place}
+              hoveredNearbyPlaceId={hoveredNearbyPlaceId}
+              onNearbyPlaceClick={onNearbyPlaceClick}
             />
           ))}
       </MapContainer>
