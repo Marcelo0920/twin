@@ -65,14 +65,6 @@ const FilterSection = ({
               icon={FaBed}
             />
           </div>
-
-          {/* Search Button */}
-          <div className="filter-actions">
-            <button className="search-btn">
-              <Search size={18} />
-              Buscar
-            </button>
-          </div>
         </div>
       </div>
     </div>
