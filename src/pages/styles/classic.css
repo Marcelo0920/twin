@@ -1473,3 +1473,392 @@
   transform: translateY(-2px);
   box-shadow: 0 8px 20px rgba(37, 211, 102, 0.3);
 }
+
+/* Hover effects for buttons */
+.search-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(139, 92, 246, 0.5);
+}
+
+button[style*="clearBtn"]:hover,
+.clear-filters-btn:hover {
+  background: rgba(239, 68, 68, 0.25) !important;
+  border-color: rgba(239, 68, 68, 0.5) !important;
+}
+
+button[style*="toggleBtn"]:hover,
+.filter-toggle-btn:hover {
+  background: rgba(255, 255, 255, 0.15) !important;
+}
+
+/* Responsive breakpoints for the new filter grid */
+@media (max-width: 1400px) {
+  /* Adjust grid for medium-large screens */
+  div[style*="gridTemplateColumns"] {
+    grid-template-columns: 1fr 1fr 0.8fr 0.8fr 0.8fr 1.3fr 0.8fr !important;
+  }
+}
+
+@media (max-width: 1200px) {
+  /* Stack filters in 2 rows for medium screens */
+  div[style*="filtersGrid"] > div {
+    min-width: 0;
+  }
+
+  /* Adjust filter grid to 2 rows */
+  div[style*='gridTemplateColumns: "1.2fr'] {
+    grid-template-columns: repeat(4, 1fr) !important;
+    grid-template-rows: auto auto;
+  }
+
+  /* Price slider spans 2 columns */
+  div[style*="filterItemWide"] {
+    grid-column: span 2;
+  }
+}
+
+@media (max-width: 768px) {
+  /* Mobile: Stack all filters vertically */
+  div[style*="topRow"] {
+    flex-direction: column;
+    gap: 1rem;
+    align-items: stretch !important;
+  }
+
+  div[style*="searchTabs"] {
+    width: 100%;
+    justify-content: center;
+  }
+
+  div[style*="filterToggle"] {
+    width: 100%;
+    justify-content: space-between;
+  }
+
+  div[style*="filtersGrid"] {
+    grid-template-columns: 1fr !important;
+    gap: 0.75rem !important;
+  }
+
+  div[style*="filterItemWide"],
+  div[style*="filterItem"],
+  div[style*="filterItemSmall"],
+  div[style*="filterItemBtn"] {
+    grid-column: 1 !important;
+  }
+
+  div[style*="filtersWrapperOpen"] {
+    max-height: 600px !important;
+  }
+}
+
+@media (max-width: 480px) {
+  /* Extra small mobile adjustments */
+  div[style*="searchTab"] {
+    padding: 8px 16px !important;
+    font-size: 0.85rem !important;
+    min-width: 90px !important;
+  }
+
+  div[style*="toggleBtn"],
+  div[style*="clearBtn"] {
+    padding: 8px 14px !important;
+    font-size: 0.8rem !important;
+  }
+}
+
+/* Animation for filter expansion */
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+div[style*="filtersWrapperOpen"] > div {
+  animation: slideDown 0.3s ease-out;
+}
+
+/* Improve dropdown z-index in filter context */
+.filter-section .custom-dropdown-classic {
+  z-index: 100;
+}
+
+.filter-section .dropdown-menu-classic {
+  z-index: 10001;
+}
+
+.search-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(139, 92, 246, 0.5);
+}
+
+button[style*="clearBtn"]:hover,
+.clear-filters-btn:hover {
+  background: rgba(239, 68, 68, 0.25) !important;
+  border-color: rgba(239, 68, 68, 0.5) !important;
+}
+
+button[style*="toggleBtn"]:hover,
+.filter-toggle-btn:hover {
+  background: rgba(255, 255, 255, 0.15) !important;
+}
+
+/* Responsive breakpoints for the new filter grid */
+@media (max-width: 1400px) {
+  /* Adjust grid for medium-large screens */
+  div[style*="gridTemplateColumns"] {
+    grid-template-columns: 1fr 1fr 0.8fr 0.8fr 0.8fr 1.3fr 0.8fr !important;
+  }
+}
+
+@media (max-width: 1200px) {
+  /* Stack filters in 2 rows for medium screens */
+  div[style*="filtersGrid"] > div {
+    min-width: 0;
+  }
+
+  /* Adjust filter grid to 2 rows */
+  div[style*='gridTemplateColumns: "1.2fr'] {
+    grid-template-columns: repeat(4, 1fr) !important;
+    grid-template-rows: auto auto;
+  }
+
+  /* Price slider spans 2 columns */
+  div[style*="filterItemWide"] {
+    grid-column: span 2;
+  }
+}
+
+@media (max-width: 768px) {
+  /* Mobile: Stack all filters vertically */
+  div[style*="topRow"] {
+    flex-direction: column;
+    gap: 1rem;
+    align-items: stretch !important;
+  }
+
+  div[style*="searchTabs"] {
+    width: 100%;
+    justify-content: center;
+  }
+
+  div[style*="filterToggle"] {
+    width: 100%;
+    justify-content: space-between;
+  }
+
+  div[style*="filtersGrid"] {
+    grid-template-columns: 1fr !important;
+    gap: 0.75rem !important;
+  }
+
+  div[style*="filterItemWide"],
+  div[style*="filterItem"],
+  div[style*="filterItemSmall"],
+  div[style*="filterItemBtn"] {
+    grid-column: 1 !important;
+  }
+
+  div[style*="filtersWrapperOpen"] {
+    max-height: 600px !important;
+  }
+}
+
+@media (max-width: 480px) {
+  /* Extra small mobile adjustments */
+  div[style*="searchTab"] {
+    padding: 8px 16px !important;
+    font-size: 0.85rem !important;
+    min-width: 90px !important;
+  }
+
+  div[style*="toggleBtn"],
+  div[style*="clearBtn"] {
+    padding: 8px 14px !important;
+    font-size: 0.8rem !important;
+  }
+}
+
+/* Animation for filter expansion */
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+div[style*="filtersWrapperOpen"] > div {
+  animation: slideDown 0.3s ease-out;
+}
+
+/* Fix dropdown z-index stacking context */
+.filter-section .custom-dropdown-classic {
+  position: relative;
+  z-index: 1000;
+}
+
+
+/* Hover effects for buttons */
+.search-btn:hover,
+button[style*="searchBtn"]:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(139, 92, 246, 0.5) !important;
+}
+
+button[style*="advancedBtn"]:hover {
+  background: rgba(255, 255, 255, 0.18) !important;
+  border-color: rgba(255, 255, 255, 0.35) !important;
+  transform: translateY(-1px);
+}
+
+/* Pulse animation for active badge */
+@keyframes pulse {
+  0%,
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.7;
+    transform: scale(1.2);
+  }
+}
+
+/* Modal input hover effects */
+input[type="number"]:hover {
+  border-color: #cbd5e1 !important;
+}
+
+input[type="number"]:focus {
+  border-color: #667eea !important;
+  box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1) !important;
+}
+
+/* Modal button hover effects */
+button[style*="closeBtn"]:hover {
+  background: #e2e8f0 !important;
+  color: #334155 !important;
+  transform: rotate(90deg);
+}
+
+button[style*="amenityBtn"]:hover:not([style*="amenityBtnActive"]) {
+  border-color: #cbd5e1 !important;
+  background: #f8fafc !important;
+  transform: translateY(-1px);
+}
+
+button[style*="clearBtn"]:hover {
+  background: #f8fafc !important;
+  border-color: #cbd5e1 !important;
+}
+
+button[style*="applyBtn"]:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4) !important;
+}
+
+/* Responsive breakpoints for one-row filter layout */
+@media (max-width: 1400px) {
+  /* Slightly adjust grid for smaller desktop */
+  div[style*="mainFilters"] {
+    grid-template-columns: 1fr 0.9fr 0.7fr 1.2fr 0.8fr 0.65fr !important;
+  }
+
+  button[style*="advancedBtnText"] {
+    display: none !important;
+  }
+}
+
+@media (max-width: 1200px) {
+  /* Stack filters in mobile view */
+  div[style*="filtersRow"] {
+    flex-direction: column !important;
+    gap: 0.75rem !important;
+    align-items: stretch !important;
+  }
+
+  div[style*="tabsWrapper"] {
+    width: 100%;
+  }
+
+  div[style*="searchTabs"] {
+    width: 100%;
+    justify-content: center;
+  }
+
+  div[style*="mainFilters"] {
+    grid-template-columns: 1fr 1fr !important;
+    gap: 0.75rem !important;
+  }
+
+  div[style*="filterItemWide"] {
+    grid-column: span 2;
+  }
+
+  button[style*="advancedBtnText"] {
+    display: inline !important;
+  }
+}
+
+@media (max-width: 768px) {
+  .filter-section {
+    padding: 4.5rem 0 1.25rem !important;
+  }
+
+  div[style*="mainFilters"] {
+    grid-template-columns: 1fr !important;
+  }
+
+  div[style*="filterItemWide"] {
+    grid-column: 1 !important;
+  }
+
+  /* Modal adjustments for mobile */
+  div[style*="modal"] {
+    max-width: 100% !important;
+    margin: 0 10px !important;
+    max-height: 95vh !important;
+  }
+
+  div[style*="grid"] {
+    grid-template-columns: 1fr !important;
+  }
+
+  div[style*="amenitiesGrid"] {
+    grid-template-columns: 1fr 1fr !important;
+  }
+}
+
+@media (max-width: 480px) {
+  div[style*="searchTab"] {
+    padding: 8px 16px !important;
+    font-size: 0.85rem !important;
+    min-width: 90px !important;
+  }
+
+  div[style*="header"] {
+    padding: 20px !important;
+  }
+
+  div[style*="content"] {
+    padding: 20px !important;
+  }
+
+  div[style*="footer"] {
+    padding: 16px 20px !important;
+    flex-direction: column !important;
+  }
+
+  div[style*="amenitiesGrid"] {
+    grid-template-columns: 1fr !important;
+  }
+}

@@ -1,7 +1,7 @@
 import React, { useState, useRef, useEffect } from "react";
 import { FaDollarSign } from "react-icons/fa";
 
-const DualRangeSlider = ({ min = 0, max = 1000000, value, onChange }) => {
+const PriceRangeSlider = ({ min = 0, max = 1000000, value, onChange }) => {
   const [minValue, setMinValue] = useState(value?.[0] || min);
   const [maxValue, setMaxValue] = useState(value?.[1] || max);
   const [isDragging, setIsDragging] = useState(null);
@@ -224,4 +224,4 @@ styleSheet.textContent = `
 `;
 document.head.appendChild(styleSheet);
 
-export default DualRangeSlider;
+export default PriceRangeSlider;

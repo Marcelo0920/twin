@@ -1,4 +1,4 @@
-// src/pages/Classic/index.jsx
+// src/pages/Classic.jsx
 import React, { useState, useRef } from "react";
 import Header from "../components/Header";
 import FilterSection from "../components/classic/FilterSection";
@@ -23,22 +23,118 @@ const Classic = () => {
   const [selectedNearbyPlace, setSelectedNearbyPlace] = useState(null);
   const mapRef = useRef(null);
 
-  // Filter states
+  // Filter states - NOW WITH ALL THE NEW FILTERS INCLUDING ADVANCED ONES
   const [filters, setFilters] = useState({
     city: "",
     propertyType: "",
     priceRange: [0, 1000000],
     bedrooms: "",
+    // Advanced filters
+    bathrooms: "",
+    garages: "",
+    minArea: "",
+    maxArea: "",
+    yearBuilt: "",
+    condition: "",
+    amenities: [],
     zone: "",
   });
 
-  // Filter properties based on activeTab
+  // Filter properties based on activeTab and filters
   const filteredProperties = mockProperties.filter((property) => {
-    if (activeTab === "comprar") {
-      return property.forSale;
-    } else {
-      return !property.forSale;
+    // Tab filter (buy/rent)
+    const matchesTab =
+      activeTab === "comprar" ? property.forSale : !property.forSale;
+    if (!matchesTab) return false;
+
+    // City filter
+    if (
+      filters.city &&
+      !property.location.toLowerCase().includes(filters.city.toLowerCase())
+    ) {
+      return false;
     }
+
+    // Property type filter
+    if (
+      filters.propertyType &&
+      property.type.toLowerCase() !== filters.propertyType.toLowerCase()
+    ) {
+      return false;
+    }
+
+    // Bedrooms filter
+    if (filters.bedrooms) {
+      const bedroomCount = parseInt(filters.bedrooms);
+      if (filters.bedrooms === "5") {
+        if (property.bedrooms < 5) return false;
+      } else {
+        if (property.bedrooms !== bedroomCount) return false;
+      }
+    }
+
+    // Price range filter
+    if (filters.priceRange) {
+      const [minPrice, maxPrice] = filters.priceRange;
+      if (property.price < minPrice || property.price > maxPrice) {
+        return false;
+      }
+    }
+
+    // ADVANCED FILTERS
+
+    // Bathrooms filter
+    if (filters.bathrooms) {
+      const bathroomCount = parseInt(filters.bathrooms);
+      if (filters.bathrooms === "4") {
+        if (property.bathrooms < 4) return false;
+      } else {
+        if (property.bathrooms !== bathroomCount) return false;
+      }
+    }
+
+    // Garages filter - add garages field to mockProperties
+    if (filters.garages && property.garages) {
+      const garageCount = parseInt(filters.garages);
+      if (filters.garages === "3") {
+        if (property.garages < 3) return false;
+      } else {
+        if (property.garages !== garageCount) return false;
+      }
+    }
+
+    // Area filter - add to mockProperties if needed
+    if (filters.minArea && property.area < parseInt(filters.minArea)) {
+      return false;
+    }
+    if (filters.maxArea && property.area > parseInt(filters.maxArea)) {
+      return false;
+    }
+
+    // Year built filter - add to mockProperties if needed
+    if (filters.yearBuilt && property.yearBuilt) {
+      const filterYear = parseInt(filters.yearBuilt);
+      if (property.yearBuilt < filterYear) return false;
+    }
+
+    // Condition filter - add to mockProperties if needed
+    if (filters.condition && property.condition) {
+      if (property.condition !== filters.condition) return false;
+    }
+
+    // Amenities filter - add to mockProperties if needed
+    if (
+      filters.amenities &&
+      filters.amenities.length > 0 &&
+      property.amenities
+    ) {
+      const hasAllAmenities = filters.amenities.every((amenity) =>
+        property.amenities.includes(amenity)
+      );
+      if (!hasAllAmenities) return false;
+    }
+
+    return true;
   });
 
   // Handlers

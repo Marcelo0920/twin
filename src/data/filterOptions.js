@@ -17,11 +17,12 @@ export const propertyTypes = [
 ];
 
 export const bedroomOptions = [
-  { value: "", label: "Cualquier cantidad" },
-  { value: "1", label: "1 dormitorio" },
-  { value: "2", label: "2 dormitorios" },
-  { value: "3", label: "3 dormitorios" },
-  { value: "4", label: "4+ dormitorios" },
+  { value: "", label: "Dormitorios" },
+  { value: "1", label: "1" },
+  { value: "2", label: "2" },
+  { value: "3", label: "3" },
+  { value: "4", label: "4" },
+  { value: "5", label: "5+" },
 ];
 
 export const bathroomOptions = [
