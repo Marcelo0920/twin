@@ -190,25 +190,26 @@ const FilterSection = ({
         <div style={styles.container}>
           <div style={styles.filtersRow}>
             {/* Tabs */}
-            <div style={styles.tabsWrapper}>
-              <div style={styles.searchTabs}>
-                {["comprar", "alquilar"].map((tab) => (
-                  <button
-                    key={tab}
-                    style={{
-                      ...styles.searchTab,
-                      ...(activeTab === tab ? styles.searchTabActive : {}),
-                    }}
-                    onClick={() => setActiveTab(tab)}
-                  >
-                    {tab.charAt(0).toUpperCase() + tab.slice(1)}
-                  </button>
-                ))}
-              </div>
-            </div>
 
             {/* Main Filters */}
             <div style={styles.mainFilters}>
+              <div style={styles.tabsWrapper}>
+                <div style={styles.searchTabs}>
+                  {["comprar", "alquilar"].map((tab) => (
+                    <button
+                      key={tab}
+                      style={{
+                        ...styles.searchTab,
+                        ...(activeTab === tab ? styles.searchTabActive : {}),
+                      }}
+                      onClick={() => setActiveTab(tab)}
+                    >
+                      {tab.charAt(0).toUpperCase() + tab.slice(1)}
+                    </button>
+                  ))}
+                </div>
+              </div>
+
               {/* City */}
               <div style={styles.filterItem}>
                 <CustomDropdown
@@ -335,7 +336,7 @@ const styles = {
   mainFilters: {
     flex: 1,
     display: "grid",
-    gridTemplateColumns: "1.1fr 1fr 0.75fr 1.3fr 0.85fr",
+    gridTemplateColumns: " 1fr 1.1fr 1fr 0.75fr 1.3fr 0.5fr",
     gap: "2.2rem",
     alignItems: "end",
   },
