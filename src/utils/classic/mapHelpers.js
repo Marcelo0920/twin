@@ -13,6 +13,10 @@ import {
 } from "react-icons/fa";
 
 export const formatPrice = (price) => {
+  return price.toLocaleString("en-US");
+};
+
+export const formatPriceSummary = (price) => {
   if (price >= 1000000) {
     return `${(price / 1000000).toFixed(1)}M`;
   } else if (price >= 1000) {
@@ -58,8 +62,8 @@ export const createCustomMarker = (
 ) => {
   const price =
     activeTab === "comprar"
-      ? formatPrice(property.price)
-      : `${property.price}/mes`;
+      ? formatPriceSummary(property.price)
+      : `${property.price}`;
 
   // Marker is highlighted if it's selected OR hovered
   const isHighlighted = isSelected || isHovered;
@@ -67,7 +71,7 @@ export const createCustomMarker = (
   return new DivIcon({
     html: `
       <div class="price-marker ${isHighlighted ? "selected" : ""}">
-        ${price}
+      $${price}
       </div>
     `,
     className: "custom-price-marker",

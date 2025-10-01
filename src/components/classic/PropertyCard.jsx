@@ -42,7 +42,10 @@ const PropertyCard = ({
             <FaBuilding size={12} />
             {property.type}
           </div>
-          <div className="property-single-badge" style={{ color: "green" }}>
+          <div
+            className="property-single-badge"
+            style={{ color: "white", backgroundColor: "#df9a51ff" }}
+          >
             Negociable
           </div>
         </div>
