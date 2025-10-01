@@ -66,7 +66,7 @@ const DetailedPropertyView = ({
             <span className="price-amount">
               {activeTab === "comprar"
                 ? formatPrice(property.price)
-                : `$${property.price}/mes`}
+                : `$${property.price}`}
             </span>
             <span className="price-type">
               {activeTab === "comprar" ? "Venta" : "Alquiler"}

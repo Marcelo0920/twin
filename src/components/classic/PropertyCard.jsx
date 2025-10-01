@@ -31,10 +31,20 @@ const PropertyCard = ({
           className="property-image"
         />
         <div className="property-price-tag">
-          <FaDollarSign size={12} />
+          <FaDollarSign size={17} />
           {activeTab === "comprar"
             ? formatPrice(property.price)
             : `${property.price}/mes`}
+        </div>
+
+        <div className="property-badges">
+          <div className="property-single-badge">
+            <FaBuilding size={12} />
+            {property.type}
+          </div>
+          <div className="property-single-badge" style={{ color: "green" }}>
+            Negociable
+          </div>
         </div>
       </div>
 
@@ -50,23 +60,18 @@ const PropertyCard = ({
           <h4>Características</h4>
           <div className="characteristics-list">
             <div className="characteristic">
-              <FaBed size={14} />
-              <span>{property.bedrooms} dorm.</span>
+              <FaBed size={22} />
+              <span>{property.bedrooms}</span>
             </div>
             <div className="characteristic">
-              <FaShower size={14} />
-              <span>{property.bathrooms} baños</span>
+              <FaShower size={22} />
+              <span>{property.bathrooms}</span>
             </div>
             <div className="characteristic">
-              <FaRuler size={14} />
+              <FaRuler size={22} />
               <span>{property.area} m²</span>
             </div>
           </div>
-        </div>
-
-        <div className="property-type-badge">
-          <FaBuilding size={12} />
-          {property.type}
         </div>
       </div>
     </div>
