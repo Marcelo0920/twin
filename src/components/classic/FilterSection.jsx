@@ -262,7 +262,6 @@ const FilterSection = ({
                   onClick={() => setShowAdvancedModal(true)}
                 >
                   <Sliders size={16} />
-                  <span style={styles.advancedBtnText}>Más Filtros</span>
                   {hasAdvancedFilters() && <span style={styles.badge}>●</span>}
                 </button>
               </div>
@@ -350,7 +349,7 @@ const styles = {
     justifyContent: "center",
     gap: "6px",
     padding: "12px 14px",
-    width: "100%",
+    width: "maxWidth",
     border: "2px solid rgba(255, 255, 255, 0.25)",
     borderRadius: "10px",
     background: "rgba(255, 255, 255, 0.1)",
