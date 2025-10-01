@@ -1,29 +1,57 @@
 import React, { useState, useEffect } from "react";
 import {
   FaCalendarAlt,
-  FaClock,
   FaVideo,
   FaMapMarkerAlt,
   FaCheckCircle,
   FaArrowLeft,
+  FaChevronLeft,
+  FaChevronRight,
+  FaClock,
+  FaMapPin,
 } from "react-icons/fa";
 
 const CalendarWidget = ({ availableDates }) => {
   const [showCalendar, setShowCalendar] = useState(false);
   const [selectedDate, setSelectedDate] = useState(null);
-  const [selectedSlot, setSelectedSlot] = useState(null);
-  const [showSlots, setShowSlots] = useState(false);
+  const [currentWeekStart, setCurrentWeekStart] = useState(new Date());
+  const [slideDirection, setSlideDirection] = useState("");
+  const [isAnimating, setIsAnimating] = useState(false);
 
-  // Random number of people who scheduled (between 3-8)
   const peopleScheduled = Math.floor(Math.random() * 6) + 3;
 
-  // Add keyframe animation for pulse effect
   useEffect(() => {
     const style = document.createElement("style");
     style.textContent = `
       @keyframes pulse {
         0%, 100% { opacity: 1; transform: scale(1); }
         50% { opacity: 0.5; transform: scale(1.1); }
+      }
+      @keyframes slideInFromRight {
+        from {
+          opacity: 0;
+          transform: translateX(20px);
+        }
+        to {
+          opacity: 1;
+          transform: translateX(0);
+        }
+      }
+      @keyframes slideInFromLeft {
+        from {
+          opacity: 0;
+          transform: translateX(-20px);
+        }
+        to {
+          opacity: 1;
+          transform: translateX(0);
+        }
+      }
+      .slide-in-right {
+        animation: slideInFromRight 0.3s ease-out;
+      }
+      .slide-in-left {
+        animation: slideInFromLeft 0.3s ease-out;
       }
     `;
     document.head.appendChild(style);
@@ -44,126 +72,101 @@ const CalendarWidget = ({ availableDates }) => {
     "Noviembre",
     "Diciembre",
   ];
-  const dayNames = ["D", "L", "M", "X", "J", "V", "S"];
+  const dayNames = ["Dom", "Lun", "Mar", "Mié", "Jue", "Vie", "Sáb"];
 
-  const currentDate = new Date();
-  const currentMonth = currentDate.getMonth();
-  const currentYear = currentDate.getFullYear();
+  const isVirtualDay = (date) => date.getDay() === 6;
 
-  // Generate time slots based on visit type
-  const generateTimeSlots = (isVirtual) => {
-    const slots = [];
-    const totalSlots = isVirtual ? 10 : 5;
-    const startHour = 9;
-    const interval = isVirtual ? 60 : 120; // 1 hour for virtual, 2 hours for presencial
-
-    for (let i = 0; i < totalSlots; i++) {
-      const totalMinutes = startHour * 60 + i * interval;
-      const hour = Math.floor(totalMinutes / 60);
-      const minute = totalMinutes % 60;
-
-      if (hour >= 18) break; // No slots after 6 PM
-
-      slots.push({
-        time: `${String(hour).padStart(2, "0")}:${String(minute).padStart(
-          2,
-          "0"
-        )}`,
-        available: Math.random() > 0.3, // Random availability for demo
-      });
-    }
-    return slots;
+  const getWeekStart = (date) => {
+    const d = new Date(date);
+    const day = d.getDay();
+    const diff = d.getDate() - day;
+    return new Date(d.setDate(diff));
   };
 
-  // Check if date is Saturday (virtual) or other day (presencial)
-  const isVirtualDay = (date) => {
-    return date.getDay() === 6; // Saturday
-  };
-
-  // Get days in current month
-  const getDaysInMonth = () => {
-    const firstDay = new Date(currentYear, currentMonth, 1);
-    const lastDay = new Date(currentYear, currentMonth + 1, 0);
-    const daysInMonth = lastDay.getDate();
-    const startingDayOfWeek = firstDay.getDay();
-
+  const getWeekDays = () => {
     const days = [];
+    const weekStart = getWeekStart(currentWeekStart);
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
 
-    // Add empty cells for days before month starts
-    for (let i = 0; i < startingDayOfWeek; i++) {
-      days.push(null);
-    }
+    for (let i = 0; i < 7; i++) {
+      const date = new Date(weekStart);
+      date.setDate(weekStart.getDate() + i);
 
-    // Add days of the month
-    for (let day = 1; day <= daysInMonth; day++) {
-      const date = new Date(currentYear, currentMonth, day);
-      const isPast =
-        date <
-        new Date(
-          currentDate.getFullYear(),
-          currentDate.getMonth(),
-          currentDate.getDate()
-        );
+      const isPast = date < today;
       const isVirtual = isVirtualDay(date);
+      const availableSlots = isPast
+        ? 0
+        : isVirtual
+        ? Math.floor(Math.random() * 6) + 5
+        : Math.floor(Math.random() * 3) + 2;
 
       days.push({
         date,
-        day,
+        day: date.getDate(),
         isPast,
         isVirtual,
-        availableSlots: isPast
-          ? 0
-          : isVirtual
-          ? Math.floor(Math.random() * 6) + 5
-          : Math.floor(Math.random() * 3) + 2,
+        availableSlots,
       });
     }
 
     return days;
   };
 
+  const handlePrevWeek = () => {
+    if (isAnimating) return;
+    setIsAnimating(true);
+    setSlideDirection("slide-in-left");
+    const newStart = new Date(currentWeekStart);
+    newStart.setDate(currentWeekStart.getDate() - 7);
+    setCurrentWeekStart(newStart);
+    setSelectedDate(null);
+    setTimeout(() => {
+      setIsAnimating(false);
+      setSlideDirection("");
+    }, 300);
+  };
+
+  const handleNextWeek = () => {
+    if (isAnimating) return;
+    setIsAnimating(true);
+    setSlideDirection("slide-in-right");
+    const newStart = new Date(currentWeekStart);
+    newStart.setDate(currentWeekStart.getDate() + 7);
+    setCurrentWeekStart(newStart);
+    setSelectedDate(null);
+    setTimeout(() => {
+      setIsAnimating(false);
+      setSlideDirection("");
+    }, 300);
+  };
+
   const handleDateClick = (dayInfo) => {
     if (!dayInfo || dayInfo.isPast || dayInfo.availableSlots === 0) return;
 
-    // If clicking on already selected date, unselect it
     if (selectedDate?.date?.toDateString() === dayInfo.date.toDateString()) {
       setSelectedDate(null);
-      setSelectedSlot(null);
-      setShowSlots(false);
-      return;
+    } else {
+      setSelectedDate(dayInfo);
     }
-
-    setSelectedDate(dayInfo);
-    setSelectedSlot(null);
-    setShowSlots(true);
-  };
-
-  const handleSlotClick = (slot) => {
-    if (!slot.available) return;
-    setSelectedSlot(slot);
   };
 
   const handleConfirm = () => {
-    if (selectedDate && selectedSlot) {
+    if (selectedDate) {
       alert(
         `Visita ${
           selectedDate.isVirtual ? "virtual" : "presencial"
-        } confirmada para ${selectedDate.date.toLocaleDateString(
-          "es-ES"
-        )} a las ${selectedSlot.time}`
+        } confirmada para ${selectedDate.date.toLocaleDateString("es-ES")}`
       );
       setSelectedDate(null);
-      setSelectedSlot(null);
-      setShowSlots(false);
     }
   };
 
-  const days = getDaysInMonth();
-  const timeSlots = selectedDate
-    ? generateTimeSlots(selectedDate.isVirtual)
-    : [];
+  const days = getWeekDays();
+  const weekStart = getWeekStart(currentWeekStart);
+  const weekEnd = new Date(weekStart);
+  weekEnd.setDate(weekStart.getDate() + 6);
 
-  // Initial promotional view
   if (!showCalendar) {
     return (
       <div style={styles.container}>
@@ -177,8 +180,7 @@ const CalendarWidget = ({ availableDates }) => {
           <div style={styles.urgencyBadge}>
             <span style={styles.urgencyDot}></span>
             <span style={styles.urgencyText}>
-              {peopleScheduled} personas agendaron para ver esta casa esta
-              semana
+              {peopleScheduled} personas agendaron esta semana
             </span>
           </div>
           <p style={styles.promoDescription}>
@@ -214,39 +216,53 @@ const CalendarWidget = ({ availableDates }) => {
   return (
     <div style={styles.container}>
       <div style={styles.header}>
-        <div style={styles.headerTop}>
-          <button
-            style={styles.backButton}
-            onClick={() => {
-              setShowCalendar(false);
-              setSelectedDate(null);
-              setSelectedSlot(null);
-              setShowSlots(false);
-            }}
-          >
-            <FaArrowLeft style={styles.backIcon} />
-          </button>
-          <h3 style={styles.title}>
-            <FaCalendarAlt style={styles.titleIcon} />
-            Agendar Visita
-          </h3>
+        <button
+          style={styles.backButton}
+          onClick={() => {
+            setShowCalendar(false);
+            setSelectedDate(null);
+          }}
+        >
+          <FaArrowLeft style={styles.backIcon} />
+        </button>
+        <h3 style={styles.title}>
+          <FaCalendarAlt style={styles.titleIcon} />
+          Agendar Visita
+        </h3>
+      </div>
+
+      <div style={styles.legend}>
+        <div style={styles.legendItem}>
+          <FaMapMarkerAlt style={{ ...styles.legendIcon, color: "#3b82f6" }} />
+          <span style={styles.legendText}>Presencial</span>
         </div>
-        <div style={styles.legend}>
-          <div style={styles.legendItem}>
-            <FaMapMarkerAlt
-              style={{ ...styles.legendIcon, color: "#3b82f6" }}
-            />
-            <span style={styles.legendText}>Presencial</span>
-          </div>
-          <div style={styles.legendItem}>
-            <FaVideo style={{ ...styles.legendIcon, color: "#8b5cf6" }} />
-            <span style={styles.legendText}>Virtual</span>
-          </div>
+        <div style={styles.legendItem}>
+          <FaVideo style={{ ...styles.legendIcon, color: "#8b5cf6" }} />
+          <span style={styles.legendText}>Virtual</span>
         </div>
       </div>
 
-      <div style={styles.monthHeader}>
-        {monthNames[currentMonth]} {currentYear}
+      <div style={styles.weekNavigation}>
+        <button
+          style={styles.navButton}
+          onClick={handlePrevWeek}
+          disabled={isAnimating}
+        >
+          <FaChevronLeft />
+        </button>
+        <div style={styles.weekRange}>
+          <span style={styles.weekRangeText}>
+            {weekStart.getDate()} - {weekEnd.getDate()}{" "}
+            {monthNames[weekEnd.getMonth()]} {weekEnd.getFullYear()}
+          </span>
+        </div>
+        <button
+          style={styles.navButton}
+          onClick={handleNextWeek}
+          disabled={isAnimating}
+        >
+          <FaChevronRight />
+        </button>
       </div>
 
       <div style={styles.weekDays}>
@@ -257,12 +273,8 @@ const CalendarWidget = ({ availableDates }) => {
         ))}
       </div>
 
-      <div style={styles.calendarGrid}>
+      <div className={slideDirection} style={styles.calendarGrid}>
         {days.map((dayInfo, index) => {
-          if (!dayInfo) {
-            return <div key={`empty-${index}`} style={styles.emptyDay} />;
-          }
-
           const isSelected =
             selectedDate?.date?.toDateString() === dayInfo.date.toDateString();
           const isDisabled = dayInfo.isPast || dayInfo.availableSlots === 0;
@@ -300,55 +312,55 @@ const CalendarWidget = ({ availableDates }) => {
         })}
       </div>
 
-      {showSlots && selectedDate && (
-        <div style={styles.slotsSection}>
-          <div style={styles.slotsHeader}>
-            <span style={styles.slotsTitle}>
-              {selectedDate.isVirtual ? (
-                <>
-                  <FaVideo style={styles.slotsTitleIcon} /> Visita Virtual
-                </>
-              ) : (
-                <>
-                  <FaMapMarkerAlt style={styles.slotsTitleIcon} /> Visita
-                  Presencial
-                </>
-              )}
-            </span>
-            <span style={styles.selectedDateText}>
-              {selectedDate.date.toLocaleDateString("es-ES", {
-                weekday: "short",
-                day: "numeric",
-                month: "short",
-              })}
-            </span>
+      {selectedDate && (
+        <div style={styles.detailsSection}>
+          <div style={styles.detailsHeader}>
+            <span style={styles.detailsTitle}>Detalles de Visita</span>
           </div>
 
-          <div style={styles.slotsGrid}>
-            {timeSlots.map((slot, index) => (
-              <div
-                key={index}
-                style={{
-                  ...styles.slotButton,
-                  ...(slot.available
-                    ? styles.slotAvailable
-                    : styles.slotUnavailable),
-                  ...(selectedSlot?.time === slot.time && styles.slotSelected),
-                }}
-                onClick={() => handleSlotClick(slot)}
-              >
-                <FaClock style={styles.slotIcon} />
-                {slot.time}
+          <div style={styles.detailsContent}>
+            <div style={styles.detailRow}>
+              <div style={styles.detailIcon}>
+                <FaCalendarAlt />
               </div>
-            ))}
+              <div style={styles.detailInfo}>
+                <span style={styles.detailLabel}>Fecha</span>
+                <span style={styles.detailValue}>
+                  {selectedDate.date.toLocaleDateString("es-ES", {
+                    day: "numeric",
+                    month: "short",
+                  })}
+                </span>
+              </div>
+            </div>
+
+            <div style={styles.detailRow}>
+              <div style={styles.detailIcon}>
+                <FaClock />
+              </div>
+              <div style={styles.detailInfo}>
+                <span style={styles.detailLabel}>Hora</span>
+                <span style={styles.detailValue}>10:00 AM</span>
+              </div>
+            </div>
+
+            <div style={styles.detailRow}>
+              <div style={styles.detailIcon}>
+                {selectedDate.isVirtual ? <FaVideo /> : <FaMapPin />}
+              </div>
+              <div style={styles.detailInfo}>
+                <span style={styles.detailLabel}>Tipo</span>
+                <span style={styles.detailValue}>
+                  {selectedDate.isVirtual ? "Virtual" : "Presencial"}
+                </span>
+              </div>
+            </div>
           </div>
 
-          {selectedSlot && (
-            <button style={styles.confirmButton} onClick={handleConfirm}>
-              <FaCheckCircle style={styles.confirmIcon} />
-              Confirmar Visita
-            </button>
-          )}
+          <button style={styles.confirmButton} onClick={handleConfirm}>
+            <FaCheckCircle style={styles.confirmIcon} />
+            Confirmar
+          </button>
         </div>
       )}
     </div>
@@ -463,16 +475,11 @@ const styles = {
   },
   header: {
     display: "flex",
-    flexDirection: "column",
+    alignItems: "center",
     gap: "0.75rem",
     marginBottom: "1rem",
     paddingBottom: "0.75rem",
     borderBottom: "1px solid #f3f4f6",
-  },
-  headerTop: {
-    display: "flex",
-    alignItems: "center",
-    gap: "0.75rem",
   },
   backButton: {
     display: "flex",
@@ -507,6 +514,8 @@ const styles = {
   legend: {
     display: "flex",
     gap: "0.75rem",
+    marginBottom: "1rem",
+    justifyContent: "center",
   },
   legendItem: {
     display: "flex",
@@ -521,12 +530,36 @@ const styles = {
     color: "#6b7280",
     fontWeight: "500",
   },
-  monthHeader: {
+  weekNavigation: {
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "space-between",
+    marginBottom: "1rem",
+    padding: "0.5rem",
+    background: "#f9fafb",
+    borderRadius: "10px",
+  },
+  navButton: {
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    width: "36px",
+    height: "36px",
+    background: "white",
+    border: "1px solid #e5e7eb",
+    borderRadius: "8px",
+    cursor: "pointer",
+    transition: "all 0.2s ease",
+    color: "#6b7280",
+  },
+  weekRange: {
+    flex: 1,
+    textAlign: "center",
+  },
+  weekRangeText: {
     fontSize: "0.875rem",
     fontWeight: "600",
     color: "#374151",
-    marginBottom: "0.75rem",
-    textAlign: "center",
   },
   weekDays: {
     display: "grid",
@@ -546,9 +579,6 @@ const styles = {
     gridTemplateColumns: "repeat(7, 1fr)",
     gap: "0.25rem",
     marginBottom: "1rem",
-  },
-  emptyDay: {
-    aspectRatio: "1",
   },
   day: {
     aspectRatio: "1",
@@ -579,10 +609,6 @@ const styles = {
   },
   dayAvailable: {
     background: "#f9fafb",
-    ":hover": {
-      borderColor: "#667eea",
-      transform: "scale(1.05)",
-    },
   },
   dayDisabled: {
     background: "#f9fafb",
@@ -594,72 +620,62 @@ const styles = {
     background: "#eef2ff",
     boxShadow: "0 0 0 2px rgba(102, 126, 234, 0.2)",
   },
-  slotsSection: {
-    marginTop: "1rem",
-    paddingTop: "1rem",
+  detailsSection: {
+    marginTop: "0.75rem",
+    paddingTop: "0.75rem",
     borderTop: "1px solid #e5e7eb",
   },
-  slotsHeader: {
-    display: "flex",
-    justifyContent: "space-between",
-    alignItems: "center",
-    marginBottom: "0.75rem",
+  detailsHeader: {
+    marginBottom: "0.5rem",
   },
-  slotsTitle: {
-    display: "flex",
-    alignItems: "center",
-    gap: "0.375rem",
+  detailsTitle: {
     fontSize: "0.875rem",
-    fontWeight: "600",
+    fontWeight: "700",
     color: "#111827",
   },
-  slotsTitleIcon: {
-    fontSize: "0.875rem",
-  },
-  selectedDateText: {
-    fontSize: "0.75rem",
-    color: "#6b7280",
-    fontWeight: "500",
-  },
-  slotsGrid: {
+  detailsContent: {
     display: "grid",
-    gridTemplateColumns: "repeat(5, 1fr)",
+    gridTemplateColumns: "repeat(3, 1fr)",
     gap: "0.5rem",
     marginBottom: "0.75rem",
   },
-  slotButton: {
+  detailRow: {
     display: "flex",
     flexDirection: "column",
     alignItems: "center",
-    gap: "0.25rem",
-    padding: "0.625rem 0.5rem",
-    borderRadius: "8px",
-    fontSize: "0.75rem",
-    fontWeight: "600",
-    cursor: "pointer",
-    transition: "all 0.2s ease",
-    border: "1px solid",
-  },
-  slotIcon: {
-    fontSize: "0.75rem",
-  },
-  slotAvailable: {
-    background: "#f0fdf4",
-    borderColor: "#86efac",
-    color: "#166534",
-  },
-  slotUnavailable: {
+    gap: "0.375rem",
+    padding: "0.5rem",
     background: "#f9fafb",
-    borderColor: "#e5e7eb",
-    color: "#9ca3af",
-    cursor: "not-allowed",
-    opacity: 0.5,
+    borderRadius: "8px",
+    border: "1px solid #e5e7eb",
   },
-  slotSelected: {
-    background: "#667eea",
-    borderColor: "#667eea",
+  detailIcon: {
+    width: "28px",
+    height: "28px",
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    background: "linear-gradient(135deg, #667eea 0%, #764ba2 100%)",
+    borderRadius: "8px",
     color: "white",
-    transform: "scale(1.05)",
+    fontSize: "0.75rem",
+  },
+  detailInfo: {
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "center",
+    gap: "0.125rem",
+  },
+  detailLabel: {
+    fontSize: "0.625rem",
+    color: "#6b7280",
+    fontWeight: "500",
+  },
+  detailValue: {
+    fontSize: "0.75rem",
+    color: "#111827",
+    fontWeight: "600",
+    textAlign: "center",
   },
   confirmButton: {
     width: "100%",
@@ -668,7 +684,7 @@ const styles = {
     justifyContent: "center",
     gap: "0.5rem",
     padding: "0.75rem",
-    background: "#667eea",
+    background: "linear-gradient(135deg, #667eea 0%, #764ba2 100%)",
     color: "white",
     border: "none",
     borderRadius: "8px",
@@ -676,6 +692,7 @@ const styles = {
     fontWeight: "600",
     cursor: "pointer",
     transition: "all 0.2s ease",
+    boxShadow: "0 4px 12px rgba(102, 126, 234, 0.3)",
   },
   confirmIcon: {
     fontSize: "1rem",
