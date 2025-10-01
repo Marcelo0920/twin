@@ -1,5 +1,5 @@
 // src/pages/Classic.jsx
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import Header from "../components/Header";
 import FilterSection from "../components/classic/FilterSection";
 import PropertyList from "../components/classic/PropertyList";
@@ -24,7 +24,12 @@ const Classic = () => {
   const [current360Images, setCurrent360Images] = useState([]);
   const [current360ImageIndex, setCurrent360ImageIndex] = useState(0);
   const [selectedNearbyPlace, setSelectedNearbyPlace] = useState(null);
+  const [showNearbyPlaces, setShowNearbyPlaces] = useState(false);
+  const [animateDetailNearby, setAnimateDetailNearby] = useState(false);
+
   const mapRef = useRef(null);
+  const hoverTimerRef = useRef(null);
+  const panTimerRef = useRef(null);
 
   // Filter states
   const [filters, setFilters] = useState({
@@ -126,6 +131,13 @@ const Classic = () => {
     return true;
   });
 
+  // Check if marker is visible in map bounds
+  const isMarkerVisible = (coordinates) => {
+    if (!mapRef.current) return true;
+    const bounds = mapRef.current.getBounds();
+    return bounds.contains(coordinates);
+  };
+
   // Handlers
   const handleFilterChange = (field, value) => {
     setFilters((prev) => ({
@@ -138,22 +150,70 @@ const Classic = () => {
     setSelectedProperty(property);
     setSelectedMarkerId(property.id);
     setShowDetailView(true);
+    setAnimateDetailNearby(true);
+
     if (mapRef.current) {
       mapRef.current.setView(property.coordinates, 15);
     }
+
+    // Reset animation flag after animation completes
+    setTimeout(() => {
+      setAnimateDetailNearby(false);
+    }, 800);
   };
 
   const handleCardClick = (property) => {
     setSelectedProperty(property);
     setSelectedMarkerId(property.id);
     setShowDetailView(true);
+    setAnimateDetailNearby(true);
+
     if (mapRef.current) {
       mapRef.current.setView(property.coordinates, 15);
     }
+
+    // Reset animation flag after animation completes
+    setTimeout(() => {
+      setAnimateDetailNearby(false);
+    }, 800);
   };
 
   const handleCardHover = (propertyId) => {
+    // Clear existing timers
+    if (hoverTimerRef.current) {
+      clearTimeout(hoverTimerRef.current);
+      hoverTimerRef.current = null;
+    }
+    if (panTimerRef.current) {
+      clearTimeout(panTimerRef.current);
+      panTimerRef.current = null;
+    }
+
     setHoveredPropertyId(propertyId);
+
+    if (propertyId) {
+      const property = filteredProperties.find((p) => p.id === propertyId);
+
+      if (property) {
+        // Set timer for panning to marker if not visible (5 seconds)
+        panTimerRef.current = setTimeout(() => {
+          if (!isMarkerVisible(property.coordinates) && mapRef.current) {
+            mapRef.current.flyTo(property.coordinates, 15, {
+              duration: 1.5,
+              easeLinearity: 0.25,
+            });
+          }
+        }, 1500);
+
+        // Set timer for showing nearby places (7 seconds)
+        hoverTimerRef.current = setTimeout(() => {
+          setShowNearbyPlaces(true);
+        }, 3000);
+      }
+    } else {
+      // Hide nearby places when hover ends
+      setShowNearbyPlaces(false);
+    }
   };
 
   const handleNearbyPlaceHover = (placeId) => {
@@ -162,6 +222,8 @@ const Classic = () => {
 
   const handleBackToList = () => {
     setShowDetailView(false);
+    setShowNearbyPlaces(false);
+    setAnimateDetailNearby(false);
     setTimeout(() => {
       setSelectedProperty(null);
       setSelectedMarkerId(null);
@@ -190,6 +252,19 @@ const Classic = () => {
     setShow360Modal(false);
     setCurrent360ImageIndex(0);
   };
+
+  // Cleanup timers on unmount
+  useEffect(() => {
+    return () => {
+      if (hoverTimerRef.current) clearTimeout(hoverTimerRef.current);
+      if (panTimerRef.current) clearTimeout(panTimerRef.current);
+    };
+  }, []);
+
+  // Get the hovered property to show nearby places
+  const hoveredProperty = hoveredPropertyId
+    ? filteredProperties.find((p) => p.id === hoveredPropertyId)
+    : null;
 
   return (
     <div className="classic-container">
@@ -243,6 +318,9 @@ const Classic = () => {
           activeTab={activeTab}
           onMarkerClick={handleMarkerClick}
           onNearbyPlaceClick={handleNearbyPlaceClick}
+          showNearbyPlaces={showNearbyPlaces}
+          hoveredProperty={hoveredProperty}
+          animateDetailNearby={animateDetailNearby}
         />
       </div>
 

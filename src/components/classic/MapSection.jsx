@@ -14,6 +14,9 @@ const MapSection = ({
   activeTab,
   onMarkerClick,
   onNearbyPlaceClick,
+  showNearbyPlaces,
+  hoveredProperty,
+  animateDetailNearby,
 }) => {
   return (
     <div className="map-section">
@@ -40,15 +43,33 @@ const MapSection = ({
           />
         ))}
 
-        {/* Nearby places markers - using custom NearbyPlaceMarker component */}
-        {selectedProperty &&
-          selectedProperty.nearbyPlaces &&
-          selectedProperty.nearbyPlaces.map((place) => (
+        {/* Nearby places markers - only show for hovered property after 7s */}
+        {showNearbyPlaces &&
+          hoveredProperty &&
+          hoveredProperty.nearbyPlaces &&
+          hoveredProperty.nearbyPlaces.map((place, index) => (
             <NearbyPlaceMarker
               key={`nearby-${place.id}`}
               place={place}
               hoveredNearbyPlaceId={hoveredNearbyPlaceId}
               onNearbyPlaceClick={onNearbyPlaceClick}
+              showAnimation={true}
+              animationDelay={index * 100}
+            />
+          ))}
+
+        {/* Always show nearby places for selected property in detail view */}
+        {selectedProperty &&
+          selectedProperty.nearbyPlaces &&
+          !showNearbyPlaces &&
+          selectedProperty.nearbyPlaces.map((place, index) => (
+            <NearbyPlaceMarker
+              key={`nearby-selected-${place.id}`}
+              place={place}
+              hoveredNearbyPlaceId={hoveredNearbyPlaceId}
+              onNearbyPlaceClick={onNearbyPlaceClick}
+              showAnimation={animateDetailNearby}
+              animationDelay={index * 100}
             />
           ))}
       </MapContainer>

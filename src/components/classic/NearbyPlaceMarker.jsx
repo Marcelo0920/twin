@@ -7,6 +7,8 @@ const NearbyPlaceMarker = ({
   place,
   hoveredNearbyPlaceId,
   onNearbyPlaceClick,
+  showAnimation = false,
+  animationDelay = 0,
 }) => {
   const markerRef = useRef(null);
 
@@ -16,7 +18,34 @@ const NearbyPlaceMarker = ({
     [place.id, place.type]
   );
 
-  // Update marker class without recreating it
+  // Handle entry animation
+  useEffect(() => {
+    if (markerRef.current && showAnimation) {
+      const markerElement = markerRef.current;
+      const iconElement = markerElement.getElement();
+
+      if (iconElement) {
+        const placeMarker = iconElement.querySelector(".nearby-place-marker");
+        if (placeMarker) {
+          // Set animation delay
+          placeMarker.style.animationDelay = `${animationDelay}ms`;
+
+          // Add entry animation class
+          placeMarker.classList.add("nearby-entering");
+
+          // Remove animation class after animation completes
+          setTimeout(() => {
+            if (placeMarker) {
+              placeMarker.classList.remove("nearby-entering");
+              placeMarker.style.animationDelay = "";
+            }
+          }, 600 + animationDelay);
+        }
+      }
+    }
+  }, [showAnimation, animationDelay]);
+
+  // Update marker class for hover without recreating it
   useEffect(() => {
     if (markerRef.current) {
       const markerElement = markerRef.current;
@@ -27,7 +56,6 @@ const NearbyPlaceMarker = ({
         if (placeMarker) {
           const isHovered = hoveredNearbyPlaceId === place.id;
 
-          // Force smooth transition
           if (isHovered) {
             placeMarker.classList.add("hovered");
           } else {
