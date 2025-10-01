@@ -130,18 +130,21 @@
 
 .detail-header {
   display: flex;
+  position: fixed;
   justify-content: flex-start;
   align-items: center;
-  padding: 1.5rem 0 1rem 0;
-  border-bottom: 1px solid #e2e8f0;
+  padding: 0.5rem 0 0.5rem 0;
   margin-bottom: 1.5rem;
+  z-index: 999;
+  width: 100%;
 }
 
 .back-button {
   display: flex;
   align-items: center;
   gap: 8px;
-  padding: 12px;
+  padding: 16px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
   background: #f8fafc;
   border: 1px solid #e2e8f0;
   border-radius: 12px;
@@ -384,19 +387,21 @@
 
 .detail-item div {
   display: flex;
-  flex-direction: column;
+  justify-content: space-around;
 }
 
 .detail-value {
   font-size: 1.25rem;
   font-weight: 700;
   color: #1e293b;
+  margin-right: 0.5rem;
 }
 
 .detail-label {
   font-size: 0.875rem;
   font-weight: 500;
   color: #64748b;
+  margin: auto;
 }
 
 /* Nearby Places Section */
@@ -457,7 +462,7 @@
 
 /* Street View Section */
 .street-view-section {
-  margin-top: 1rem;
+  margin-top: 2rem;
 }
 
 .section-description {

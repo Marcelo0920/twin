@@ -1,6 +1,3 @@
-// src/pages/Classic/components/StreetView.jsx
-import React from "react";
-
 const StreetView = ({ images, onImageClick }) => {
   return (
     <div className="street-view-section">

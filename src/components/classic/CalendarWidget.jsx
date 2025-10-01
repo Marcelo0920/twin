@@ -369,11 +369,11 @@ const CalendarWidget = ({ availableDates }) => {
 
 const styles = {
   container: {
-    background: "white",
     border: "1px solid #e5e7eb",
     borderRadius: "12px",
     padding: "1.25rem",
     boxShadow: "0 1px 3px rgba(0, 0, 0, 0.1)",
+    marginTop: "2rem",
   },
   promoSection: {
     display: "flex",
@@ -637,7 +637,6 @@ const styles = {
     display: "grid",
     gridTemplateColumns: "repeat(3, 1fr)",
     gap: "0.5rem",
-    marginBottom: "0.75rem",
   },
   detailRow: {
     display: "flex",

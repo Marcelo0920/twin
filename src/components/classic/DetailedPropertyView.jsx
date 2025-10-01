@@ -45,7 +45,7 @@ const DetailedPropertyView = ({
     <div className="detailed-property-view">
       <div className="detail-header">
         <button className="back-button" onClick={onBack}>
-          <FaArrowLeft size={18} />
+          <FaArrowLeft size={20} />
         </button>
       </div>
 
@@ -104,7 +104,6 @@ const DetailedPropertyView = ({
               <FaBuilding size={20} />
               <div>
                 <span className="detail-value">{property.type}</span>
-                <span className="detail-label">Tipo</span>
               </div>
             </div>
           </div>
@@ -144,9 +143,6 @@ const DetailedPropertyView = ({
           />
 
           <CalendarWidget availableDates={property.availableDates} />
-
-          {/* Add padding at bottom to prevent content from being hidden behind sticky actions */}
-          <div className="sticky-actions-spacer"></div>
         </div>
       </div>
 
