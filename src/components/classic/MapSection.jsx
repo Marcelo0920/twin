@@ -1,4 +1,3 @@
-// src/pages/Classic/components/MapSection.jsx
 import React from "react";
 import { MapContainer, TileLayer } from "react-leaflet";
 import PropertyMarker from "./PropertyMarker";
@@ -31,8 +30,8 @@ const MapSection = ({
           attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
         />
 
-        {/* Property markers - using custom PropertyMarker component */}
-        {properties.map((property) => (
+        {/* Property markers with index for staggered animation */}
+        {properties.map((property, index) => (
           <PropertyMarker
             key={property.id}
             property={property}
@@ -40,10 +39,11 @@ const MapSection = ({
             hoveredPropertyId={hoveredPropertyId}
             activeTab={activeTab}
             onMarkerClick={onMarkerClick}
+            index={index}
           />
         ))}
 
-        {/* Nearby places markers - only show for hovered property after 7s */}
+        {/* Nearby places markers - only show for hovered property after delay */}
         {showNearbyPlaces &&
           hoveredProperty &&
           hoveredProperty.nearbyPlaces &&

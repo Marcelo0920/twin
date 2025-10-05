@@ -1,6 +1,6 @@
-// src/pages/Classic/components/PropertyCard.jsx
 import React from "react";
 import { MapPin } from "lucide-react";
+import { motion } from "framer-motion";
 import {
   FaBed,
   FaShower,
@@ -9,6 +9,7 @@ import {
   FaBuilding,
 } from "react-icons/fa";
 import { formatPrice } from "../../utils/classic/mapHelpers";
+import { useNavigate } from "react-router-dom";
 
 const PropertyCard = ({
   property,
@@ -16,28 +17,60 @@ const PropertyCard = ({
   onClick,
   onHover,
   activeTab,
+  index = 0,
 }) => {
   return (
-    <div
+    <motion.div
+      layout
+      initial={{ opacity: 0, scale: 0.8, y: 20, rotateX: -15 }}
+      animate={{ opacity: 1, scale: 1, y: 0, rotateX: 0 }}
+      exit={{
+        opacity: 0,
+        scale: 0.6,
+        y: -30,
+        rotateX: 15,
+        transition: {
+          duration: 0.3,
+          ease: [0.43, 0.13, 0.23, 0.96],
+        },
+      }}
+      transition={{
+        duration: 0.5,
+        delay: index * 0.05,
+        ease: [0.34, 1.56, 0.64, 1],
+      }}
       className={`property-card ${isSelected ? "selected" : ""}`}
       onClick={onClick}
       onMouseEnter={() => onHover(property.id)}
       onMouseLeave={() => onHover(null)}
     >
       <div className="property-image-container">
-        <img
+        <motion.img
           src={property.images[0]}
           alt={property.name}
           className="property-image"
+          initial={{ scale: 1.2 }}
+          animate={{ scale: 1 }}
+          transition={{ duration: 0.6, ease: "easeOut" }}
         />
-        <div className="property-price-tag">
+        <motion.div
+          className="property-price-tag"
+          initial={{ x: -20, opacity: 0 }}
+          animate={{ x: 0, opacity: 1 }}
+          transition={{ delay: 0.2 + index * 0.05, duration: 0.4 }}
+        >
           <FaDollarSign size={17} />
           {activeTab === "comprar"
             ? formatPrice(property.price)
             : `${property.price}/mes`}
-        </div>
+        </motion.div>
 
-        <div className="property-badges">
+        <motion.div
+          className="property-badges"
+          initial={{ x: 20, opacity: 0 }}
+          animate={{ x: 0, opacity: 1 }}
+          transition={{ delay: 0.3 + index * 0.05, duration: 0.4 }}
+        >
           <div className="property-single-badge">
             <FaBuilding size={12} />
             {property.type}
@@ -48,7 +81,7 @@ const PropertyCard = ({
           >
             Negociable
           </div>
-        </div>
+        </motion.div>
       </div>
 
       <div className="property-content">
@@ -77,7 +110,7 @@ const PropertyCard = ({
           </div>
         </div>
       </div>
-    </div>
+    </motion.div>
   );
 };
 

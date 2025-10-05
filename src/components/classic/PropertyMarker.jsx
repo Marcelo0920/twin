@@ -1,5 +1,4 @@
-// src/components/classic/PropertyMarker.jsx
-import { useEffect, useRef, useMemo } from "react";
+import { useEffect, useRef, useMemo, useState } from "react";
 import { Marker } from "react-leaflet";
 import { createCustomMarker } from "../../utils/classic/mapHelpers";
 
@@ -9,8 +8,10 @@ const PropertyMarker = ({
   hoveredPropertyId,
   activeTab,
   onMarkerClick,
+  index = 0,
 }) => {
   const markerRef = useRef(null);
+  const [hasEntered, setHasEntered] = useState(false);
 
   // Create icon only once
   const icon = useMemo(
@@ -18,7 +19,33 @@ const PropertyMarker = ({
     [property.id, activeTab]
   );
 
-  // Update marker class without recreating it
+  // Entry animation when marker first appears
+  useEffect(() => {
+    if (markerRef.current && !hasEntered) {
+      const markerElement = markerRef.current;
+      const iconElement = markerElement.getElement();
+
+      if (iconElement) {
+        const priceMarker = iconElement.querySelector(".price-marker");
+        if (priceMarker) {
+          // Add entry animation with staggered delay
+          priceMarker.style.animationDelay = `${index * 50}ms`;
+          priceMarker.classList.add("marker-entering");
+
+          // Remove animation class after it completes
+          setTimeout(() => {
+            if (priceMarker) {
+              priceMarker.classList.remove("marker-entering");
+              priceMarker.style.animationDelay = "";
+              setHasEntered(true);
+            }
+          }, 800 + index * 50);
+        }
+      }
+    }
+  }, [hasEntered, index]);
+
+  // Update marker class for selection/hover without recreating it
   useEffect(() => {
     if (markerRef.current) {
       const markerElement = markerRef.current;
@@ -31,7 +58,6 @@ const PropertyMarker = ({
             selectedMarkerId === property.id ||
             hoveredPropertyId === property.id;
 
-          // Force smooth transition
           if (isHighlighted) {
             priceMarker.classList.add("selected");
           } else {

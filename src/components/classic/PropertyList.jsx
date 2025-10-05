@@ -1,5 +1,5 @@
-// src/pages/Classic/components/PropertyList.jsx
 import React from "react";
+import { AnimatePresence } from "framer-motion";
 import PropertyCard from "./PropertyCard";
 
 const PropertyList = ({
@@ -17,16 +17,19 @@ const PropertyList = ({
       </div>
 
       <div className="properties-grid">
-        {properties.map((property) => (
-          <PropertyCard
-            key={property.id}
-            property={property}
-            isSelected={selectedProperty?.id === property.id}
-            onClick={() => onCardClick(property)}
-            onHover={onCardHover}
-            activeTab={activeTab}
-          />
-        ))}
+        <AnimatePresence mode="popLayout">
+          {properties.map((property, index) => (
+            <PropertyCard
+              key={property.id}
+              property={property}
+              isSelected={selectedProperty?.id === property.id}
+              onClick={() => onCardClick(property)}
+              onHover={onCardHover}
+              activeTab={activeTab}
+              index={index}
+            />
+          ))}
+        </AnimatePresence>
       </div>
     </div>
   );
