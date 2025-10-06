@@ -39,6 +39,9 @@
 .custom-price-marker {
   background: none !important;
   border: none !important;
+}
+
+.price-marker-wrapper {
   animation: markerBounceIn 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55)
     backwards;
 }
@@ -46,34 +49,15 @@
 @keyframes markerBounceIn {
   0% {
     opacity: 0;
-    transform: translateY(-40px) scale(0);
+    transform: scale(0);
   }
   60% {
-    transform: translateY(8px) scale(1.15);
+    transform: scale(1.15);
   }
   100% {
     opacity: 1;
-    transform: translateY(0) scale(1);
+    transform: scale(1);
   }
-}
-
-.leaflet-marker-pane .custom-price-marker:nth-child(1) {
-  animation-delay: 0s;
-}
-.leaflet-marker-pane .custom-price-marker:nth-child(2) {
-  animation-delay: 0.1s;
-}
-.leaflet-marker-pane .custom-price-marker:nth-child(3) {
-  animation-delay: 0.2s;
-}
-.leaflet-marker-pane .custom-price-marker:nth-child(4) {
-  animation-delay: 0.3s;
-}
-.leaflet-marker-pane .custom-price-marker:nth-child(5) {
-  animation-delay: 0.4s;
-}
-.leaflet-marker-pane .custom-price-marker:nth-child(6) {
-  animation-delay: 0.5s;
 }
 
 .price-marker {

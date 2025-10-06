@@ -65,13 +65,14 @@ export const createCustomMarker = (
       ? formatPriceSummary(property.price)
       : `${property.price}`;
 
-  // Marker is highlighted if it's selected OR hovered
   const isHighlighted = isSelected || isHovered;
 
   return new DivIcon({
     html: `
-      <div class="price-marker ${isHighlighted ? "selected" : ""}">
-      $${price}
+      <div class="price-marker-wrapper">
+        <div class="price-marker ${isHighlighted ? "selected" : ""}">
+          $${price}
+        </div>
       </div>
     `,
     className: "custom-price-marker",
