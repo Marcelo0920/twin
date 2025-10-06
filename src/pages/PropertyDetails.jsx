@@ -1,5 +1,7 @@
 import React, { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import { MapContainer, TileLayer, Marker } from "react-leaflet";
+import L from "leaflet";
 import {
   FaBed,
   FaShower,
@@ -20,7 +22,67 @@ import {
   FaUtensils,
   FaChevronLeft,
   FaChevronRight,
+  FaSwimmingPool,
+  FaLeaf,
+  FaCar,
+  FaShieldAlt,
+  FaSnowflake,
+  FaFire,
+  FaBlender,
+  FaTshirt,
+  FaCouch,
+  FaBacon,
+  FaExclamationTriangle,
+  FaVideo,
 } from "react-icons/fa";
+import { GrElevator } from "react-icons/gr";
+
+// Fix Leaflet default icon issue
+delete L.Icon.Default.prototype._getIconUrl;
+L.Icon.Default.mergeOptions({
+  iconRetinaUrl:
+    "https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-icon-2x.png",
+  iconUrl:
+    "https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-icon.png",
+  shadowUrl:
+    "https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-shadow.png",
+});
+
+// Helper function to create nearby place marker icon
+const createNearbyPlaceIcon = (type) => {
+  const color = getNearbyPlaceColor(type);
+  const IconComponent = getNearbyPlaceIcon(type);
+
+  return L.divIcon({
+    className: "custom-nearby-marker",
+    html: `
+      <div class="nearby-place-marker" style="background-color: ${color}; width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 12px rgba(0,0,0,0.3); border: 3px solid white;">
+        <svg width="20" height="20" fill="white" viewBox="0 0 24 24">
+          <path d="${getIconPath(type)}" />
+        </svg>
+      </div>
+    `,
+    iconSize: [40, 40],
+    iconAnchor: [20, 20],
+  });
+};
+
+// Get SVG path for icon type
+const getIconPath = (type) => {
+  const paths = {
+    hospital:
+      "M19 3H5c-1.1 0-1.99.9-1.99 2L3 19c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-1 11h-4v4h-4v-4H6v-4h4V6h4v4h4v4z",
+    gym: "M20.57 14.86L22 13.43 20.57 12 17 15.57 8.43 7 12 3.43 10.57 2 9.14 3.43 7.71 2 5.57 4.14 4.14 2.71 2.71 4.14l1.43 1.43L2 7.71l1.43 1.43L2 10.57 3.43 12 7 8.43 15.57 17 12 20.57 13.43 22l1.43-1.43L16.29 22l2.14-2.14 1.43 1.43 1.43-1.43-1.43-1.43L22 16.29z",
+    supermarket:
+      "M7 18c-1.1 0-1.99.9-1.99 2S5.9 22 7 22s2-.9 2-2-.9-2-2-2zM1 2v2h2l3.6 7.59-1.35 2.45c-.16.28-.25.61-.25.96 0 1.1.9 2 2 2h12v-2H7.42c-.14 0-.25-.11-.25-.25l.03-.12.9-1.63h7.45c.75 0 1.41-.41 1.75-1.03l3.58-6.49c.08-.14.12-.31.12-.48 0-.55-.45-1-1-1H5.21l-.94-2H1zm16 16c-1.1 0-1.99.9-1.99 2s.89 2 1.99 2 2-.9 2-2-.9-2-2-2z",
+    park: "M14 6l-3.75 5 2.85 3.8-1.6 1.2C9.81 13.75 7 10 7 10l-6 8h22L14 6z",
+    school:
+      "M5 13.18v4L12 21l7-3.82v-4L12 17l-7-3.82zM12 3L1 9l11 6 9-4.91V17h2V9L12 3z",
+    restaurant:
+      "M11 9H9V2H7v7H5V2H3v7c0 2.12 1.66 3.84 3.75 3.97V22h2.5v-9.03C11.34 12.84 13 11.12 13 9V2h-2v7zm5-3v8h2.5v8H21V2c-2.76 0-5 2.24-5 4z",
+  };
+  return paths[type] || paths.hospital;
+};
 
 // Helper functions for nearby places
 const getNearbyPlaceIcon = (type) => {
@@ -45,6 +107,48 @@ const getNearbyPlaceColor = (type) => {
     restaurant: "#ec4899",
   };
   return colors[type] || "#6b7280";
+};
+
+// Feature icon mapping - THIS is how you do it properly
+const getFeatureIcon = (feature) => {
+  const lowerFeature = feature.toLowerCase();
+
+  if (lowerFeature.includes("piscina"))
+    return { icon: FaSwimmingPool, color: "#3b82f6" };
+  if (lowerFeature.includes("jardín") || lowerFeature.includes("jardin"))
+    return { icon: FaLeaf, color: "#22c55e" };
+  if (lowerFeature.includes("garage") || lowerFeature.includes("garaje"))
+    return { icon: FaCar, color: "#64748b" };
+  if (lowerFeature.includes("seguridad"))
+    return { icon: FaShieldAlt, color: "#ef4444" };
+  if (lowerFeature.includes("ascensor") || lowerFeature.includes("elevador"))
+    return { icon: GrElevator, color: "#8b5cf6" };
+  if (lowerFeature.includes("aire") || lowerFeature.includes("acondicionado"))
+    return { icon: FaSnowflake, color: "#06b6d4" };
+  if (
+    lowerFeature.includes("calefacción") ||
+    lowerFeature.includes("calefaccion")
+  )
+    return { icon: FaFire, color: "#f97316" };
+  if (lowerFeature.includes("cocina") && lowerFeature.includes("equipada"))
+    return { icon: FaBlender, color: "#84cc16" };
+  if (lowerFeature.includes("closet"))
+    return { icon: FaTshirt, color: "#ec4899" };
+  if (
+    lowerFeature.includes("lavandería") ||
+    lowerFeature.includes("lavanderia")
+  )
+    return { icon: FaTshirt, color: "#0ea5e9" };
+  if (lowerFeature.includes("terraza"))
+    return { icon: FaCouch, color: "#f59e0b" };
+  if (lowerFeature.includes("bbq") || lowerFeature.includes("parrilla"))
+    return { icon: FaBacon, color: "#dc2626" };
+  if (lowerFeature.includes("alarma"))
+    return { icon: FaExclamationTriangle, color: "#eab308" };
+  if (lowerFeature.includes("cámara") || lowerFeature.includes("camara"))
+    return { icon: FaVideo, color: "#6366f1" };
+
+  return { icon: FaCheckCircle, color: "#10b981" };
 };
 
 // Mock data
@@ -74,6 +178,7 @@ const mockProperty = {
       type: "hospital",
       name: "Hospital Equipetrol",
       distance: "1.2 km",
+      coordinates: [-17.7733, -63.1567],
       image:
         "https://images.unsplash.com/photo-1587351021759-3e566b6af7cc?w=800&h=600&fit=crop",
     },
@@ -82,6 +187,7 @@ const mockProperty = {
       type: "gym",
       name: "Fitness Center",
       distance: "0.5 km",
+      coordinates: [-17.7783, -63.1617],
       image:
         "https://images.unsplash.com/photo-1534438327276-14e5300c3a48?w=800&h=600&fit=crop",
     },
@@ -90,6 +196,7 @@ const mockProperty = {
       type: "supermarket",
       name: "Supermercado",
       distance: "0.8 km",
+      coordinates: [-17.7883, -63.1717],
       image:
         "https://images.unsplash.com/photo-1604719312566-8912e9227c6a?w=800&h=600&fit=crop",
     },
@@ -98,6 +205,7 @@ const mockProperty = {
       type: "park",
       name: "Parque Urbano",
       distance: "0.3 km",
+      coordinates: [-17.7803, -63.1637],
       image:
         "https://images.unsplash.com/photo-1559827260-dc66d52bef19?w=800&h=600&fit=crop",
     },
@@ -106,6 +214,7 @@ const mockProperty = {
       type: "school",
       name: "Colegio Internacional",
       distance: "0.7 km",
+      coordinates: [-17.7753, -63.1697],
       image:
         "https://images.unsplash.com/photo-1580582932707-520aed937b7b?w=800&h=600&fit=crop",
     },
@@ -114,6 +223,7 @@ const mockProperty = {
       type: "restaurant",
       name: "Restaurant Gourmet",
       distance: "0.4 km",
+      coordinates: [-17.7823, -63.1587],
       image:
         "https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=800&h=600&fit=crop",
     },
@@ -158,13 +268,94 @@ const mockProperty = {
   },
 };
 
+// Map Modal Component - REUSE what you already have, don't be stupid
+const MapModal = ({ isOpen, onClose, property }) => {
+  if (!isOpen || !property) return null;
+
+  // Property coordinates (mock data - replace with actual property coordinates)
+  const propertyCoordinates = [-17.7833, -63.1667];
+
+  return (
+    <AnimatePresence>
+      <motion.div
+        style={styles.mapModalOverlay}
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        exit={{ opacity: 0 }}
+        onClick={onClose}
+      >
+        <motion.div
+          style={styles.mapModalContent}
+          initial={{ scale: 0.9, opacity: 0 }}
+          animate={{ scale: 1, opacity: 1 }}
+          exit={{ scale: 0.9, opacity: 0 }}
+          onClick={(e) => e.stopPropagation()}
+        >
+          <button style={styles.mapModalClose} onClick={onClose}>
+            ×
+          </button>
+
+          <div style={styles.mapModalHeader}>
+            <FaMapMarkerAlt size={24} color="#FF9017" />
+            <div>
+              <h3 style={styles.mapModalTitle}>{property.name}</h3>
+              <p style={styles.mapModalSubtitle}>{property.location}</p>
+            </div>
+          </div>
+
+          <div style={styles.mapContainer}>
+            <MapContainer
+              center={propertyCoordinates}
+              zoom={14}
+              style={{ height: "100%", width: "100%", borderRadius: "12px" }}
+              zoomControl={true}
+            >
+              <TileLayer
+                url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+                attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+              />
+
+              {/* Property Marker */}
+              <Marker position={propertyCoordinates}>
+                <div style={styles.propertyMarker}>
+                  <FaMapMarkerAlt size={24} color="#FF9017" />
+                </div>
+              </Marker>
+
+              {/* Nearby Places Markers */}
+              {property.nearbyPlaces &&
+                property.nearbyPlaces.map((place) => (
+                  <Marker
+                    key={place.id}
+                    position={place.coordinates}
+                    icon={createNearbyPlaceIcon(place.type)}
+                  />
+                ))}
+            </MapContainer>
+          </div>
+
+          <div style={styles.mapModalLegend}>
+            <div style={styles.legendItem}>
+              <FaMapMarkerAlt size={16} color="#FF9017" />
+              <span>Propiedad</span>
+            </div>
+            <div style={styles.legendItem}>
+              <FaMapMarkerAlt size={16} color="#6b7280" />
+              <span>Lugares cercanos</span>
+            </div>
+          </div>
+        </motion.div>
+      </motion.div>
+    </AnimatePresence>
+  );
+};
+
 // Hero Image Component (for Matterport)
 const HeroImage = ({ image, propertyName }) => {
   return (
     <div style={styles.heroContainer}>
       <div style={styles.heroImageWrapper}>
         <img src={image} alt={propertyName} style={styles.heroImage} />
-        <div style={styles.matterportBadge}>📐 Vista 360° Matterport</div>
       </div>
     </div>
   );
@@ -176,7 +367,6 @@ const ImageCarousel = ({ images, title }) => {
   const [selectedImage, setSelectedImage] = useState(null);
   const [direction, setDirection] = useState(0);
 
-  // Add hover effects via style tag
   React.useEffect(() => {
     const style = document.createElement("style");
     style.textContent = `
@@ -338,7 +528,7 @@ const ImageCarousel = ({ images, title }) => {
   );
 };
 
-// Gallery Component (now using carousel)
+// Gallery Component
 const Gallery = ({ images }) => {
   return <ImageCarousel images={images} title="Conoce la casa" />;
 };
@@ -348,16 +538,17 @@ const StreetView = ({ images }) => {
   return <ImageCarousel images={images} title="Conoce la zona" />;
 };
 
-// Nearby Places Component
+// Nearby Places Component - NOW WITH MODAL
 const NearbyPlaces = ({ places }) => {
-  // Add hover effects via style tag
+  const [selectedPlace, setSelectedPlace] = useState(null);
+
   React.useEffect(() => {
     const style = document.createElement("style");
     style.textContent = `
       .nearby-place-card:hover {
         border-color: #FF9017;
-        transform: translateY(-2px);
-        box-shadow: 0 4px 12px rgba(255, 144, 23, 0.15);
+        transform: translateY(-4px);
+        box-shadow: 0 8px 24px rgba(255, 144, 23, 0.2);
       }
     `;
     document.head.appendChild(style);
@@ -365,36 +556,104 @@ const NearbyPlaces = ({ places }) => {
   }, []);
 
   return (
-    <div style={styles.section}>
-      <h2 style={styles.sectionTitle}>Lugares cercanos</h2>
-      <div style={styles.nearbyPlacesGrid}>
-        {places.map((place) => {
-          const IconComponent = getNearbyPlaceIcon(place.type);
-          const color = getNearbyPlaceColor(place.type);
+    <>
+      <div style={styles.section}>
+        <h2 style={styles.sectionTitle}>Lugares cercanos</h2>
+        <div style={styles.nearbyPlacesGrid}>
+          {places.map((place) => {
+            const IconComponent = getNearbyPlaceIcon(place.type);
+            const color = getNearbyPlaceColor(place.type);
 
-          return (
-            <div
-              key={place.id}
-              className="nearby-place-card"
-              style={styles.nearbyPlaceCard}
-            >
+            return (
               <div
-                style={{
-                  ...styles.nearbyPlaceIcon,
-                  backgroundColor: `${color}20`,
-                }}
+                key={place.id}
+                className="nearby-place-card"
+                style={styles.nearbyPlaceCard}
+                onClick={() => setSelectedPlace(place)}
               >
-                <IconComponent size={24} style={{ color: color }} />
+                <div
+                  style={{
+                    ...styles.nearbyPlaceIcon,
+                    backgroundColor: `${color}20`,
+                  }}
+                >
+                  <IconComponent size={24} style={{ color: color }} />
+                </div>
+                <div style={styles.nearbyPlaceInfo}>
+                  <h4 style={styles.nearbyPlaceName}>{place.name}</h4>
+                  <span style={styles.nearbyPlaceDistance}>
+                    {place.distance}
+                  </span>
+                </div>
               </div>
-              <div style={styles.nearbyPlaceInfo}>
-                <h4 style={styles.nearbyPlaceName}>{place.name}</h4>
-                <span style={styles.nearbyPlaceDistance}>{place.distance}</span>
-              </div>
-            </div>
-          );
-        })}
+            );
+          })}
+        </div>
       </div>
-    </div>
+
+      {/* Place Modal - You should've thought of this yourself */}
+      <AnimatePresence>
+        {selectedPlace && (
+          <motion.div
+            style={styles.fullscreenOverlay}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            onClick={() => setSelectedPlace(null)}
+          >
+            <motion.div
+              style={styles.placeModalContent}
+              initial={{ scale: 0.8, y: 50 }}
+              animate={{ scale: 1, y: 0 }}
+              exit={{ scale: 0.8, y: 50 }}
+              onClick={(e) => e.stopPropagation()}
+            >
+              <img
+                src={selectedPlace.image}
+                alt={selectedPlace.name}
+                style={styles.placeModalImage}
+              />
+              <div style={styles.placeModalInfo}>
+                <div style={styles.placeModalHeader}>
+                  <div
+                    style={{
+                      ...styles.nearbyPlaceIcon,
+                      backgroundColor: `${getNearbyPlaceColor(
+                        selectedPlace.type
+                      )}20`,
+                      width: "64px",
+                      height: "64px",
+                    }}
+                  >
+                    {React.createElement(
+                      getNearbyPlaceIcon(selectedPlace.type),
+                      {
+                        size: 32,
+                        style: {
+                          color: getNearbyPlaceColor(selectedPlace.type),
+                        },
+                      }
+                    )}
+                  </div>
+                  <div style={{ flex: 1 }}>
+                    <h3 style={styles.placeModalTitle}>{selectedPlace.name}</h3>
+                    <p style={styles.placeModalDistance}>
+                      📍 {selectedPlace.distance} de la propiedad
+                    </p>
+                  </div>
+                </div>
+              </div>
+              <button
+                style={styles.closeModalBtn}
+                onClick={() => setSelectedPlace(null)}
+              >
+                ×
+              </button>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </>
   );
 };
 
@@ -441,33 +700,53 @@ const StatCard = ({ icon: Icon, value, label, color }) => (
   </div>
 );
 
-// Property Features Component with Expandable Section
+// IMPROVED Property Features Component - Pay attention here
 const PropertyFeatures = ({ features, additionalFeatures }) => {
   const [showMore, setShowMore] = useState(false);
 
-  // Add hover effects via style tag
   React.useEffect(() => {
     const style = document.createElement("style");
     style.textContent = `
+      .feature-card:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+      }
       .show-more-btn:hover {
-        background-color: #f8fafc;
+        background-color: #FF9017;
         border-color: #FF9017;
-        color: #FF9017;
+        color: white;
       }
     `;
     document.head.appendChild(style);
     return () => document.head.removeChild(style);
   }, []);
 
+  const FeatureCard = ({ feature }) => {
+    const { icon: IconComponent, color } = getFeatureIcon(feature);
+
+    return (
+      <div className="feature-card" style={styles.featureCard}>
+        <div
+          style={{
+            ...styles.featureCardIcon,
+            backgroundColor: `${color}15`,
+            color: color,
+          }}
+        >
+          <IconComponent size={24} />
+        </div>
+        <span style={styles.featureCardText}>{feature}</span>
+      </div>
+    );
+  };
+
   return (
     <div style={styles.section}>
       <h2 style={styles.sectionTitle}>Características Principales</h2>
-      <div style={styles.featuresGrid}>
+
+      <div style={styles.featuresGridImproved}>
         {features.map((feature, idx) => (
-          <div key={idx} style={styles.featureChip}>
-            <FaCheckCircle size={14} style={styles.featureIcon} />
-            {feature}
-          </div>
+          <FeatureCard key={idx} feature={feature} />
         ))}
       </div>
 
@@ -478,14 +757,11 @@ const PropertyFeatures = ({ features, additionalFeatures }) => {
             animate={{ height: "auto", opacity: 1 }}
             exit={{ height: 0, opacity: 0 }}
             transition={{ duration: 0.3, ease: "easeInOut" }}
-            style={{ overflow: "hidden", marginTop: "1rem" }}
+            style={{ overflow: "hidden", marginTop: "1.5rem" }}
           >
-            <div style={styles.featuresGrid}>
+            <div style={styles.featuresGridImproved}>
               {additionalFeatures.map((feature, idx) => (
-                <div key={idx} style={styles.featureChip}>
-                  <FaCheckCircle size={14} style={styles.featureIcon} />
-                  {feature}
-                </div>
+                <FeatureCard key={idx} feature={feature} />
               ))}
             </div>
           </motion.div>
@@ -502,31 +778,6 @@ const PropertyFeatures = ({ features, additionalFeatures }) => {
     </div>
   );
 };
-
-// Amenities Component
-const AmenitiesSection = ({ amenities }) => (
-  <div style={styles.section}>
-    <h2 style={styles.sectionTitle}>Amenidades</h2>
-    <div style={styles.amenitiesContainer}>
-      <AmenityCategory title="Interior" items={amenities.interior} />
-      <AmenityCategory title="Exterior" items={amenities.exterior} />
-      <AmenityCategory title="Edificio" items={amenities.building} />
-    </div>
-  </div>
-);
-
-const AmenityCategory = ({ title, items }) => (
-  <div style={styles.amenityCategory}>
-    <h3 style={styles.amenityTitle}>{title}</h3>
-    <ul style={styles.amenityList}>
-      {items.map((item, idx) => (
-        <li key={idx} style={styles.amenityItem}>
-          • {item}
-        </li>
-      ))}
-    </ul>
-  </div>
-);
 
 // Contact Actions Component
 const ContactActions = () => (
@@ -548,24 +799,17 @@ const ContactActions = () => (
 const PropertyDetails = () => {
   const [property] = useState(mockProperty);
 
+  const [showMapModal, setShowMapModal] = useState(false);
+
   const handleBack = () => {
-    // In your actual app: navigate(-1) or window.history.back()
     console.log("Navigate back");
   };
 
   return (
     <div style={styles.container}>
-      {/* Header with Back Button */}
-      <div style={styles.header}>
-        <button style={styles.backBtn} onClick={handleBack}>
-          <FaArrowLeft size={18} />
-          <span>Volver a resultados</span>
-        </button>
-      </div>
+      <div style={styles.header}></div>
 
-      {/* Main Content */}
       <div style={styles.mainContent}>
-        {/* Left Column */}
         <div style={styles.leftColumn}>
           <HeroImage image={property.mainImage} propertyName={property.name} />
 
@@ -616,7 +860,6 @@ const PropertyDetails = () => {
           <NearbyPlaces places={property.nearbyPlaces} />
         </div>
 
-        {/* Right Column - Sticky Contact */}
         <div style={styles.rightColumn}>
           <div style={styles.contactCard}>
             <div style={styles.contactHeader}>
@@ -631,15 +874,6 @@ const PropertyDetails = () => {
             <div style={styles.divider} />
 
             <div style={styles.agentSection}>
-              <div style={styles.agentInfo}>
-                <div style={styles.agentAvatar}>AG</div>
-                <div style={styles.agentDetails}>
-                  <div style={styles.agentName}>Agente Inmobiliario</div>
-                  <div style={styles.agentRole}>Asesor Senior</div>
-                  <div style={styles.agentPhone}>📞 +591 123 456 789</div>
-                </div>
-              </div>
-
               <button style={styles.scheduleBtn}>
                 <FaCalendarAlt size={18} />
                 <span>Agendar Visita</span>
@@ -659,6 +893,24 @@ const PropertyDetails = () => {
           </div>
         </div>
       </div>
+
+      {/* Fixed Map Bubble Button - Bottom Left */}
+      <motion.button
+        style={styles.mapBubble}
+        onClick={() => setShowMapModal(true)}
+        whileHover={{ scale: 1.1 }}
+        whileTap={{ scale: 0.95 }}
+      >
+        <FaMapMarkerAlt size={20} />
+        <span>Ver en mapa</span>
+      </motion.button>
+
+      {/* Map Modal */}
+      <MapModal
+        isOpen={showMapModal}
+        onClose={() => setShowMapModal(false)}
+        property={property}
+      />
     </div>
   );
 };
@@ -709,7 +961,6 @@ const styles = {
     flexDirection: "column",
     gap: "1.5rem",
   },
-  // Hero Image Styles
   heroContainer: {
     backgroundColor: "white",
     borderRadius: "20px",
@@ -726,20 +977,6 @@ const styles = {
     height: "100%",
     objectFit: "cover",
   },
-  matterportBadge: {
-    position: "absolute",
-    top: "1.5rem",
-    left: "1.5rem",
-    backgroundColor: "#FF9017",
-    backdropFilter: "blur(10px)",
-    color: "white",
-    padding: "0.75rem 1.5rem",
-    borderRadius: "24px",
-    fontSize: "0.875rem",
-    fontWeight: "700",
-    boxShadow: "0 4px 12px rgba(255, 144, 23, 0.3)",
-  },
-  // Carousel Styles
   carouselContainer: {
     position: "relative",
     width: "100%",
@@ -817,7 +1054,6 @@ const styles = {
     fontWeight: "600",
     zIndex: 10,
   },
-  // Nearby Places Styles
   nearbyPlacesGrid: {
     display: "grid",
     gridTemplateColumns: "repeat(2, 1fr)",
@@ -832,7 +1068,7 @@ const styles = {
     border: "2px solid #e2e8f0",
     borderRadius: "14px",
     cursor: "pointer",
-    transition: "all 0.2s ease",
+    transition: "all 0.3s ease",
   },
   nearbyPlaceIcon: {
     width: "52px",
@@ -857,10 +1093,9 @@ const styles = {
     color: "#64748b",
     fontWeight: "500",
   },
-  // Place Modal Styles
   placeModalContent: {
     backgroundColor: "white",
-    borderRadius: "20px",
+    borderRadius: "24px",
     overflow: "hidden",
     maxWidth: "700px",
     width: "90%",
@@ -881,15 +1116,35 @@ const styles = {
     gap: "1.25rem",
   },
   placeModalTitle: {
-    fontSize: "1.5rem",
+    fontSize: "1.75rem",
     fontWeight: "800",
     color: "#0f172a",
-    margin: "0 0 0.25rem 0",
+    margin: "0 0 0.5rem 0",
   },
   placeModalDistance: {
-    fontSize: "1rem",
+    fontSize: "1.125rem",
     color: "#64748b",
     margin: 0,
+    fontWeight: "600",
+  },
+  closeModalBtn: {
+    position: "absolute",
+    top: "1.5rem",
+    right: "1.5rem",
+    width: "48px",
+    height: "48px",
+    backgroundColor: "white",
+    border: "none",
+    borderRadius: "50%",
+    fontSize: "2rem",
+    fontWeight: "300",
+    color: "#1e293b",
+    cursor: "pointer",
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    boxShadow: "0 4px 12px rgba(0,0,0,0.2)",
+    transition: "all 0.2s ease",
   },
   propertyHeader: {
     backgroundColor: "white",
@@ -1015,38 +1270,51 @@ const styles = {
     color: "#475569",
     margin: 0,
   },
-  featuresGrid: {
+  // IMPROVED FEATURE STYLES
+  featuresGridImproved: {
     display: "grid",
-    gridTemplateColumns: "repeat(auto-fill, minmax(180px, 1fr))",
-    gap: "1rem",
+    gridTemplateColumns: "repeat(auto-fill, minmax(220px, 1fr))",
+    gap: "1.25rem",
   },
-  featureChip: {
+  featureCard: {
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "center",
+    gap: "1rem",
+    padding: "1.5rem",
+    backgroundColor: "#ffffff",
+    border: "2px solid #e2e8f0",
+    borderRadius: "16px",
+    transition: "all 0.3s cubic-bezier(0.4, 0, 0.2, 1)",
+    cursor: "default",
+  },
+  featureCardIcon: {
+    width: "56px",
+    height: "56px",
+    borderRadius: "14px",
     display: "flex",
     alignItems: "center",
-    gap: "0.625rem",
-    padding: "1rem 1.25rem",
-    backgroundColor: "#f8fafc",
-    borderRadius: "12px",
-    fontSize: "0.9375rem",
-    fontWeight: "600",
-    color: "#475569",
-    border: "1px solid #e2e8f0",
+    justifyContent: "center",
+    transition: "all 0.3s ease",
   },
-  featureIcon: {
-    color: "#10b981",
-    flexShrink: 0,
+  featureCardText: {
+    fontSize: "0.9375rem",
+    fontWeight: "700",
+    color: "#1e293b",
+    textAlign: "center",
+    lineHeight: "1.4",
   },
   showMoreBtn: {
     marginTop: "1.5rem",
-    padding: "0.875rem 1.5rem",
+    padding: "1rem 1.5rem",
     backgroundColor: "transparent",
     border: "2px solid #e2e8f0",
     borderRadius: "12px",
     color: "#475569",
     fontSize: "0.9375rem",
-    fontWeight: "600",
+    fontWeight: "700",
     cursor: "pointer",
-    transition: "all 0.2s ease",
+    transition: "all 0.3s ease",
     width: "100%",
   },
   contactCard: {
@@ -1115,45 +1383,7 @@ const styles = {
   agentSection: {
     marginBottom: "1.5rem",
   },
-  agentInfo: {
-    display: "flex",
-    alignItems: "center",
-    gap: "1rem",
-    marginBottom: "1.25rem",
-  },
-  agentAvatar: {
-    width: "64px",
-    height: "64px",
-    backgroundColor: "#5A2D95",
-    borderRadius: "50%",
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
-    color: "white",
-    fontSize: "1.375rem",
-    fontWeight: "700",
-    flexShrink: 0,
-  },
-  agentDetails: {
-    flex: 1,
-  },
-  agentName: {
-    fontSize: "1.0625rem",
-    fontWeight: "700",
-    color: "#0f172a",
-    marginBottom: "0.25rem",
-  },
-  agentRole: {
-    fontSize: "0.8125rem",
-    color: "#FF9017",
-    fontWeight: "600",
-    marginBottom: "0.375rem",
-  },
-  agentPhone: {
-    fontSize: "0.875rem",
-    color: "#64748b",
-    fontWeight: "500",
-  },
+
   scheduleBtn: {
     width: "100%",
     display: "flex",
@@ -1221,6 +1451,118 @@ const styles = {
     alignItems: "center",
     justifyContent: "center",
     boxShadow: "0 4px 12px rgba(0,0,0,0.3)",
+  },
+  // Map Bubble Button Styles
+  mapBubble: {
+    position: "fixed",
+    bottom: "2rem",
+    left: "2rem",
+    display: "flex",
+    alignItems: "center",
+    gap: "0.75rem",
+    padding: "1rem 1.5rem",
+    backgroundColor: "#FF9017",
+    color: "white",
+    border: "none",
+    borderRadius: "50px",
+    fontSize: "1rem",
+    fontWeight: "700",
+    cursor: "pointer",
+    boxShadow: "0 8px 24px rgba(255, 144, 23, 0.4)",
+    zIndex: 1000,
+    transition: "all 0.3s ease",
+  },
+  // Map Modal Styles
+  mapModalOverlay: {
+    position: "fixed",
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+    backgroundColor: "rgba(0, 0, 0, 0.8)",
+    backdropFilter: "blur(8px)",
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    zIndex: 9999,
+    padding: "2rem",
+  },
+  mapModalContent: {
+    backgroundColor: "white",
+    borderRadius: "24px",
+    width: "100%",
+    maxWidth: "1000px",
+    maxHeight: "90vh",
+    overflow: "hidden",
+    position: "relative",
+    boxShadow: "0 20px 60px rgba(0,0,0,0.3)",
+  },
+  mapModalClose: {
+    position: "absolute",
+    top: "1.5rem",
+    right: "1.5rem",
+    width: "48px",
+    height: "48px",
+    backgroundColor: "white",
+    border: "2px solid #e2e8f0",
+    borderRadius: "50%",
+    fontSize: "2rem",
+    fontWeight: "300",
+    color: "#1e293b",
+    cursor: "pointer",
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    boxShadow: "0 4px 12px rgba(0,0,0,0.1)",
+    zIndex: 10,
+    transition: "all 0.2s ease",
+  },
+  mapModalHeader: {
+    display: "flex",
+    alignItems: "center",
+    gap: "1rem",
+    padding: "2rem 2rem 1.5rem 2rem",
+    borderBottom: "2px solid #f1f5f9",
+  },
+  mapModalTitle: {
+    fontSize: "1.5rem",
+    fontWeight: "800",
+    color: "#0f172a",
+    margin: "0 0 0.25rem 0",
+  },
+  mapModalSubtitle: {
+    fontSize: "0.95rem",
+    color: "#64748b",
+    margin: 0,
+    display: "flex",
+    alignItems: "center",
+    gap: "0.5rem",
+  },
+  mapContainer: {
+    height: "500px",
+    padding: "0 2rem",
+    marginTop: "1rem",
+  },
+  mapModalLegend: {
+    display: "flex",
+    gap: "2rem",
+    padding: "1.5rem 2rem 2rem 2rem",
+    justifyContent: "center",
+    borderTop: "2px solid #f1f5f9",
+    marginTop: "1rem",
+  },
+  legendItem: {
+    display: "flex",
+    alignItems: "center",
+    gap: "0.5rem",
+    fontSize: "0.875rem",
+    fontWeight: "600",
+    color: "#475569",
+  },
+  propertyMarker: {
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
   },
 };
 
