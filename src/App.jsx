@@ -4,6 +4,7 @@ import Home from "./pages/Home";
 import Cortos from "./pages/Cortos";
 import Classic from "./pages/Classic";
 import "./App.css";
+import PropertyDetails from "./pages/PropertyDetails";
 
 function App() {
   return (
@@ -13,6 +14,7 @@ function App() {
           <Route path="/" element={<Home />} />
           <Route path="/cortos" element={<Cortos />} />
           <Route path="/classic" element={<Classic />} />
+          <Route path="/property/:id" element={<PropertyDetails />} />
         </Routes>
       </div>
     </Router>
