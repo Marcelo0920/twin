@@ -137,6 +137,27 @@ const DetailedPropertyView = ({
             </div>
           </div>
 
+          <div className="property-photos-section">
+            <h3>Conoce la propiedad</h3>
+            <p className="section-description">
+              Explora cada espacio de esta propiedad en detalle
+            </p>
+            <div className="street-view-grid">
+              {property.images.map((img, idx) => (
+                <div
+                  key={idx}
+                  className="street-view-card"
+                  onClick={() => onStreet360Click(img)}
+                >
+                  <img src={img} alt={`Foto ${idx + 1}`} />
+                  <div className="street-view-overlay">
+                    <span>Foto #{idx + 1}</span>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+
           <StreetView
             images={property.street360Images}
             onImageClick={onStreet360Click}
