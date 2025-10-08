@@ -1,7 +1,7 @@
 import React, { useState, useRef, useEffect } from "react";
 import { Search, X, ChevronDown, Check } from "lucide-react";
 import { useNavigate } from "react-router-dom";
-import Header from "../components/Header";
+import HomeHeader from "../components/headers/HomeHeader";
 import "./styles/home.css";
 
 // Custom Dropdown Component
@@ -148,7 +148,7 @@ const Home = () => {
   return (
     <div className="home-container">
       {/* Header */}
-      <Header
+      <HomeHeader
         mobileMenuOpen={mobileMenuOpen}
         setMobileMenuOpen={setMobileMenuOpen}
       />

@@ -1,6 +1,6 @@
 // src/pages/Classic.jsx
 import React, { useState, useRef, useEffect } from "react";
-import Header from "../components/Header";
+import Header from "../components/headers/Header";
 import FilterSection from "../components/classic/FilterSection";
 import PropertyList from "../components/classic/PropertyList";
 import DetailedPropertyView from "../components/classic/DetailedPropertyView";
