@@ -1,0 +1,126 @@
+/* Guardados Page Styles */
+
+.guardados-container {
+  min-height: 100vh;
+  background: linear-gradient(to bottom, #f8fafc 0%, #e2e8f0 100%);
+}
+
+.guardados-content {
+  max-width: 1200px;
+  margin: 0 auto;
+  margin-top: 3rem;
+  padding: 40px 20px;
+  position: relative;
+}
+
+.guardados-header {
+  text-align: center;
+  margin-bottom: 40px;
+}
+
+.guardados-header h1 {
+  font-size: 3rem;
+  font-weight: 800;
+  color: #1e293b;
+  margin: 0 0 10px 0;
+  background: linear-gradient(135deg, #1e293b 0%, #475569 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.guardados-subtitle {
+  font-size: 1.1rem;
+  color: #64748b;
+  margin: 0;
+}
+
+/* Comparar Button */
+.comparar-button {
+  position: sticky;
+  top: 100px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 100;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px 40px;
+  font-size: 1.1rem;
+  font-weight: 700;
+  border: none;
+  border-radius: 50px;
+  cursor: pointer;
+  margin: 0 auto 40px;
+  display: block;
+  width: fit-content;
+  transition: all 0.3s ease;
+}
+
+.comparar-button.enabled {
+  background: linear-gradient(135deg, #ff9017 0%, #ff7b17 100%);
+  color: white;
+  box-shadow: 0 6px 20px rgba(255, 144, 23, 0.4);
+}
+
+.comparar-button.disabled {
+  background: #cbd5e1;
+  color: #94a3b8;
+  cursor: not-allowed;
+  box-shadow: none;
+}
+
+/* Properties Grid */
+.guardados-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+  gap: 30px;
+  margin-bottom: 40px;
+}
+
+/* Empty State */
+.empty-state {
+  text-align: center;
+  padding: 80px 20px;
+  color: #64748b;
+  font-size: 1.2rem;
+}
+
+/* Responsive */
+@media (max-width: 1200px) {
+  .guardados-grid {
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 25px;
+  }
+}
+
+@media (max-width: 768px) {
+  .guardados-header h1 {
+    font-size: 2rem;
+  }
+
+  .guardados-subtitle {
+    font-size: 1rem;
+  }
+
+  .guardados-grid {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+
+  .comparar-button {
+    top: 80px;
+    padding: 14px 32px;
+    font-size: 1rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .guardados-content {
+    padding: 30px 15px;
+  }
+
+  .guardados-header h1 {
+    font-size: 1.8rem;
+  }
+}

@@ -1,0 +1,8 @@
+- Mejorar la pag. de /cortos, hacerlo parecido a tik tok pero mejor que tiktok web.
+- En filtros avanzados de la busqueda clasica, /classic, hay que agregar una opcion de mostrar solo las casas que le dieron like
+    Cuando no haya ninguna casa que diga un mensaje en la card list "Sin casas guardadas", cuando hayan casas que las cards tengan
+    el estilo que tiene en /guardados (un aro en la esquina superior izquierda que pueda darle click, al cargar la pagina todos los aros
+    deben un borde de color naranja para darle a entender al usuario que puede darle click ahi ). agregar
+    el button de comparar a lado de "Propiedades disponibles" (el cual es el title del header)
+
+- 

@@ -1,0 +1,187 @@
+/* Comparison Modal Styles */
+
+.comparison-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.7);
+  backdrop-filter: blur(8px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+  padding: 20px;
+}
+
+.comparison-modal-content {
+  background: white;
+  border-radius: 24px;
+  width: 95%;
+  max-width: 1400px;
+  max-height: 90vh;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 25px 50px rgba(0, 0, 0, 0.3);
+  overflow: hidden;
+}
+
+/* Header */
+.comparison-modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 30px 40px;
+  border-bottom: 2px solid #e2e8f0;
+  background: linear-gradient(to bottom, #ffffff 0%, #f8fafc 100%);
+}
+
+.comparison-modal-header h2 {
+  font-size: 2rem;
+  font-weight: 800;
+  color: #1e293b;
+  margin: 0;
+  background: linear-gradient(135deg, #1e293b 0%, #475569 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.comparison-close-button {
+  background: rgba(255, 255, 255, 0.95);
+  border: none;
+  border-radius: 50%;
+  width: 44px;
+  height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  color: #64748b;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  backdrop-filter: blur(10px);
+}
+
+.comparison-close-button:hover {
+  background: #ff9017;
+  color: white;
+  transform: rotate(90deg);
+  box-shadow: 0 6px 16px rgba(255, 144, 23, 0.3);
+}
+
+/* Tabs */
+.comparison-tabs {
+  display: flex;
+  gap: 10px;
+  padding: 5px 40px 0;
+  background: #f8fafc;
+  border-bottom: 2px solid #e2e8f0;
+}
+
+.center {
+  margin: auto 0;
+  margin-right: 30px;
+}
+.comparison-tabs-with-exit {
+  display: flex;
+  text-align: center;
+
+  justify-content: space-between;
+}
+
+.comparison-tab {
+  padding: 14px 28px;
+  background: transparent;
+  border: none;
+  border-radius: 12px 12px 0 0;
+  font-size: 1rem;
+  font-weight: 600;
+  color: #64748b;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  position: relative;
+}
+
+.comparison-tab::after {
+  content: "";
+  position: absolute;
+  bottom: -2px;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: transparent;
+  transition: background 0.3s ease;
+}
+
+.comparison-tab:hover {
+  color: #475569;
+  background: rgba(255, 144, 23, 0.1);
+}
+
+.comparison-tab.active {
+  color: #ff9017;
+  background: white;
+}
+
+.comparison-tab.active::after {
+  background: #ff9017;
+}
+
+/* Tab Content */
+.comparison-tab-content {
+  flex: 1;
+  overflow: auto;
+  background: white;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .comparison-modal-content {
+    width: 100%;
+    max-height: 95vh;
+    border-radius: 16px;
+  }
+
+  .comparison-modal-header {
+    padding: 20px 24px;
+  }
+
+  .comparison-modal-header h2 {
+    font-size: 1.5rem;
+  }
+
+  .comparison-tabs {
+    padding: 15px 24px 0;
+  }
+
+  .comparison-tab {
+    padding: 12px 20px;
+    font-size: 0.9rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .comparison-modal-overlay {
+    padding: 10px;
+  }
+
+  .comparison-modal-header h2 {
+    font-size: 1.3rem;
+  }
+
+  .comparison-tab {
+    padding: 10px 16px;
+    font-size: 0.85rem;
+    gap: 6px;
+  }
+
+  .comparison-tab svg {
+    width: 16px;
+    height: 16px;
+  }
+}

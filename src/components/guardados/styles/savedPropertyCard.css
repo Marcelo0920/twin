@@ -1,0 +1,184 @@
+/* SavedPropertyCard Styles */
+
+.saved-property-card {
+  background: white;
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  cursor: pointer;
+  position: relative;
+}
+
+.saved-property-card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.15);
+}
+
+.saved-property-card.selected {
+  box-shadow: 0 0 0 3px #ff9017, 0 12px 24px rgba(255, 144, 23, 0.3);
+}
+
+.saved-property-card .property-image-container {
+  position: relative;
+  width: 100%;
+  height: 240px;
+  background: #f1f5f9;
+}
+
+.saved-property-card .property-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.saved-property-card:hover .property-image {
+  transform: scale(1.1);
+}
+
+/* Selection Bullet */
+.selection-bullet {
+  position: absolute;
+  top: 15px;
+  left: 15px;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.95);
+  border: 3px solid #e2e8f0;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+  z-index: 10;
+  backdrop-filter: blur(10px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.selection-bullet:hover {
+  border-color: #ff9017;
+  background: rgba(255, 255, 255, 1);
+  box-shadow: 0 6px 16px rgba(255, 144, 23, 0.3);
+}
+
+.selection-bullet.selected {
+  background: #ff9017;
+  border-color: #ff9017 !important;
+  color: white;
+}
+
+/* Price Tag */
+.saved-property-card .property-price-tag {
+  position: absolute;
+  bottom: -15px;
+  left: 15px;
+  background: linear-gradient(135deg, #ff9017 0%, #ff7b17 100%);
+  color: white;
+  padding: 10px 20px;
+  border-radius: 25px;
+  font-weight: 700;
+  font-size: 1rem;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  box-shadow: 0 4px 12px rgba(255, 144, 23, 0.3);
+  z-index: 999;
+}
+
+/* Badges */
+.saved-property-card .property-badges {
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  z-index: 5;
+}
+
+.saved-property-card .property-single-badge {
+  background: rgba(255, 255, 255, 0.95);
+  color: #475569;
+  padding: 6px 12px;
+  border-radius: 20px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  backdrop-filter: blur(10px);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Property Content */
+.saved-property-card .property-content {
+  padding: 25px 20px 20px;
+}
+
+.saved-property-card .property-name {
+  font-size: 1.3rem;
+  font-weight: 700;
+  color: #1e293b;
+  margin: 0 0 10px 0;
+  line-height: 1.3;
+}
+
+.saved-property-card .property-location {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  color: #64748b;
+  font-size: 0.9rem;
+  margin-bottom: 15px;
+}
+
+.saved-property-card .property-characteristics {
+  margin-top: 15px;
+}
+
+.saved-property-card .property-characteristics h4 {
+  font-size: 0.85rem;
+  color: #64748b;
+  font-weight: 600;
+  margin: 0 0 10px 0;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.saved-property-card .characteristics-list {
+  display: flex;
+  gap: 20px;
+}
+
+.saved-property-card .characteristic {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: #475569;
+  font-weight: 600;
+  font-size: 0.95rem;
+}
+
+.saved-property-card .characteristic svg {
+  color: #ff9017;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .saved-property-card .property-image-container {
+    height: 200px;
+  }
+
+  .saved-property-card .property-name {
+    font-size: 1.1rem;
+  }
+
+  .selection-bullet {
+    width: 32px;
+    height: 32px;
+    top: 12px;
+    left: 12px;
+  }
+}

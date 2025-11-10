@@ -5,6 +5,8 @@ import Cortos from "./pages/Cortos";
 import Classic from "./pages/Classic";
 import "./App.css";
 import PropertyDetails from "./pages/PropertyDetails";
+import Guardados from "./pages/Guardados";
+import Shorts from "./pages/Shorts";
 
 function App() {
   return (
@@ -15,6 +17,8 @@ function App() {
           <Route path="/cortos" element={<Cortos />} />
           <Route path="/classic" element={<Classic />} />
           <Route path="/property/:id" element={<PropertyDetails />} />
+          <Route path="/guardados" element={<Guardados />} />
+          <Route path="/shorts" element={<Shorts />} />
         </Routes>
       </div>
     </Router>
