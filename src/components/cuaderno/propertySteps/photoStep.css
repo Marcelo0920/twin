@@ -1,0 +1,141 @@
+.new-property-map-modal .photo-step {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.new-property-map-modal .upload-buttons {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1rem;
+}
+
+.new-property-map-modal .upload-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+  padding: 1rem;
+  background: white;
+  color: #5a2d95;
+  border: 2px dashed #5a2d95;
+  border-radius: 12px;
+  font-size: 0.9375rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.new-property-map-modal .upload-btn:hover {
+  background: #5a2d95;
+  color: white;
+  border-style: solid;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(90, 45, 149, 0.3);
+}
+
+.new-property-map-modal .camera-btn {
+  color: #ff9017;
+  border-color: #ff9017;
+}
+
+.new-property-map-modal .camera-btn:hover {
+  background: #ff9017;
+  color: white;
+}
+
+.new-property-map-modal .photos-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+  gap: 1rem;
+  margin-top: 0.5rem;
+}
+
+.new-property-map-modal .photo-item {
+  position: relative;
+  aspect-ratio: 1;
+  border-radius: 12px;
+  overflow: hidden;
+  border: 2px solid #e5e7eb;
+  background: #f9fafb;
+}
+
+.new-property-map-modal .photo-preview {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.new-property-map-modal .remove-photo-btn {
+  position: absolute;
+  top: 0.5rem;
+  right: 0.5rem;
+  width: 28px;
+  height: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(239, 68, 68, 0.95);
+  color: white;
+  border: none;
+  border-radius: 50%;
+  cursor: pointer;
+  transition: all 0.2s;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+}
+
+.new-property-map-modal .remove-photo-btn:hover {
+  background: #dc2626;
+  transform: scale(1.1);
+}
+
+.new-property-map-modal .add-photo-placeholder {
+  aspect-ratio: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  background: white;
+  border: 2px dashed #d1d5db;
+  border-radius: 12px;
+  color: #9ca3af;
+  cursor: pointer;
+  transition: all 0.3s;
+  font-size: 0.875rem;
+  font-weight: 500;
+}
+
+.new-property-map-modal .add-photo-placeholder:hover {
+  background: #f9fafb;
+  border-color: #5a2d95;
+  color: #5a2d95;
+  transform: scale(1.02);
+}
+
+.new-property-map-modal .photo-counter {
+  text-align: center;
+  font-size: 0.875rem;
+  color: #6b7280;
+  font-weight: 500;
+  padding: 0.75rem;
+  background: #f9fafb;
+  border-radius: 8px;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .new-property-map-modal .upload-buttons {
+    grid-template-columns: 1fr;
+  }
+
+  .new-property-map-modal .photos-grid {
+    grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+    gap: 0.75rem;
+  }
+
+  .new-property-map-modal .upload-btn {
+    padding: 0.875rem;
+    font-size: 0.875rem;
+  }
+}

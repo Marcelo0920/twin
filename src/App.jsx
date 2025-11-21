@@ -7,6 +7,8 @@ import "./App.css";
 import PropertyDetails from "./pages/PropertyDetails";
 import Guardados from "./pages/Guardados";
 import Shorts from "./pages/Shorts";
+import MisPropiedades from "./pages/MisPropiedades";
+import Cuaderno from "./pages/Cuaderno";
 
 function App() {
   return (
@@ -19,6 +21,8 @@ function App() {
           <Route path="/property/:id" element={<PropertyDetails />} />
           <Route path="/guardados" element={<Guardados />} />
           <Route path="/shorts" element={<Shorts />} />
+          <Route path="/mis-propiedades" element={<MisPropiedades />} />
+          <Route path="/cuaderno" element={<Cuaderno />} />
         </Routes>
       </div>
     </Router>

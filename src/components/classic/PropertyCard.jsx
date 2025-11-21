@@ -1,5 +1,5 @@
 import React from "react";
-import { MapPin } from "lucide-react";
+import { MapPin, Check } from "lucide-react";
 import { motion } from "framer-motion";
 import {
   FaBed,
@@ -18,7 +18,15 @@ const PropertyCard = ({
   onHover,
   activeTab,
   index = 0,
+  isSelectedForComparison = false,
+  onToggleComparison,
+  showComparisonRing = false,
 }) => {
+  const handleComparisonClick = (e) => {
+    e.stopPropagation();
+    onToggleComparison?.(property.id);
+  };
+
   return (
     <motion.div
       layout
@@ -45,6 +53,16 @@ const PropertyCard = ({
       onMouseLeave={() => onHover(null)}
     >
       <div className="property-image-container">
+        {/* Selection Ring - Only show when showComparisonRing is true */}
+        {showComparisonRing && (
+          <div
+            className={`property-selection-ring ${isSelectedForComparison ? "selected" : ""}`}
+            onClick={handleComparisonClick}
+          >
+            {isSelectedForComparison && <Check size={16} strokeWidth={3} />}
+          </div>
+        )}
+
         <motion.img
           src={property.images[0]}
           alt={property.name}

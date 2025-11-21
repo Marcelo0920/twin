@@ -14,6 +14,7 @@ import {
 import { formatPrice } from "../../utils/classic/mapHelpers";
 import ImageCarousel from "./ImageCarousel";
 import CalendarWidget from "./CalendarWidget";
+import CalendarModal from "./CalendarModal";
 import NearbyPlaces from "./NearbyPlaces";
 import StreetView from "./StreetView";
 
@@ -26,6 +27,7 @@ const DetailedPropertyView = ({
   onStreet360Click,
 }) => {
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
+  const [showCalendarModal, setShowCalendarModal] = useState(false);
 
   if (!property) return null;
 
@@ -163,7 +165,7 @@ const DetailedPropertyView = ({
             onImageClick={onStreet360Click}
           />
 
-          <CalendarWidget availableDates={property.availableDates} />
+          <CalendarWidget onScheduleClick={() => setShowCalendarModal(true)} />
         </div>
       </div>
 
@@ -179,6 +181,12 @@ const DetailedPropertyView = ({
           <FaWhatsapp size={18} />
         </button>
       </div>
+
+      {/* Calendar Modal */}
+      <CalendarModal
+        isOpen={showCalendarModal}
+        onClose={() => setShowCalendarModal(false)}
+      />
     </div>
   );
 };

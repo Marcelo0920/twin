@@ -36,6 +36,7 @@ import {
   FaVideo,
 } from "react-icons/fa";
 import { GrElevator } from "react-icons/gr";
+import CalendarModal from "../components/classic/CalendarModal";
 
 // Fix Leaflet default icon issue
 delete L.Icon.Default.prototype._getIconUrl;
@@ -800,10 +801,7 @@ const PropertyDetails = () => {
   const [property] = useState(mockProperty);
 
   const [showMapModal, setShowMapModal] = useState(false);
-
-  const handleBack = () => {
-    console.log("Navigate back");
-  };
+  const [showCalendarModal, setShowCalendarModal] = useState(false);
 
   return (
     <div style={styles.container}>
@@ -874,7 +872,10 @@ const PropertyDetails = () => {
             <div style={styles.divider} />
 
             <div style={styles.agentSection}>
-              <button style={styles.scheduleBtn}>
+              <button
+                style={styles.scheduleBtn}
+                onClick={() => setShowCalendarModal(true)}
+              >
                 <FaCalendarAlt size={18} />
                 <span>Agendar Visita</span>
               </button>
@@ -910,6 +911,12 @@ const PropertyDetails = () => {
         isOpen={showMapModal}
         onClose={() => setShowMapModal(false)}
         property={property}
+      />
+
+      {/* Calendar Modal */}
+      <CalendarModal
+        isOpen={showCalendarModal}
+        onClose={() => setShowCalendarModal(false)}
       />
     </div>
   );

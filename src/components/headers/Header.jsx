@@ -7,6 +7,8 @@ import {
   Settings,
   LogOut,
   ChevronDown,
+  Home,
+  BookOpen,
 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { useState, useRef, useEffect } from "react";
@@ -41,9 +43,14 @@ const Header = ({ mobileMenuOpen, setMobileMenuOpen }) => {
     setIsUserMenuOpen(false);
 
     switch (action) {
+      case "properties":
+        navigate('/mis-propiedades');
+        break;
       case "saved":
-        console.log("Navigate to saved properties");
-        // navigate('/saved');
+        navigate("/classic", { state: { showSavedOnly: true } });
+        break;
+      case "cuaderno":
+        navigate("/cuaderno");
         break;
       case "settings":
         console.log("Navigate to settings");
@@ -101,10 +108,26 @@ const Header = ({ mobileMenuOpen, setMobileMenuOpen }) => {
                   <div className="user-menu-options">
                     <button
                       className="user-menu-option"
+                      onClick={() => handleUserMenuAction("properties")}
+                    >
+                      <Home size={18} />
+                      <span>Mis propiedades</span>
+                    </button>
+
+                    <button
+                      className="user-menu-option"
                       onClick={() => handleUserMenuAction("saved")}
                     >
                       <Bookmark size={18} />
                       <span>Guardados</span>
+                    </button>
+
+                    <button
+                      className="user-menu-option"
+                      onClick={() => handleUserMenuAction("cuaderno")}
+                    >
+                      <BookOpen size={18} />
+                      <span>Cuaderno</span>
                     </button>
 
                     <button

@@ -16,6 +16,7 @@ import {
 import { formatPrice } from "../../utils/classic/mapHelpers";
 import ImageCarousel from "../classic/ImageCarousel";
 import CalendarWidget from "../classic/CalendarWidget";
+import CalendarModal from "../classic/CalendarModal";
 import NearbyPlaces from "../classic/NearbyPlaces";
 import StreetView from "../classic/StreetView";
 import Modal360 from "../classic/Modal360";
@@ -27,6 +28,7 @@ const PropertyDetailModal = ({ isOpen, onClose, property }) => {
   const [current360Images, setCurrent360Images] = useState([]);
   const [current360ImageIndex, setCurrent360ImageIndex] = useState(0);
   const [selectedNearbyPlace, setSelectedNearbyPlace] = useState(null);
+  const [showCalendarModal, setShowCalendarModal] = useState(false);
 
   if (!isOpen || !property) return null;
 
@@ -201,7 +203,9 @@ const PropertyDetailModal = ({ isOpen, onClose, property }) => {
                   onImageClick={handleStreet360Click}
                 />
 
-                <CalendarWidget availableDates={property.availableDates} />
+                <CalendarWidget
+                  onScheduleClick={() => setShowCalendarModal(true)}
+                />
               </div>
             </div>
 
@@ -226,6 +230,11 @@ const PropertyDetailModal = ({ isOpen, onClose, property }) => {
             currentIndex={current360ImageIndex}
             onIndexChange={setCurrent360ImageIndex}
             selectedPlace={selectedNearbyPlace}
+          />
+
+          <CalendarModal
+            isOpen={showCalendarModal}
+            onClose={() => setShowCalendarModal(false)}
           />
         </motion.div>
       )}

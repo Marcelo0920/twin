@@ -74,7 +74,9 @@ const Guardados = () => {
           <h1>Propiedades Guardadas</h1>
           <p className="guardados-subtitle">
             {savedProperties.length}{" "}
-            {savedProperties.length === 1 ? "propiedad guardada" : "propiedades guardadas"}
+            {savedProperties.length === 1
+              ? "propiedad guardada"
+              : "propiedades guardadas"}
           </p>
         </div>
 

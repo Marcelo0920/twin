@@ -1,5 +1,6 @@
 // src/pages/Classic.jsx
 import React, { useState, useRef, useEffect } from "react";
+import { useLocation } from "react-router-dom";
 import Header from "../components/headers/Header";
 import FilterSection from "../components/classic/FilterSection";
 import PropertyList from "../components/classic/PropertyList";
@@ -12,6 +13,8 @@ import "./styles/classic.css";
 import "../components/classic/styles/properties.css";
 
 const Classic = () => {
+  const location = useLocation();
+
   // State management
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [activeTab, setActiveTab] = useState("comprar");
@@ -26,10 +29,20 @@ const Classic = () => {
   const [selectedNearbyPlace, setSelectedNearbyPlace] = useState(null);
   const [showNearbyPlaces, setShowNearbyPlaces] = useState(false);
   const [animateDetailNearby, setAnimateDetailNearby] = useState(false);
+  const [showSavedOnly, setShowSavedOnly] = useState(false);
+  const [savedProperties, setSavedProperties] = useState(new Set([1, 3, 5])); // Pre-populate with 3 example properties
+  const [selectedForComparison, setSelectedForComparison] = useState([]);
 
   const mapRef = useRef(null);
   const hoverTimerRef = useRef(null);
   const panTimerRef = useRef(null);
+
+  // Check if navigated from "Guardados" button and activate favoritos
+  useEffect(() => {
+    if (location.state?.showSavedOnly) {
+      setShowSavedOnly(true);
+    }
+  }, [location.state]);
 
   // Filter states
   const [filters, setFilters] = useState({
@@ -52,6 +65,11 @@ const Classic = () => {
     const matchesTab =
       activeTab === "comprar" ? property.forSale : !property.forSale;
     if (!matchesTab) return false;
+
+    // Filter by saved properties if showSavedOnly is active
+    if (showSavedOnly && !savedProperties.has(property.id)) {
+      return false;
+    }
 
     if (
       filters.city &&
@@ -178,6 +196,16 @@ const Classic = () => {
     }, 800);
   };
 
+  const handleToggleComparison = (propertyId) => {
+    setSelectedForComparison((prev) => {
+      if (prev.includes(propertyId)) {
+        return prev.filter((id) => id !== propertyId);
+      } else {
+        return [...prev, propertyId];
+      }
+    });
+  };
+
   const handleCardHover = (propertyId) => {
     // Clear existing timers
     if (hoverTimerRef.current) {
@@ -278,6 +306,8 @@ const Classic = () => {
         setActiveTab={setActiveTab}
         filters={filters}
         onFilterChange={handleFilterChange}
+        showSavedOnly={showSavedOnly}
+        onToggleSaved={() => setShowSavedOnly(!showSavedOnly)}
       />
 
       <div className="main-content">
@@ -293,6 +323,12 @@ const Classic = () => {
               onCardClick={handleCardClick}
               onCardHover={handleCardHover}
               activeTab={activeTab}
+              selectedForComparison={selectedForComparison}
+              onToggleComparison={handleToggleComparison}
+              onCompareClick={() =>
+                console.log("Compare:", selectedForComparison)
+              }
+              showSavedOnly={showSavedOnly}
             />
 
             <div className="properties-detail-view">

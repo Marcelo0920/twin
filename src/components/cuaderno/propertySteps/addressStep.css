@@ -1,0 +1,62 @@
+.new-property-map-modal .address-step {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.new-property-map-modal .address-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.new-property-map-modal .form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.new-property-map-modal .form-group label {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.9375rem;
+  font-weight: 600;
+  color: #374151;
+}
+
+.new-property-map-modal .form-group label svg {
+  color: #5a2d95;
+}
+
+.new-property-map-modal .address-input {
+  width: 100%;
+  padding: 0.875rem 1rem;
+  font-size: 0.9375rem;
+  border: 2px solid #e5e7eb;
+  border-radius: 12px;
+  transition: all 0.3s;
+  font-family: inherit;
+}
+
+.new-property-map-modal .address-input:focus {
+  outline: none;
+  border-color: #5a2d95;
+  box-shadow: 0 0 0 3px rgba(90, 45, 149, 0.1);
+}
+
+.new-property-map-modal .address-input::placeholder {
+  color: #9ca3af;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .new-property-map-modal .address-input {
+    padding: 0.75rem 0.875rem;
+    font-size: 0.875rem;
+  }
+
+  .new-property-map-modal .form-group label {
+    font-size: 0.875rem;
+  }
+}

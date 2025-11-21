@@ -1,0 +1,204 @@
+/* My Property Card Styles */
+.mis-propiedades-property-card {
+  background: white;
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  border: 2px solid transparent;
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  cursor: pointer;
+  max-width: 380px;
+  margin: 0 auto;
+}
+
+.mis-propiedades-property-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 25px rgba(255, 144, 23, 0.15);
+}
+
+.mis-propiedades-image-container {
+  position: relative;
+  height: 220px;
+  overflow: hidden;
+}
+
+.mis-propiedades-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.mis-propiedades-property-card:hover .mis-propiedades-image {
+  transform: scale(1.05);
+}
+
+/* Edit Button */
+.mis-propiedades-edit-btn {
+  position: absolute;
+  top: 12px;
+  left: 12px;
+  width: 44px;
+  height: 44px;
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(10px);
+  border: none;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  z-index: 10;
+  color: #ff9017;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.mis-propiedades-edit-btn:hover {
+  background: #ff9017;
+  color: white;
+  transform: scale(1.1);
+}
+
+.mis-propiedades-edit-btn:active {
+  transform: scale(0.95);
+}
+
+.mis-propiedades-price-tag {
+  position: absolute;
+  top: -20px;
+  left: 15px;
+  background-color: #ff9017;
+  color: white;
+  padding: 8px 12px;
+  border-radius: 20px;
+  font-weight: 700;
+  font-size: 1.1rem;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  z-index: 10;
+}
+
+.mis-propiedades-badges {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+  position: absolute;
+  top: 10px;
+  right: 12px;
+  align-items: end;
+}
+
+.mis-propiedades-single-badge {
+  align-items: center;
+  background: #f1f5f99d;
+  color: #475569;
+  max-width: max-content;
+  padding: 8px 14px;
+  border-radius: 12px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  display: flex;
+  gap: 6px;
+}
+
+.mis-propiedades-content {
+  padding: 1.25rem;
+  position: relative;
+  padding-bottom: 0.8rem;
+}
+
+.mis-propiedades-name {
+  font-size: 1.1rem;
+  font-weight: 700;
+  margin-top: 0.75rem;
+  color: #10405b;
+  margin-bottom: 0.75rem;
+  line-height: 1.3;
+}
+
+.mis-propiedades-location {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  color: #10405b80;
+  font-size: 0.875rem;
+  margin-bottom: 1rem;
+}
+
+/* Statistics Section */
+.mis-propiedades-statistics {
+  margin-bottom: 1rem;
+  border-top: 1px solid #e2e8f0;
+  padding-top: 1rem;
+}
+
+.mis-propiedades-stats-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.875rem;
+}
+
+.mis-propiedades-stats-header h4 {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: #374151;
+  margin: 0;
+}
+
+.mis-propiedades-ver-mas-btn {
+  padding: 0.5rem 1rem;
+  background: linear-gradient(135deg, #ff9017 0%, #ff7a00 100%);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.mis-propiedades-ver-mas-btn:hover {
+  transform: scale(1.05);
+  box-shadow: 0 2px 8px rgba(255, 144, 23, 0.3);
+}
+
+.mis-propiedades-stats-badges {
+  display: flex;
+  gap: 0.625rem;
+  flex-wrap: wrap;
+}
+
+.mis-propiedades-stat-badge {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 0.875rem;
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 10px;
+  font-size: 0.9375rem;
+  font-weight: 600;
+  color: #475569;
+  flex: 1;
+  min-width: 90px;
+  justify-content: center;
+}
+
+.mis-propiedades-stat-badge svg {
+  color: #ff9017;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .mis-propiedades-property-card {
+    max-width: 100%;
+  }
+
+  .mis-propiedades-image-container {
+    height: 200px;
+  }
+}

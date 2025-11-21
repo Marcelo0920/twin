@@ -1,0 +1,494 @@
+.cuaderno-page {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.cuaderno-container {
+  flex: 1;
+  position: relative;
+  overflow: hidden;
+}
+
+.cuaderno-map {
+  width: 100%;
+  height: 100%;
+}
+
+/* Badge Buttons */
+.city-badge-button {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  z-index: 999;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1.5rem;
+  background: white;
+  color: #5a2d95;
+  border: 2px solid #5a2d95;
+  border-radius: 24px;
+  font-size: 0.9375rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.city-badge-button:hover {
+  background: #5a2d95;
+  color: white;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(90, 45, 149, 0.3);
+}
+
+.city-badge-button:active {
+  transform: translateY(0);
+  box-shadow: 0 2px 8px rgba(90, 45, 149, 0.25);
+}
+
+/* Top Left Badges Container */
+.top-left-badges {
+  position: absolute;
+  top: 20px;
+  left: 4rem;
+  z-index: 999;
+  display: flex;
+  gap: 0.75rem;
+}
+
+.routes-badge-button,
+.property-badge-button,
+.show-properties-badge-button {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1.5rem;
+  background: white;
+  color: #5a2d95;
+  border: 2px solid #5a2d95;
+  border-radius: 24px;
+  font-size: 0.9375rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.property-badge-button {
+  color: #ff9017;
+  border-color: #ff9017;
+}
+
+.show-properties-badge-button {
+  color: #10b981;
+  border-color: #10b981;
+}
+
+.show-properties-badge-button.active {
+  background: #10b981;
+  color: white;
+  box-shadow: 0 6px 20px rgba(16, 185, 129, 0.3);
+}
+
+.routes-badge-button:hover,
+.property-badge-button:hover,
+.show-properties-badge-button:hover {
+  color: white;
+  transform: translateY(-2px);
+}
+
+.routes-badge-button:hover {
+  background: #5a2d95;
+  box-shadow: 0 6px 20px rgba(90, 45, 149, 0.3);
+}
+
+.property-badge-button:hover {
+  background: #ff9017;
+  box-shadow: 0 6px 20px rgba(255, 144, 23, 0.3);
+}
+
+.show-properties-badge-button:hover {
+  background: #10b981;
+  box-shadow: 0 6px 20px rgba(16, 185, 129, 0.3);
+}
+
+.routes-badge-button:active,
+.property-badge-button:active,
+.show-properties-badge-button:active {
+  transform: translateY(0);
+}
+
+.routes-badge-button:active {
+  box-shadow: 0 2px 8px rgba(90, 45, 149, 0.25);
+}
+
+.property-badge-button:active {
+  box-shadow: 0 2px 8px rgba(255, 144, 23, 0.25);
+}
+
+.show-properties-badge-button:active {
+  box-shadow: 0 2px 8px rgba(16, 185, 129, 0.25);
+}
+
+/* Save Route Button (Top Left) */
+.save-route-button-top {
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1.5rem;
+  background: #ff9017;
+  color: white;
+  border: none;
+  border-radius: 24px;
+  font-size: 0.9375rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 4px 12px rgba(255, 144, 23, 0.3);
+}
+
+.save-route-button-top:hover {
+  background: #e87d00;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(255, 144, 23, 0.4);
+}
+
+/* Route Control Buttons (Left Center) */
+.route-control-buttons {
+  position: absolute;
+  left: 20px;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 1000;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.undo-marker-button,
+.cancel-route-button-side {
+  width: 48px;
+  height: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  border: none;
+}
+
+.undo-marker-button {
+  background: white;
+  color: #5a2d95;
+}
+
+.undo-marker-button:hover:not(:disabled) {
+  background: #5a2d95;
+  color: white;
+  transform: translateX(4px);
+  box-shadow: 0 6px 20px rgba(90, 45, 149, 0.3);
+}
+
+.undo-marker-button:disabled {
+  background: #f3f4f6;
+  color: #d1d5db;
+  cursor: not-allowed;
+  opacity: 0.5;
+}
+
+.cancel-route-button-side {
+  background: white;
+  color: #ef4444;
+}
+
+.cancel-route-button-side:hover {
+  background: #ef4444;
+  color: white;
+  transform: translateX(4px);
+  box-shadow: 0 6px 20px rgba(239, 68, 68, 0.3);
+}
+
+/* Pencil Cursor when creating route */
+.cuaderno-container.creating-route .cuaderno-map {
+  cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="%235a2d95" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 3a2.85 2.83 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5Z"/><path d="m15 5 4 4"/></svg>')
+      2 22,
+    auto;
+}
+
+/* Navigation Button (Left Center) */
+.navigation-button {
+  position: absolute;
+  left: 20px;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 1000;
+  width: 56px;
+  height: 56px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+  border: none;
+  background: white;
+  color: #5a2d95;
+}
+
+.navigation-button:hover {
+  background: #5a2d95;
+  color: white;
+  transform: translateY(-50%) scale(1.1);
+  box-shadow: 0 6px 24px rgba(90, 45, 149, 0.4);
+}
+
+.navigation-button.active {
+  background: #ef4444;
+  color: white;
+  animation: pulse 2s infinite;
+}
+
+.navigation-button.active:hover {
+  background: #dc2626;
+}
+
+@keyframes pulse {
+  0%,
+  100% {
+    box-shadow: 0 4px 16px rgba(239, 68, 68, 0.4);
+  }
+  50% {
+    box-shadow: 0 4px 24px rgba(239, 68, 68, 0.6);
+  }
+}
+
+/* User Location Marker */
+.user-location-marker {
+  background: none;
+  border: none;
+}
+
+.user-location-dot {
+  width: 24px;
+  height: 24px;
+  background: #3b82f6;
+  border: 4px solid white;
+  border-radius: 50%;
+  box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.3), 0 4px 12px rgba(0, 0, 0, 0.3);
+  animation: locationPulse 2s infinite;
+}
+
+@keyframes locationPulse {
+  0%,
+  100% {
+    transform: scale(1);
+    box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.3), 0 4px 12px rgba(0, 0, 0, 0.3);
+  }
+  50% {
+    transform: scale(1.1);
+    box-shadow: 0 0 0 8px rgba(59, 130, 246, 0.2), 0 4px 12px rgba(0, 0, 0, 0.3);
+  }
+}
+
+/* Custom Property Markers */
+.custom-property-marker-cuaderno {
+  background: none;
+  border: none;
+}
+
+.cuaderno-property-marker {
+  position: relative;
+  width: 44px;
+  height: 52px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  filter: drop-shadow(0 6px 12px rgba(0, 0, 0, 0.3));
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.cuaderno-property-marker:hover {
+  filter: drop-shadow(0 8px 16px rgba(0, 0, 0, 0.4));
+  transform: translateY(-4px) scale(1.05);
+}
+
+.cuaderno-property-marker-circle {
+  width: 44px;
+  height: 44px;
+  background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 3px solid white;
+  box-shadow: 0 0 0 2px rgba(16, 185, 129, 0.3);
+  position: relative;
+  z-index: 2;
+}
+
+.cuaderno-property-marker-arrow {
+  width: 0;
+  height: 0;
+  border-left: 11px solid transparent;
+  border-right: 11px solid transparent;
+  border-top: 14px solid white;
+  position: absolute;
+  bottom: 0;
+  z-index: 1;
+}
+
+.cuaderno-property-marker-arrow::after {
+  content: "";
+  position: absolute;
+  top: -16px;
+  left: -9px;
+  width: 0;
+  height: 0;
+  border-left: 9px solid transparent;
+  border-right: 9px solid transparent;
+  border-top: 12px solid #059669;
+}
+
+/* Property Marker Tooltip */
+.leaflet-tooltip.property-marker-tooltip {
+  background: white;
+  border: none;
+  border-radius: 12px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+  padding: 0;
+  min-width: 240px;
+}
+
+.leaflet-tooltip.property-marker-tooltip::before {
+  display: none;
+}
+
+.tooltip-content {
+  padding: 1rem;
+}
+
+.tooltip-price {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: #ff9017;
+  margin-bottom: 0.5rem;
+}
+
+.tooltip-address {
+  font-size: 0.9375rem;
+  font-weight: 600;
+  color: #1f2937;
+  margin-bottom: 0.25rem;
+}
+
+.tooltip-location {
+  font-size: 0.8125rem;
+  color: #6b7280;
+  margin-bottom: 0.75rem;
+}
+
+.tooltip-features {
+  display: flex;
+  gap: 1rem;
+  padding-top: 0.75rem;
+  border-top: 1px solid #e5e7eb;
+}
+
+.tooltip-feature {
+  display: flex;
+  align-items: center;
+  gap: 0.375rem;
+  color: #10b981;
+  font-size: 0.875rem;
+  font-weight: 600;
+}
+
+.tooltip-feature svg {
+  flex-shrink: 0;
+}
+
+.tooltip-feature span {
+  color: #1f2937;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .city-badge-button {
+    top: 10px;
+    right: 10px;
+    padding: 0.625rem 1.25rem;
+    font-size: 0.875rem;
+  }
+
+  .top-left-badges {
+    top: 10px;
+    left: 10px;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .routes-badge-button,
+  .property-badge-button,
+  .show-properties-badge-button {
+    padding: 0.625rem 1.25rem;
+    font-size: 0.875rem;
+  }
+
+  .save-route-button-top {
+    top: 10px;
+    left: 10px;
+    padding: 0.625rem 1.25rem;
+    font-size: 0.875rem;
+  }
+
+  .route-control-buttons {
+    left: 10px;
+  }
+
+  .undo-marker-button,
+  .cancel-route-button-side {
+    width: 44px;
+    height: 44px;
+  }
+
+  .navigation-button {
+    left: 10px;
+    width: 52px;
+    height: 52px;
+  }
+
+  .leaflet-tooltip.property-marker-tooltip {
+    min-width: 200px;
+  }
+
+  .tooltip-price {
+    font-size: 1.125rem;
+  }
+
+  .tooltip-address {
+    font-size: 0.875rem;
+  }
+
+  .tooltip-location {
+    font-size: 0.75rem;
+  }
+
+  .tooltip-features {
+    gap: 0.75rem;
+  }
+
+  .tooltip-feature {
+    font-size: 0.8125rem;
+  }
+}

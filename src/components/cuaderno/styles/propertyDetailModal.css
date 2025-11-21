@@ -1,0 +1,338 @@
+/* Property Detail Modal Styles - Prefix: pdm- */
+
+/* Import Carousel Styles */
+@import '../../../pages/styles/classic.css';
+
+/* Overlay */
+.pdm-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.7);
+  backdrop-filter: blur(4px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 10000;
+  padding: 1rem;
+}
+
+/* Modal Container */
+.pdm-container {
+  background: white;
+  border-radius: 12px;
+  max-width: 900px;
+  width: 100%;
+  max-height: 90vh;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+  animation: pdmSlideUp 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  overflow: hidden;
+}
+
+@keyframes pdmSlideUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px) scale(0.96);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+/* Header */
+.pdm-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1.25rem 1.5rem;
+  border-bottom: 1px solid #e5e7eb;
+  flex-shrink: 0;
+  background: #fafafa;
+}
+
+.pdm-title {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: #1f2937;
+  margin: 0;
+}
+
+.pdm-header-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.pdm-edit-btn {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 1rem;
+  background: white;
+  color: #5a2d95;
+  border: 1px solid #5a2d95;
+  border-radius: 8px;
+  font-size: 0.875rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.pdm-edit-btn:hover {
+  background: #5a2d95;
+  color: white;
+}
+
+.pdm-edit-btn.active {
+  background: #ff9017;
+  border-color: #ff9017;
+  color: white;
+}
+
+.pdm-edit-btn.active:hover {
+  background: #e87d00;
+  border-color: #e87d00;
+}
+
+.pdm-close-btn {
+  background: none;
+  border: none;
+  color: #6b7280;
+  cursor: pointer;
+  padding: 0.5rem;
+  border-radius: 6px;
+  transition: all 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.pdm-close-btn:hover {
+  background: #f3f4f6;
+  color: #1f2937;
+}
+
+/* Content */
+.pdm-content {
+  flex: 1;
+  overflow-y: auto;
+  overflow-x: hidden;
+  min-height: 0;
+}
+
+.pdm-content::-webkit-scrollbar {
+  width: 8px;
+}
+
+.pdm-content::-webkit-scrollbar-track {
+  background: #f9fafb;
+}
+
+.pdm-content::-webkit-scrollbar-thumb {
+  background: #d1d5db;
+  border-radius: 4px;
+}
+
+.pdm-content::-webkit-scrollbar-thumb:hover {
+  background: #9ca3af;
+}
+
+/* Details Section */
+.pdm-details {
+  padding: 1.5rem;
+}
+
+.pdm-section {
+  margin-bottom: 2rem;
+}
+
+.pdm-section:last-child {
+  margin-bottom: 0;
+}
+
+.pdm-section-title {
+  font-size: 0.875rem;
+  font-weight: 700;
+  color: #374151;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin: 0 0 1rem 0;
+  padding-bottom: 0.5rem;
+  border-bottom: 2px solid #e5e7eb;
+}
+
+/* Fields Container */
+.pdm-fields {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 0;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+/* Field Row */
+.pdm-field-row {
+  display: grid;
+  grid-template-columns: 140px 1fr;
+  min-height: 44px;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.pdm-field-row:last-child {
+  border-bottom: none;
+}
+
+.pdm-field-row:nth-child(odd) {
+  background: #fafafa;
+}
+
+.pdm-field-row:nth-child(even) {
+  background: white;
+}
+
+.pdm-field-label {
+  display: flex;
+  align-items: center;
+  padding: 0.75rem 1rem;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  color: #6b7280;
+  border-right: 1px solid #e5e7eb;
+  background: #f9fafb;
+}
+
+.pdm-field-value {
+  display: flex;
+  align-items: center;
+  padding: 0.75rem 1rem;
+  font-size: 0.875rem;
+  color: #1f2937;
+  font-weight: 500;
+}
+
+/* Input Fields */
+.pdm-field-input,
+.pdm-select {
+  width: 100%;
+  padding: 0.625rem 0.875rem;
+  font-size: 0.875rem;
+  color: #1f2937;
+  background: white;
+  border: 1px solid #d1d5db;
+  border-radius: 0;
+  transition: all 0.2s;
+  font-family: inherit;
+  font-weight: 500;
+  margin: 2px;
+}
+
+.pdm-field-input:focus,
+.pdm-select:focus {
+  outline: none;
+  border-color: #5a2d95;
+  box-shadow: 0 0 0 2px rgba(90, 45, 149, 0.1);
+  background: #fefefe;
+}
+
+.pdm-field-input:hover,
+.pdm-select:hover {
+  border-color: #9ca3af;
+}
+
+/* Textarea */
+.pdm-textarea {
+  width: 100%;
+  padding: 0.875rem 1rem;
+  font-size: 0.875rem;
+  color: #1f2937;
+  background: white;
+  border: 1px solid #d1d5db;
+  border-radius: 8px;
+  transition: all 0.2s;
+  font-family: inherit;
+  resize: vertical;
+  min-height: 100px;
+  line-height: 1.6;
+}
+
+.pdm-textarea:focus {
+  outline: none;
+  border-color: #5a2d95;
+  box-shadow: 0 0 0 3px rgba(90, 45, 149, 0.1);
+}
+
+.pdm-description-text {
+  font-size: 0.9375rem;
+  color: #4b5563;
+  line-height: 1.6;
+  margin: 0;
+  padding: 0.5rem 0;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .pdm-container {
+    max-width: 100%;
+    max-height: 100vh;
+    border-radius: 0;
+  }
+
+  .pdm-header {
+    padding: 1rem 1.25rem;
+  }
+
+  .pdm-title {
+    font-size: 1rem;
+    max-width: 60%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .pdm-edit-btn {
+    padding: 0.5rem 0.875rem;
+    font-size: 0.8125rem;
+  }
+
+  .pdm-details {
+    padding: 1.25rem;
+  }
+
+  .pdm-section {
+    margin-bottom: 1.5rem;
+  }
+
+  .pdm-section-title {
+    font-size: 0.8125rem;
+  }
+
+  .pdm-fields {
+    grid-template-columns: 1fr;
+  }
+
+  .pdm-field-row {
+    grid-template-columns: 1fr;
+  }
+
+  .pdm-field-label {
+    border-right: none;
+    border-bottom: 1px solid #e5e7eb;
+    padding: 0.5rem 0.875rem;
+  }
+
+  .pdm-field-value {
+    padding: 0.625rem 0.875rem;
+  }
+
+  .pdm-field-input,
+  .pdm-select {
+    padding: 0.5rem 0.75rem;
+    font-size: 0.8125rem;
+  }
+}

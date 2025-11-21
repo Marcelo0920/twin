@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Search, Sliders } from "lucide-react";
+import { Search, Sliders, Heart } from "lucide-react";
 import { FaCity, FaBuilding, FaBed } from "react-icons/fa";
 import CustomDropdown from "../dropdown/Dropdown";
 import AdvancedFiltersModal from "./modals/AdvancedFiltersModal";
@@ -163,6 +163,8 @@ const FilterSection = ({
   setActiveTab,
   filters,
   onFilterChange,
+  showSavedOnly,
+  onToggleSaved,
 }) => {
   const [showAdvancedModal, setShowAdvancedModal] = useState(false);
 
@@ -241,6 +243,24 @@ const FilterSection = ({
                   placeholder="Dorm."
                   icon={FaBed}
                 />
+              </div>
+
+              {/* Saved Toggle Button */}
+              <div style={styles.filterItemBtn}>
+                <button
+                  style={{
+                    ...styles.savedBtn,
+                    ...(showSavedOnly ? styles.savedBtnActive : {}),
+                  }}
+                  onClick={onToggleSaved}
+                  title="Mostrar guardados"
+                >
+                  <Heart
+                    size={18}
+                    fill={showSavedOnly ? "#ff9017" : "none"}
+                    stroke={showSavedOnly ? "#ff9017" : "white"}
+                  />
+                </button>
               </div>
 
               {/* Price Slider */}
@@ -336,7 +356,7 @@ const styles = {
   mainFilters: {
     flex: 1,
     display: "grid",
-    gridTemplateColumns: " 1fr 1.1fr 1fr 0.75fr 1.3fr 0.5fr",
+    gridTemplateColumns: "1fr 1.1fr 1fr 0.75fr 0.5fr 1.3fr 0.5fr",
     gap: "2.2rem",
     alignItems: "end",
   },
@@ -379,6 +399,30 @@ const styles = {
     fontSize: "1.2rem",
     lineHeight: 1,
     animation: "pulse 2s ease-in-out infinite",
+  },
+  savedBtn: {
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    gap: "6px",
+    padding: "12px 14px",
+    width: "maxWidth",
+    border: "2px solid rgba(255, 255, 255, 0.25)",
+    borderRadius: "10px",
+    background: "rgba(255, 255, 255, 0.1)",
+    color: "white",
+    fontSize: "0.85rem",
+    fontWeight: "600",
+    cursor: "pointer",
+    transition: "all 0.3s ease",
+    backdropFilter: "blur(10px)",
+    position: "relative",
+    whiteSpace: "nowrap",
+  },
+  savedBtnActive: {
+    background: "rgba(255, 144, 23, 0.2)",
+    borderColor: "#ff9017",
+    boxShadow: "0 0 0 2px rgba(255, 144, 23, 0.2)",
   },
   searchBtn: {
     display: "flex",
