@@ -130,7 +130,7 @@ const Cortos = () => {
   const videos = [
     {
       id: 1,
-      src: "/src/assets/Amoblare_2.mp4",
+      src: "/assets/Amoblare_2.mp4",
       title: "TOMORROW X TOGETHER 🔥",
       description: "Let's keep dancing until the sun rises😳",
       location: "San Francisco, CA",
@@ -139,7 +139,7 @@ const Cortos = () => {
     },
     {
       id: 2,
-      src: "/src/assets/Atitulos.mp4",
+      src: "/assets/Atitulos.mp4",
       title: "Modern Living Space",
       description: "Beautiful penthouse with city views",
       location: "New York, NY",
@@ -148,7 +148,7 @@ const Cortos = () => {
     },
     {
       id: 3,
-      src: "/src/assets/Ikea.mp4",
+      src: "/assets/Ikea.mp4",
       title: "Cozy Family Home",
       description: "Perfect home for growing families",
       location: "Los Angeles, CA",
