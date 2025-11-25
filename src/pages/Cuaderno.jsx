@@ -1,6 +1,27 @@
 import React, { useState, useRef, useEffect } from "react";
-import { MapPin, Route as RouteIcon, Save, Undo, X, Play, Square, Home, Eye, Bed, Bath, Maximize } from "lucide-react";
-import { MapContainer, TileLayer, useMap, useMapEvents, Marker, Polyline, Tooltip } from "react-leaflet";
+import {
+  MapPin,
+  Route as RouteIcon,
+  Save,
+  Undo,
+  X,
+  Play,
+  Square,
+  Home,
+  Eye,
+  Bed,
+  Bath,
+  Maximize,
+} from "lucide-react";
+import {
+  MapContainer,
+  TileLayer,
+  useMap,
+  useMapEvents,
+  Marker,
+  Polyline,
+  Tooltip,
+} from "react-leaflet";
 import L from "leaflet";
 import MyPropertiesHeader from "../components/headers/MyPropertiesHeader";
 import CitySearchModal from "../components/cuaderno/CitySearchModal";
@@ -61,7 +82,7 @@ const Cuaderno = () => {
       direccion: "Av. San Martin #123",
       zona: "Equipetrol",
       ciudad: "Santa Cruz",
-      location: [-17.7850, -63.1820],
+      location: [-17.785, -63.182],
       precio: "450000",
       dormitorios: "4",
       banos: "3",
@@ -88,14 +109,15 @@ const Cuaderno = () => {
       miOferta: "",
       valorMin: "",
       valorMax: "",
-      descripcion: "Hermosa propiedad en zona residencial con excelentes acabados.",
+      descripcion:
+        "Hermosa propiedad en zona residencial con excelentes acabados.",
     },
     {
       id: 2,
       direccion: "Calle Los Lirios #456",
       zona: "Urubó",
       ciudad: "Santa Cruz",
-      location: [-17.7590, -63.0950],
+      location: [-17.759, -63.095],
       precio: "380000",
       dormitorios: "3",
       banos: "2",
@@ -129,7 +151,7 @@ const Cuaderno = () => {
       direccion: "Av. Beni #789",
       zona: "Norte",
       ciudad: "Santa Cruz",
-      location: [-17.7650, -63.1750],
+      location: [-17.765, -63.175],
       precio: "320000",
       dormitorios: "3",
       banos: "2",
@@ -163,7 +185,7 @@ const Cuaderno = () => {
       direccion: "Calle Libertad #321",
       zona: "Centro",
       ciudad: "Santa Cruz",
-      location: [-17.7840, -63.1820],
+      location: [-17.784, -63.182],
       precio: "280000",
       dormitorios: "2",
       banos: "2",
@@ -197,7 +219,7 @@ const Cuaderno = () => {
       direccion: "Av. Cristo Redentor #654",
       zona: "Cristo Redentor",
       ciudad: "Santa Cruz",
-      location: [-17.7950, -63.1620],
+      location: [-17.795, -63.162],
       precio: "520000",
       dormitorios: "5",
       banos: "4",
@@ -231,7 +253,7 @@ const Cuaderno = () => {
       direccion: "Calle Monseñor Rivero #987",
       zona: "Las Palmas",
       ciudad: "Santa Cruz",
-      location: [-17.7700, -63.1900],
+      location: [-17.77, -63.19],
       precio: "420000",
       dormitorios: "4",
       banos: "3",
@@ -399,13 +421,18 @@ const Cuaderno = () => {
 
     const id = navigator.geolocation.watchPosition(
       (position) => {
-        const newLocation = [position.coords.latitude, position.coords.longitude];
+        const newLocation = [
+          position.coords.latitude,
+          position.coords.longitude,
+        ];
         setUserLocation(newLocation);
         updatePassedSegments(newLocation);
       },
       (error) => {
         console.error("Error getting location:", error);
-        alert("No se pudo obtener tu ubicación. Por favor verifica los permisos.");
+        alert(
+          "No se pudo obtener tu ubicación. Por favor verifica los permisos."
+        );
         handleStopNavigation();
       },
       {
@@ -438,7 +465,11 @@ const Cuaderno = () => {
       const end = currentRouteMarkers[i + 1].position;
 
       // Find closest point on segment to user location
-      const closestPoint = getClosestPointOnSegment(currentLocation, start, end);
+      const closestPoint = getClosestPointOnSegment(
+        currentLocation,
+        start,
+        end
+      );
       const distanceToSegment = getDistance(currentLocation, closestPoint);
 
       // If user is close enough to this segment (within ~100 meters)
@@ -458,7 +489,10 @@ const Cuaderno = () => {
         const segmentLength = getDistance(start, end);
 
         // If user is past this segment
-        if (distToEnd < distanceToSegment && i < currentRouteMarkers.length - 2) {
+        if (
+          distToEnd < distanceToSegment &&
+          i < currentRouteMarkers.length - 2
+        ) {
           segments.push({
             index: i,
             progress: 1,
@@ -610,9 +644,13 @@ const Cuaderno = () => {
               <span>Nueva propiedad</span>
             </button>
             <button
-              className={`show-properties-badge-button ${showProperties ? "active" : ""}`}
+              className={`show-properties-badge-button ${
+                showProperties ? "active" : ""
+              }`}
               onClick={() => setShowProperties(!showProperties)}
-              title={showProperties ? "Ocultar propiedades" : "Mostrar propiedades"}
+              title={
+                showProperties ? "Ocultar propiedades" : "Mostrar propiedades"
+              }
             >
               <Eye size={16} />
               <span>Propiedades</span>
@@ -650,7 +688,9 @@ const Cuaderno = () => {
         {showPlayButton && !isCreatingRoute && (
           <button
             className={`navigation-button ${isNavigating ? "active" : ""}`}
-            onClick={isNavigating ? handleStopNavigation : handleStartNavigation}
+            onClick={
+              isNavigating ? handleStopNavigation : handleStartNavigation
+            }
             title={isNavigating ? "Detener navegación" : "Iniciar navegación"}
           >
             {isNavigating ? <Square size={20} /> : <Play size={20} />}
@@ -693,7 +733,9 @@ const Cuaderno = () => {
                 const end = currentRouteMarkers[index + 1].position;
 
                 // Find segment info
-                const segmentInfo = passedSegments.find((s) => s.index === index);
+                const segmentInfo = passedSegments.find(
+                  (s) => s.index === index
+                );
                 const progress = segmentInfo?.progress || 0;
 
                 if (progress > 0 && progress < 1 && segmentInfo?.isActive) {
@@ -751,43 +793,49 @@ const Cuaderno = () => {
           )}
 
           {/* Property Markers */}
-          {showProperties && !isNavigating && properties.map((property) => (
-            <Marker
-              key={property.id}
-              position={property.location}
-              icon={createPropertyMarkerIcon()}
-              eventHandlers={{
-                click: () => setSelectedProperty(property),
-              }}
-            >
-              <Tooltip
-                direction="top"
-                offset={[0, -55]}
-                opacity={1}
-                className="property-marker-tooltip"
+          {showProperties &&
+            !isNavigating &&
+            properties.map((property) => (
+              <Marker
+                key={property.id}
+                position={property.location}
+                icon={createPropertyMarkerIcon()}
+                eventHandlers={{
+                  click: () => setSelectedProperty(property),
+                }}
               >
-                <div className="tooltip-content">
-                  <div className="tooltip-price">{formatPrice(property.precio)}</div>
-                  <div className="tooltip-address">{property.direccion}</div>
-                  <div className="tooltip-location">{property.zona}, {property.ciudad}</div>
-                  <div className="tooltip-features">
-                    <div className="tooltip-feature">
-                      <Bed size={14} />
-                      <span>{property.dormitorios}</span>
+                <Tooltip
+                  direction="top"
+                  offset={[0, -55]}
+                  opacity={1}
+                  className="property-marker-tooltip"
+                >
+                  <div className="tooltip-content">
+                    <div className="tooltip-price">
+                      {formatPrice(property.precio)}
                     </div>
-                    <div className="tooltip-feature">
-                      <Bath size={14} />
-                      <span>{property.banos}</span>
+                    <div className="tooltip-address">{property.direccion}</div>
+                    <div className="tooltip-location">
+                      {property.zona}, {property.ciudad}
                     </div>
-                    <div className="tooltip-feature">
-                      <Maximize size={14} />
-                      <span>{property.terreno} m²</span>
+                    <div className="tooltip-features">
+                      <div className="tooltip-feature">
+                        <Bed size={14} />
+                        <span>{property.dormitorios}</span>
+                      </div>
+                      <div className="tooltip-feature">
+                        <Bath size={14} />
+                        <span>{property.banos}</span>
+                      </div>
+                      <div className="tooltip-feature">
+                        <Maximize size={14} />
+                        <span>{property.terreno} m²</span>
+                      </div>
                     </div>
                   </div>
-                </div>
-              </Tooltip>
-            </Marker>
-          ))}
+                </Tooltip>
+              </Marker>
+            ))}
         </MapContainer>
       </div>
 
